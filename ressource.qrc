@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/qrc">
+        <file>ressources/image/pdf.png</file>
+        <file>ressources/translations/english.qm</file>
+        <file>ressources/image/flag_france.png</file>
+        <file>ressources/image/flag_spain.png</file>
+        <file>ressources/image/flag_usa.png</file>
+        <file>ressources/image/toggle-off.png</file>
+        <file>ressources/image/toggle-on.png</file>
+    </qresource>
+</RCC>
