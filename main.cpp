@@ -3,67 +3,104 @@
 
 #include <QApplication>
 #include <QTranslator>
+#include <QSqlQuery>
+
+QPlainTextEdit *logTextEdit;
+
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+    const char *file = context.file ? context.file : "";
+    QString logMessage = QString("%1 %2").arg(localMsg.constData(), file);
+
+    if(logTextEdit) logTextEdit->appendPlainText(logMessage);
+
+    fprintf(stderr, "%s\n", localMsg.constData());
+}
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    qInstallMessageHandler(myMessageOutput);
+    QTranslator translator, translatorQtBase;
 
-    QTranslator anglais;
-    anglais.load(":/qrc/ressources/translations/english.qm");
-
-    //Création du fichier settings.csv
-    if(!QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).exists() || !QFile(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/settings.csv").exists())
+    //Création du fichier de langage
+    if(!QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).exists() || !QFile(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/translate.txt").exists())
     {
         QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-        QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/settings.csv");
+        QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/translate.txt");
 
         if (file.open(QIODevice::ReadWrite))
         {
             file.resize(0);
             QTextStream stream(&file);
-            stream << "settings;translate;tab;filters;filtersStat";
-            stream << "\n";
-            stream << "false;francais;0;0;true,0,0";
+            stream << "Français";
             file.close();
         }
     }
 
-    //Lecture du fichier settings
-    QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/settings.csv");
+    //Lecture du langage sélectionné
+    QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/translate.txt");
 
-    if (file.open(QIODevice::ReadWrite))
+    if(file.open(QIODevice::ReadWrite))
     {
         QTextStream stream(&file);
-        QStringList headers = stream.readLine().split(";");
-        QStringList parameters = stream.readLine().split(";");
+        QString line = stream.readLine();
 
-        //Anglais
-        if(parameters.at(headers.indexOf("translate")) == "anglais") a.installTranslator(&anglais);
+        if(line == "Français")
+        {
+            translatorQtBase.load(":/qrc/ressources/translations/qtbase_fr.qm");
+            qDebug() << "La langue a été modifiée en Français";
+        }
+        else if(line == "English") {
+            translator.load(":/qrc/ressources/translations/english.qm");
+            qDebug() << "Language has been changed to English";
+        }
+        else if(line == "Español") {
+            translatorQtBase.load(":/qrc/ressources/translations/qtbase_es.qm");
+            translator.load(":/qrc/ressources/translations/spanish.qm");
+            qDebug() << "El idioma ha sido cambiado a Español.";
+        }
+
+        a.installTranslator(&translator);
+        a.installTranslator(&translatorQtBase);
+        QLocale::setDefault(QLocale(translator.language()) != QLocale::C ? QLocale(translator.language()) : QLocale("fr_FR"));
 
         file.close();
     }
 
     OverAid w;
+    logTextEdit = w.ui->plainTextEdit_debug;
 
-    //Langue sélectionnée dans le menu
-    if (file.open(QIODevice::ReadWrite))
-    {
-        QTextStream stream(&file);
-        QStringList headers = stream.readLine().split(";");
-        QStringList parameters = stream.readLine().split(";");
+    w.database();
 
-        w.language = parameters.at(headers.indexOf("translate"));
-
-        //Anglais
-        if(parameters.at(headers.indexOf("translate")) == "anglais")
-        {
-            foreach(QAction *action, w.ui->menuLangage->actions())
-                if(action->isCheckable()) action->setChecked(false);
-            w.ui->actionAnglais->setChecked(true);
+    QVersionNumber versionDB, versionApp;
+    versionApp = QVersionNumber::fromString(w.version);
+    QSqlQuery settings("SELECT version,language FROM Settings");
+    if(settings.next()) {
+        //Version
+        if(QVersionNumber::fromString(settings.value("version").toString()) > versionApp) {
+            QMessageBox::warning(nullptr, QObject::tr("Erreur version"), QObject::tr("La version de l'application est obsolète.\nMerci d'utiliser une version plus récente."), QObject::tr("Fermer"));
+            return -1;
         }
+
+        //Langage sélectionné
+        foreach(QAction *action, w.ui->menuLangage->actions())
+            if(action->isCheckable()) action->setChecked(false);
+        if(settings.value("language").toString() == "Français") w.ui->actionFran_ais->setChecked(true);
+        else if(settings.value("language").toString() == "English") w.ui->actionAnglais->setChecked(true);
+        else if(settings.value("language").toString() == "Español") w.ui->actionEspagnol->setChecked(true);
+
+        w.locale = QLocale(translator.language()) != QLocale::C ? QLocale(translator.language()) : QLocale("fr_FR");
     }
 
-    w.actu_compte();
+    w.actu_settings();
     w.show();
+
+    a.setApplicationName("OverAid");
+    //a.setOrganizationName("Tom BEBIN");
+    a.setOrganizationDomain("tombebin.com");
+    a.setApplicationVersion(w.version);
+
     return a.exec();
 }

@@ -47,6 +47,12 @@ RESOURCES += \
 DISTFILES += \
     version.txt
 
+TRANSLATIONS += \
+    ressources/translations/qtbase_fr.ts \
+    ressources/translations/english.ts \
+    ressources/translations/qtbase_es.ts \
+    ressources/translations/spanish.ts
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

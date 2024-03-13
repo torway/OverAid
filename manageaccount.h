@@ -43,6 +43,8 @@ private slots:
 
     void on_comboBox_devise_2_currentTextChanged(const QString &arg1);
 
+    void on_pushButton_defaultAccount_clicked();
+
 private:
     Ui::ManageAccount *ui;
 

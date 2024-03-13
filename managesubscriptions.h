@@ -34,6 +34,8 @@ private slots:
 
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_pushButton_clicked();
+
 private:
     TransForm *trans = new TransForm(nullptr, "Abonnement");
 };

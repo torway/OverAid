@@ -11,6 +11,7 @@ TransForm::TransForm(QWidget *parent, QString command) :
     ui->setupUi(this);
 
     commande = command;
+    ui->dateEditAdd->setLocale(locale);
     ui->dateEditAdd->setDate(QDate::currentDate());
 
     if(commande == "Modifier")
@@ -26,8 +27,8 @@ TransForm::TransForm(QWidget *parent, QString command) :
     {
         this->setWindowTitle(tr("OverAid © - Abonnements"));
         ui->groupBoxAdd->setTitle("Ajouter un abonnement");
-        ui->dateEditAdd->setDisplayFormat("dd");
-        ui->label_4->setText("Jour");
+        ui->dateEditAdd->setDisplayFormat(QString("d").repeated(locale.dateFormat(QLocale::ShortFormat).count('d')));
+        ui->label_4->setText(tr("Jour"));
         ui->dateEditAdd->setDate(QDate(2000,01,01));
     }
     else if(commande == "Modifier abo")
@@ -35,8 +36,8 @@ TransForm::TransForm(QWidget *parent, QString command) :
         this->setWindowTitle(tr("OverAid © - Modifier l'abonnement"));
         ui->pushButtonAdd->setText("Modifier");
         ui->groupBoxAdd->setTitle("Modifier l'abonnement");
-        ui->dateEditAdd->setDisplayFormat("dd");
-        ui->label_4->setText("Jour");
+        ui->dateEditAdd->setDisplayFormat(QString("d").repeated(locale.dateFormat(QLocale::ShortFormat).count('d')));
+        ui->label_4->setText(tr("Jour"));
         ui->dateEditAdd->setDate(QDate(2000,01,01));
 
         this->setMaximumWidth(16777215);
@@ -89,7 +90,7 @@ void TransForm::on_comboBox_devise_currentTextChanged(const QString &arg1)
     totalAmount();
 }
 
-//Dépense ou Entrée d'argent
+//Debit ou Credit
 void TransForm::on_pushButton_out_clicked()
 {
     ui->checkBox_inOut->setCheckState(Qt::Unchecked);
@@ -186,12 +187,12 @@ void TransForm::on_pushButtonAdd_clicked()
     else
     {
         QString type;
-        if(ui->checkBox_inOut->checkState() == Qt::Unchecked) type = "Dépense";
-        else type = "Entrée d'argent";
+        if(ui->checkBox_inOut->checkState() == Qt::Unchecked) type = "Debit";
+        else type = "Credit";
 
         QString moyen;
         if(ui->comboBox_moyen->currentText() == tr("Carte bancaire")) moyen = "Carte bancaire";
-        else if(ui->comboBox_moyen->currentText() == tr("Éspèces")) moyen = "Éspèces";
+        else if(ui->comboBox_moyen->currentText() == tr("Espèces")) moyen = "Espèces";
         else if(ui->comboBox_moyen->currentText() == tr("Chèque")) moyen = "Chèque";
         else if(ui->comboBox_moyen->currentText() == tr("Virement")) moyen = "Virement";
         else if(ui->comboBox_moyen->currentText() == tr("Prélèvement")) moyen = "Prélèvement";
@@ -228,7 +229,7 @@ void TransForm::on_pushButtonAdd_clicked()
         if(commande == "Ajouter")
         {
             query.prepare("INSERT INTO Transactions (id_compte, date, type, moyen, categorie, sous_categorie, description, montant, detail_montant, fichier, devise, montantDeviseCompte) "
-                          "VALUES ('"+QString::number(id_compte)+"', '"+ui->dateEditAdd->date().toString("dd/MM/yyyy")+"', '"+type.replace("'","''")+"', '"+moyen+"', '"+cat+"', "
+                          "VALUES ('"+QString::number(id_compte)+"', '"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', '"+type.replace("'","''")+"', '"+moyen+"', '"+cat+"', "
                           "'"+cat2+"', '"+desc+"', '"+montant+"', '"+ope+"',:pdf, '"+ui->comboBox_devise->currentText().left(3)+"', '"+montantDeviseCompte+"');");
 
             QMessageBox::information(this, tr("Transaction ajoutée"), tr("La transaction a bien été ajoutée."), tr("Fermer"));
@@ -236,7 +237,7 @@ void TransForm::on_pushButtonAdd_clicked()
 
         if(commande == "Modifier")
         {
-            query.prepare("UPDATE Transactions SET date='"+ui->dateEditAdd->date().toString("dd/MM/yyyy")+"', type='"+type.replace("'","''")+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', "
+            query.prepare("UPDATE Transactions SET date='"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', type='"+type.replace("'","''")+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', "
                           "description='"+desc+"', montant='"+montant+"', detail_montant='"+ope+"', fichier=:pdf, devise='"+ui->comboBox_devise->currentText().left(3)+"', montantDeviseCompte='"+montantDeviseCompte+"' "
                           "WHERE id_trans='"+ui->label_id->text()+"'");
 
@@ -261,11 +262,7 @@ void TransForm::on_pushButtonAdd_clicked()
             this->close();
         }
 
-        if(ui->lineEditPDF->text().isEmpty())
-        {
-            query.bindValue(":pdf","");
-            query.exec();
-        }
+        if(ui->lineEditPDF->text().isEmpty()) query.bindValue(":pdf","");
         else
         {
             QFile file(ui->lineEditPDF->text());
@@ -273,8 +270,9 @@ void TransForm::on_pushButtonAdd_clicked()
             QByteArray PDFInByteArray = file.readAll();
 
             query.bindValue(":pdf",PDFInByteArray);
-            query.exec();
         }
+        query.exec();
+
         emit actu();
     }
 }

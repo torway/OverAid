@@ -124,22 +124,22 @@
           </item>
           <item>
            <property name="text">
+            <string>Virement</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Espèces</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Chèque</string>
            </property>
           </item>
           <item>
            <property name="text">
             <string>Prélèvement</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Éspèces</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Virement</string>
            </property>
           </item>
          </widget>
@@ -180,7 +180,11 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QDateEdit" name="dateEditAdd"/>
+         <widget class="QDateEdit" name="dateEditAdd">
+          <property name="displayFormat">
+           <string>dd MMM yyyy</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_5">
@@ -296,7 +300,7 @@
 }</string>
           </property>
           <property name="text">
-           <string>Dépense</string>
+           <string>Débit</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -371,7 +375,7 @@ QCheckBox::indicator:unchecked {
 }</string>
           </property>
           <property name="text">
-           <string>Entrée d'argent</string>
+           <string>Crédit</string>
           </property>
           <property name="checkable">
            <bool>true</bool>

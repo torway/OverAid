@@ -46,10 +46,10 @@ void OverAid::stats()
 {
     QLineSeries *zeroSeries = new QLineSeries();
 
-    QSqlQuery firstDate("SELECT date FROM Transactions WHERE "+where+" ORDER BY (substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) ASC, id_trans ASC");
+    QSqlQuery firstDate("SELECT date FROM Transactions WHERE "+where+" ORDER BY date ASC, id_trans ASC");
     if(firstDate.next())
     {
-        QDateTime olderDate = QDateTime::fromString(firstDate.value("date").toString(),"dd/MM/yyyy").addDays(-1);
+        QDateTime olderDate = QDateTime::fromString(firstDate.value("date").toString(),"yyyyMMdd").addDays(-1);
         if(where.startsWith("1+1 AND id_compte"))
         {
             QSqlQuery compteInitial("SELECT montant_initial FROM Comptes WHERE id_compte='"+QString::number(id_compte)+"'");
@@ -76,10 +76,10 @@ void OverAid::stats()
                 QTreeWidgetItem *transaction = monthItem->child(monthItem->childCount()-k);
 
                 solde.append(QString(transaction->text(8).split(" ").at(0)).replace(",",".").toDouble());
-                series->append(QDateTime::fromString(transaction->text(0),"dd/MM/yyyy").toMSecsSinceEpoch(), QString(transaction->text(8).split(" ").at(0)).replace(",",".").toDouble());
-                zeroSeries->append(QDateTime::fromString(transaction->text(0),"dd/MM/yyyy").toMSecsSinceEpoch(), 0);
+                series->append(QDateTime::fromString(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")).toMSecsSinceEpoch(), QString(transaction->text(8).split(" ").at(0)).replace(",",".").toDouble());
+                zeroSeries->append(QDateTime::fromString(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")).toMSecsSinceEpoch(), 0);
 
-                dates.append(QDateTime::fromString(transaction->text(0),"dd/MM/yyyy"));
+                dates.append(QDateTime::fromString(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")));
             }
         }
     }
@@ -96,7 +96,7 @@ void OverAid::stats()
     chart->setLocale(locale);
     if(series->count() == 0)
     {
-        chart->setTitle("Aucune transaction avec ces filtres");
+        chart->setTitle(tr("Aucune transaction avec ces filtres"));
         rangeSlider->setEnabled(false);
     }
     else chart->setTitle("");
@@ -106,8 +106,7 @@ void OverAid::stats()
     zeroSeries->setPen(QPen(QBrush(Qt::black),0.5));
 
     axisX->setTickCount(10);
-    if(language == "anglais") axisX->setFormat("MMM dd yyyy");
-    if(language == "francais") axisX->setFormat("dd MMM yyyy");
+    axisX->setFormat(tr("dd MMM yyyy"));
     axisX->setTitleText(tr("Date"));
     axisX->setLabelsAngle(-25);
     chart->addAxis(axisX, Qt::AlignBottom);

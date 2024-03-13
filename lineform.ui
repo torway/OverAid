@@ -133,7 +133,10 @@
      <item>
       <widget class="QLineEdit" name="lineEditAdd_description">
        <property name="placeholderText">
-        <string>Carrefour Drive</string>
+        <string>Carrefour</string>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -246,7 +249,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_deviseCompte">
           <property name="text">
-           <string>→ Montant local </string>
+           <string>→ Montant local</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

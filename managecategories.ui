@@ -10,6 +10,9 @@
     <height>606</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -75,6 +78,9 @@
      </property>
      <property name="shortcut">
       <string>Ctrl+W</string>
+     </property>
+     <property name="autoDefault">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

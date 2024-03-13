@@ -7,5 +7,8 @@
         <file>ressources/image/flag_usa.png</file>
         <file>ressources/image/toggle-off.png</file>
         <file>ressources/image/toggle-on.png</file>
+        <file>ressources/translations/spanish.qm</file>
+        <file>ressources/translations/qtbase_es.qm</file>
+        <file>ressources/translations/qtbase_fr.qm</file>
     </qresource>
 </RCC>

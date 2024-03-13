@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1650</width>
+    <width>1682</width>
     <height>960</height>
    </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
    <string>OverAid</string>
@@ -35,7 +38,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>120</height>
+        <height>110</height>
        </size>
       </property>
       <property name="font">
@@ -56,7 +59,7 @@
        <bool>false</bool>
       </property>
       <property name="checkable">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <property name="leftMargin">
@@ -108,9 +111,9 @@
              <widget class="QDateEdit" name="dateEditFilter_start">
               <property name="dateTime">
                <datetime>
-                <hour>8</hour>
-                <minute>3</minute>
-                <second>54</second>
+                <hour>12</hour>
+                <minute>0</minute>
+                <second>0</second>
                 <year>1900</year>
                 <month>1</month>
                 <day>1</day>
@@ -118,17 +121,20 @@
               </property>
               <property name="time">
                <time>
-                <hour>8</hour>
-                <minute>3</minute>
-                <second>54</second>
+                <hour>12</hour>
+                <minute>0</minute>
+                <second>0</second>
                </time>
+              </property>
+              <property name="displayFormat">
+               <string>dd MMM yyyy</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>Dépense / Entrée :</string>
+               <string>Débit / Crédit</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -173,13 +179,16 @@
              <widget class="QDateEdit" name="dateEditFilter_end">
               <property name="dateTime">
                <datetime>
-                <hour>18</hour>
+                <hour>0</hour>
                 <minute>0</minute>
                 <second>0</second>
                 <year>2100</year>
                 <month>12</month>
-                <day>30</day>
+                <day>29</day>
                </datetime>
+              </property>
+              <property name="displayFormat">
+               <string>dd MMM yyyy</string>
               </property>
              </widget>
             </item>
@@ -231,12 +240,12 @@
               </item>
               <item>
                <property name="text">
-                <string>Dépense</string>
+                <string>Débit</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Entrée d'argent</string>
+                <string>Crédit</string>
                </property>
               </item>
              </widget>
@@ -268,17 +277,17 @@
               </item>
               <item>
                <property name="text">
-                <string>Éspèces</string>
+                <string>Virement</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Espèces</string>
                </property>
               </item>
               <item>
                <property name="text">
                 <string>Chèque</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Virement</string>
                </property>
               </item>
               <item>
@@ -296,7 +305,14 @@
              </widget>
             </item>
             <item row="1" column="10">
-             <widget class="QComboBox" name="comboBoxFiltre_devise"/>
+             <widget class="QComboBox" name="comboBoxFiltre_devise">
+              <property name="maximumSize">
+               <size>
+                <width>200</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
             </item>
             <item row="1" column="1">
              <widget class="QLabel" name="label_6">
@@ -332,6 +348,9 @@
               <property name="placeholderText">
                <string>Description</string>
               </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
            </layout>
@@ -359,7 +378,7 @@
        <item row="0" column="2">
         <widget class="QLabel" name="label_idSavedFilter">
          <property name="text">
-          <string>id_filtre</string>
+          <string>id_filter</string>
          </property>
         </widget>
        </item>
@@ -415,7 +434,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Prévision compte :</string>
+           <string>Solde futur :</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -430,7 +449,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Reste compte : </string>
+           <string>Solde : </string>
           </property>
          </widget>
         </item>
@@ -529,6 +548,22 @@
       </widget>
      </widget>
     </item>
+    <item row="0" column="1" rowspan="2">
+     <widget class="QPlainTextEdit" name="plainTextEdit_debug">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -536,7 +571,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1650</width>
+     <width>1682</width>
      <height>24</height>
     </rect>
    </property>
@@ -549,7 +584,7 @@
       <string>Comptes</string>
      </property>
      <addaction name="separator"/>
-     <addaction name="actionAjouter_un_compte"/>
+     <addaction name="actionGerer_les_comptes"/>
     </widget>
     <widget class="QMenu" name="menuLangage">
      <property name="title">
@@ -565,8 +600,9 @@
     <addaction name="actionCat_gories"/>
     <addaction name="actionAbonnements"/>
     <addaction name="separator"/>
+    <addaction name="actionAfficher_le_d_bugger"/>
    </widget>
-   <widget class="QMenu" name="menufirst">
+   <widget class="QMenu" name="menuFichier">
     <property name="title">
      <string>Fichier</string>
     </property>
@@ -574,12 +610,13 @@
     <addaction name="actionExporter_les_PDF_en_ZIP"/>
     <addaction name="actionSauvegarder_la_base_de_donn_es"/>
     <addaction name="separator"/>
+    <addaction name="action_about"/>
     <addaction name="actionFermer"/>
    </widget>
-   <addaction name="menufirst"/>
+   <addaction name="menuFichier"/>
    <addaction name="menuG_rer"/>
   </widget>
-  <action name="actionAjouter_un_compte">
+  <action name="actionGerer_les_comptes">
    <property name="text">
     <string>Gérer les comptes</string>
    </property>
@@ -594,7 +631,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="ressource.qrc">
@@ -622,6 +659,9 @@
    </property>
    <property name="shortcut">
     <string>Esc</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::TextHeuristicRole</enum>
    </property>
   </action>
   <action name="actionExporter_au_format_CSV">
@@ -658,6 +698,22 @@
    </property>
    <property name="text">
     <string>Espagnol</string>
+   </property>
+  </action>
+  <action name="actionAfficher_le_d_bugger">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Afficher le débugger</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>À propos</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
  </widget>

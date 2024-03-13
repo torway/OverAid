@@ -12,10 +12,6 @@ OverAid::OverAid(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("OverAid ©");
 
-    database();
-    //actu() se fait dans le main.cpp
-
-
     //Slider a deux sens
     rangeSlider = new RangeSlider(Qt::Horizontal, RangeSlider::Option::DoubleHandles, ui->tabStats);
     rangeSlider->setObjectName(QString::fromUtf8("rangeSlider"));
@@ -23,6 +19,7 @@ OverAid::OverAid(QWidget *parent)
     ui->gridLayout_stats->addWidget(rangeSlider,1,0);
 
     //Menu clic droit
+    ui->lineEditFiltre_desc->setContextMenuPolicy(Qt::DefaultContextMenu);
     ui->treeWidgetSummary->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeWidgetSummary, &QTreeWidget::customContextMenuRequested, this, &OverAid::treeWidgetMenu);
 }
@@ -37,52 +34,85 @@ void OverAid::database()
     overaidDatabase = QSqlDatabase::addDatabase("QSQLITE");
     overaidDatabase.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/database.db");
 
+    //if(!QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/"+qApp->organizationName()).exists()) QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/"+qApp->organizationName());
     if(!QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).exists()) QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     if(!QFile(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/database.db").exists())
     {
-        if(overaidDatabase.open()) qDebug() << "Connexion à la base de donnée réussie.";
-        else qDebug() << "Impossible de se connecter à la base de donnée.";
+        if(overaidDatabase.open()) qDebug() << tr("Connexion à la base de donnée réussie.");
+        else qDebug() << tr("Impossible de se connecter à la base de donnée.");
 
+        QSqlQuery settings("CREATE TABLE \"Settings\" (\"version\" TEXT NOT NULL DEFAULT 0, \"language\" TEXT NOT NULL DEFAULT 'Francais', \"defaultAccount\" TEXT NOT NULL DEFAULT '1', \"showGroupFilter\" TEXT NOT NULL DEFAULT 'true', \"showDebugWindow\" TEXT NOT NULL DEFAULT 'false', \"geometry\" TEXT NOT NULL DEFAULT '0;0;0;0');");
+        if(!settings.executedQuery().isEmpty())
+        {
+            //Créer la ligne de paramètres
+            QSqlQuery settings("INSERT INTO Settings (version) VALUES ('"+version+"')");
+
+            bool done = false;
+            while(done == false)
+            {
+                bool ok;
+                QStringList languages;
+                languages << "Français" << "English" << "Español";
+
+                QString selectedOptionLanguage = QInputDialog::getItem(nullptr, "Language", "Please choose your language.", languages, 0, false, &ok);
+                if(ok && !selectedOptionLanguage.isEmpty())
+                {
+                    QSqlQuery langage("UPDATE Settings SET language='"+selectedOptionLanguage+"'");
+
+                    QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/language.txt");
+                    if (file.open(QIODevice::ReadWrite))
+                    {
+                        file.resize(0);
+                        QTextStream stream(&file);
+                        stream << selectedOptionLanguage;
+                        file.close();
+
+                        done = true;
+                    }
+                }
+            }
+        }
         QSqlQuery compte("CREATE TABLE \"Comptes\" (\"id_compte\" INTEGER NOT NULL, \"nom\" TEXT NOT NULL, \"montant_initial\" DOUBLE NOT NULL, \"devise\" TEXT NOT NULL, \"active\" TEXT NOT NULL, PRIMARY KEY(\"id_compte\" AUTOINCREMENT));");
         QSqlQuery transaction("CREATE TABLE \"Transactions\" (\"id_trans\" INTEGER NOT NULL, \"id_compte\" TEXT NOT NULL,\"date\" TEXT NOT NULL,\"type\" TEXT NOT NULL,\"moyen\" TEXT NOT NULL,\"categorie\" TEXT NOT NULL,\"sous_categorie\" TEXT NOT NULL,\"description\" TEXT NOT NULL,\"montant\" DOUBLE NOT NULL,\"devise\" TEXT NOT NULL,\"montantDeviseCompte\" DOUBLE NOT NULL,\"detail_montant\" TEXT NOT NULL,\"fichier\" BLOB,PRIMARY KEY(\"id_trans\" AUTOINCREMENT));");
-        QSqlQuery categorie("CREATE TABLE \"Catégories\" (\"id_cat\" INTEGER NOT NULL,\"type\"	TEXT,\"nom\" TEXT NOT NULL,\"cat0\" TEXT NOT NULL,\"id_compte\" INTEGER, PRIMARY KEY(\"id_cat\" AUTOINCREMENT))");
+        QSqlQuery categorie("CREATE TABLE \"Catégories\" (\"id_cat\" INTEGER NOT NULL,\"type\" TEXT,\"nom\" TEXT NOT NULL,\"cat0\" TEXT NOT NULL,\"id_compte\" INTEGER, PRIMARY KEY(\"id_cat\" AUTOINCREMENT))");
         QSqlQuery abonnement("CREATE TABLE\"Abonnements\" (\"id_sub\" INTEGER NOT NULL,\"id_compte\" INTEGER NOT NULL,\"renouvellement\" TEXT NOT NULL,\"type\" TEXT NOT NULL,\"moyen\" TEXT NOT NULL,\"categorie\" TEXT NOT NULL,\"sous_categorie\" TEXT NOT NULL,\"description\" TEXT NOT NULL,\"montant\" DOUBLE NOT NULL,\"devise\" TEXT NOT NULL,\"montantDeviseCompte\" DOUBLE NOT NULL,\"detail_montant\" TEXT NOT NULL,\"fichier\" BLOB NOT NULL,\"dernier\" TEXT NOT NULL, PRIMARY KEY(\"id_sub\" AUTOINCREMENT));");
         QSqlQuery filtre("CREATE TABLE \"Filtres\" (\"id_filtre\" INTEGER NOT NULL, \"id_compte\" INTEGER NOT NULL, \"nom\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"moyen\" TEXT NOT NULL, \"categorie\" TEXT NOT NULL, \"sous_categorie\" TEXT NOT NULL, \"date_debut\" TEXT NOT NULL, \"date_fin\" TEXT NOT NULL, \"description\" TEXT NOT NULL, \"devise\" TEXT NOT NULL, PRIMARY KEY(\"id_filtre\" AUTOINCREMENT));");
         QSqlQuery devise("CREATE TABLE \"Devises\" (\"id_currency\" INTEGER NOT NULL, \"code\" TEXT NOT NULL, \"nom\" TEXT NOT NULL, \"symbole\" TEXT NOT NULL, PRIMARY KEY(\"id_currency\" AUTOINCREMENT));");
         if(!devise.executedQuery().isEmpty())
         {
-            QList<QLocale> allLocales = QLocale::matchingLocales(QLocale::English, QLocale::AnyScript, QLocale::AnyCountry);
-            allLocales += QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
-            QList<QString> allCurrencies;
-            foreach (const QLocale &currencyLocale, allLocales) {
-                if(!currencyLocale.currencySymbol(QLocale::CurrencyIsoCode).isEmpty() && !currencyLocale.currencySymbol(QLocale::CurrencySymbol).isEmpty() && !currencyLocale.currencySymbol(QLocale::CurrencyDisplayName).isEmpty())
-                {
-                    bool exists = false;
-                    foreach (const QString &str, allCurrencies) if(str.startsWith(currencyLocale.currencySymbol(QLocale::CurrencyIsoCode), Qt::CaseInsensitive)) exists = true;
-                    if(!exists)  allCurrencies.append(currencyLocale.currencySymbol(QLocale::CurrencyIsoCode) + "-" + currencyLocale.currencySymbol(QLocale::CurrencyDisplayName) + "-" + currencyLocale.currencySymbol(QLocale::CurrencySymbol));
-
-                    allCurrencies.sort();
-                }
-            }
-            foreach (QString currency, allCurrencies) QSqlQuery currencyAdd("INSERT INTO Devises (code,nom,symbole) VALUES ('"+currency.split("-").at(0)+"','"+currency.split("-").at(1)+"','"+currency.split("-").at(2)+"')");
+            foreach (QString currency, devisesList) QSqlQuery currencyAdd("INSERT INTO Devises (code,nom,symbole) VALUES ('"+currency.split("-").at(0)+"','"+currency.split("-").at(1)+"','"+currency.split("-").at(2)+"')");
 
             //Créer le premier compte
-            bool done = false, done2 = false;
+            bool done = false, done2 = false, done3 = false;
             while(done == false)
             {
                 bool ok;
-                QString selectedOptionName = QInputDialog::getText(nullptr, tr("Nouveau compte"), tr("Veuillez choisir un nom pour votre compte."), QLineEdit::Normal, tr("Courant"), &ok);
+                QString selectedOptionName = QInputDialog::getText(nullptr, tr("Nouveau compte"), tr("Veuillez choisir un nom pour votre compte."), QLineEdit::Normal, tr("Compte courant"), &ok);
                 if(ok && !selectedOptionName.isEmpty())
                 {
                     while(done2 == false)
                     {
                         bool ok;
+
+                        QStringList allCurrencies;
+                        QSqlQuery devises("SELECT * FROM Devises");
+                        while(devises.next()) allCurrencies.append(devises.value("code").toString()+" : "+devises.value("nom").toString()+" ("+devises.value("symbole").toString()+")");
+
                         QString selectedOptionCurrency = QInputDialog::getItem(nullptr, tr("Nouveau compte"), tr("Veuillez choisir une devise pour votre compte."), allCurrencies, 0, false, &ok);
                         if(ok && !selectedOptionCurrency.isEmpty())
                         {
-                            QSqlQuery courant("INSERT INTO Comptes (nom,montant_initial,devise,active) VALUES ('"+selectedOptionName+"', 0, '"+selectedOptionCurrency.left(3)+"', 'true')");
-                            done2 = true;
+                            while(done3 == false)
+                            {
+                                bool ok;
+                                double selectedOptionAmount = QInputDialog::getDouble(nullptr, tr("Nouveau compte"), tr("Veuillez choisir le montant initial pour votre compte."), 0, -100000, 100000, 2, &ok);
+                                if(ok)
+                                {
+                                    done3 = true;
+                                    QSqlQuery courant("INSERT INTO Comptes (nom,montant_initial,devise,active) VALUES ('"+selectedOptionName+"', '"+QString::number(selectedOptionAmount,'f',2)+"', '"+selectedOptionCurrency.left(3)+"', 'true')");
+                                }
+                            }
                         }
+                        done2 = true;
                     }
                     done = true;
                 }
@@ -91,15 +121,21 @@ void OverAid::database()
     }
     else
     {
-        if(overaidDatabase.open()) qDebug() << "Connexion à la base de donnée réussie.";
-        else qDebug() << "Impossible de se connecter à la base de donnée.";
+        if(overaidDatabase.open()) qDebug() << tr("Connexion à la base de donnée réussie.");
+        else qDebug() << tr("Impossible de se connecter à la base de donnée.");
     }
+}
+
+void OverAid::closeEvent(QCloseEvent *event)
+{
+    QSqlQuery geometry("UPDATE Settings SET geometry='"+QString::number(this->geometry().x())+";"+QString::number(this->geometry().y())+";"+QString::number(this->geometry().width())+";"+QString::number(this->geometry().height())+"'");
+    event->accept();
 }
 
 void OverAid::treeWidgetMenu(const QPoint &pos)
 {
     bool transId = false;
-    if(!ui->treeWidgetSummary->currentItem()->text(9).isEmpty()) transId = true;
+    if(ui->treeWidgetSummary->currentItem() && !ui->treeWidgetSummary->currentItem()->text(9).isEmpty()) transId = true;
 
     QAction *newAct_etendre = new QAction(tr("Tout étendre"), this);
     connect(newAct_etendre, SIGNAL(triggered()), this, SLOT(tout_etendre()));
@@ -148,16 +184,6 @@ void OverAid::treeWidgetMenu(const QPoint &pos)
 void OverAid::actu(bool remember, bool actuCat)
 {
     QTime time = QTime::currentTime();
-    if(!updated)
-    {
-        update();
-        actu_devise();
-        qDebug() << "update time : " << time.msecsTo(QTime::currentTime()) << " msec.";
-    }
-
-    //Langage
-    if(language == "anglais") locale = QLocale::English;
-    if(language == "francais") locale = QLocale::French;
 
     //MAJ Abonnement
     QSqlQuery abo("SELECT * FROM Abonnements WHERE CAST(dernier AS int)<'"+QDate::currentDate().toString("yyyyMM")+"'");
@@ -208,19 +234,13 @@ void OverAid::actu(bool remember, bool actuCat)
 
             QSqlQuery ajouter;
             ajouter.prepare("INSERT INTO Transactions (id_compte, date, type, moyen, categorie, sous_categorie, description, montant, detail_montant, fichier, devise, montantDeviseCompte) "
-                            "VALUES ('"+abo.value("id_compte").toString()+"', '"+lastDate.toString("dd/MM/yyyy")+"', '"+abo.value("type").toString().replace("'","''")+"', '"+abo.value("moyen").toString().replace("'","''")+"', '"+abo.value("categorie").toString()+"', "
+                            "VALUES ('"+abo.value("id_compte").toString()+"', '"+lastDate.toString("yyyyMMdd")+"', '"+abo.value("type").toString().replace("'","''")+"', '"+abo.value("moyen").toString().replace("'","''")+"', '"+abo.value("categorie").toString()+"', "
                             "'"+abo.value("sous_categorie").toString()+"', '"+expFinal.replace("'","''")+"', '"+abo.value("montant").toString()+"', '"+abo.value("detail_montant").toString()+"',:pdf, '"+abo.value("devise").toString()+"', '"+abo.value("montantDeviseCompte").toString()+"');");
 
-            if(abo.value("fichier").toByteArray().isEmpty())
-            {
-                ajouter.bindValue(":pdf","");
-                ajouter.exec();
-            }
-            else
-            {
-                ajouter.bindValue(":pdf",abo.value("fichier").toByteArray());
-                ajouter.exec();
-            }
+            if(abo.value("fichier").toByteArray().isEmpty()) ajouter.bindValue(":pdf","");
+            else ajouter.bindValue(":pdf",abo.value("fichier").toByteArray());
+
+            ajouter.exec();
 
             QSqlQuery update("UPDATE Abonnements SET dernier='"+lastDate.toString("yyyyMM")+"' WHERE id_sub='"+abo.value("id_sub").toString()+"'");
         }
@@ -281,11 +301,13 @@ void OverAid::actu(bool remember, bool actuCat)
     {
         trans->setEnabled(true);
         ui->actionAbonnements->setEnabled(true);
+        ui->actionCat_gories->setEnabled(true);
     }
     else
     {
         trans->setEnabled(false);
         ui->actionAbonnements->setEnabled(false);
+        ui->actionCat_gories->setEnabled(false);
     }
 
     qDebug() << "actu time : " << time.msecsTo(QTime::currentTime()) << " msec.";
@@ -360,7 +382,7 @@ void OverAid::actu_sousCategorie()
     //Filtres sous-catégorie
     id_sousCategories.clear();
 
-    QString cat0_filtre = "1+1"; // Par défaut, si aucune catégorie n'est cochée
+    QString cat0_filtre = "cat0='-1'"; // Par défaut, si aucune catégorie n'est cochée
 
     if(ui->pushButtonFiltre_cat->menu()->actions().count() >= 4) {
         QStringList cat0FilterList;
@@ -488,14 +510,14 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
     QString inOut, moyen, cat, cat2;
 
     switch (ui->comboBoxFiltre_inOut->currentIndex()) {
-        case 1: inOut = "Dépense"; break;
-        case 2: inOut = "Entrée d''argent"; break;
+        case 1: inOut = "Debit"; break;
+        case 2: inOut = "Credit"; break;
         default: inOut = ""; break;
     }
 
     switch (ui->comboBoxFiltre_moyen->currentIndex()) {
         case 1: moyen = "Carte bancaire"; break;
-        case 2: moyen = "Éspèces"; break;
+        case 2: moyen = "Espèces"; break;
         case 3: moyen = "Chèque"; break;
         case 4: moyen = "Virement"; break;
         case 5: moyen = "Prélèvement"; break;
@@ -556,18 +578,27 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
         {
             bool ok;
             QString selectedOptionName = QInputDialog::getText(nullptr, tr("Nouveau filtre"), tr("Veuillez choisir un nom pour ce filtre personnalisé."), QLineEdit::Normal, tr(""), &ok);
-            if(ok && !selectedOptionName.isEmpty())
+            if(ok)
             {
-                if(currentNames.contains(selectedOptionName)) QMessageBox::warning(this,tr("Erreur"),tr("Un filtre personnalisé porte déjà ce nom."), tr("Fermer"));
-                else {
-                    QSqlQuery add("INSERT INTO Filtres (id_compte, nom, type, moyen, categorie, sous_categorie, date_debut, date_fin, description, devise) "
-                                  "VALUES ('"+QString::number(id_compte)+"','"+selectedOptionName+"','"+inOut+"','"+moyen+"','"+cat+"','"+cat2+"','"+ui->dateEditFilter_start->text()+"','"+ui->dateEditFilter_end->text()+"',"
-                                  "'"+ui->lineEditFiltre_desc->text().replace("'","''")+"','"+(ui->comboBoxFiltre_devise->currentIndex() == 0 ? "" : ui->comboBoxFiltre_devise->currentText().left(3))+"')");
-                    actu_savedFilters();
-                    ui->comboBox_savedFilters->setCurrentIndex(ui->comboBox_savedFilters->findText(selectedOptionName));
-                    QMessageBox::information(this,tr("Filtre personnalisé ajouté"),tr("Le filtre personnalisé '%1' a bien été ajouté.").arg(selectedOptionName), tr("Fermer"));
-                    done = true;
+                if(!selectedOptionName.isEmpty())
+                {
+                    if(currentNames.contains(selectedOptionName)) QMessageBox::warning(this,tr("Erreur"),tr("Un filtre personnalisé porte déjà ce nom."), tr("Fermer"));
+                    else {
+                        QSqlQuery add("INSERT INTO Filtres (id_compte, nom, type, moyen, categorie, sous_categorie, date_debut, date_fin, description, devise) "
+                                      "VALUES ('"+QString::number(id_compte)+"','"+selectedOptionName+"','"+inOut+"','"+moyen+"','"+cat+"','"+cat2+"','"+ui->dateEditFilter_start->text()+"','"+ui->dateEditFilter_end->text()+"',"
+                                      "'"+ui->lineEditFiltre_desc->text().replace("'","''")+"','"+(ui->comboBoxFiltre_devise->currentIndex() == 0 ? "" : ui->comboBoxFiltre_devise->currentText().left(3))+"')");
+                        actu_savedFilters();
+                        ui->comboBox_savedFilters->setCurrentIndex(ui->comboBox_savedFilters->findText(selectedOptionName));
+                        QMessageBox::information(this,tr("Filtre personnalisé ajouté"),tr("Le filtre personnalisé '%1' a bien été ajouté.").arg(selectedOptionName), tr("Fermer"));
+                        done = true;
+                    }
                 }
+                else QMessageBox::warning(this,tr("Erreur"),tr("Le filtre personnalisé doit avoir un nom valide.").arg(selectedOptionName), tr("Fermer"));
+            }
+            else
+            {
+                ui->comboBox_savedFilters->setCurrentIndex(0);
+                done = true;
             }
         }
     }
@@ -584,14 +615,14 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
             ui->label_idSavedFilter->setText(filtres.value("id_filtre").toString());
 
             QString inOutH = filtres.value("type").toString();
-            if(inOutH == "Dépense") inOut = tr("Dépense");
-            if(inOutH == "Entrée d'argent") inOut = tr("Entrée d'argent");
+            if(inOutH == "Debit") inOut = tr("Débit");
+            if(inOutH == "Credit") inOut = tr("Crédit");
             if(ui->comboBoxFiltre_inOut->findText(inOutH) != -1) ui->comboBoxFiltre_inOut->setCurrentText(inOutH);
             else ui->comboBoxFiltre_inOut->setCurrentIndex(0);
 
             QString moyenH = filtres.value("moyen").toString();
             if(moyenH == "Carte bancaire") moyen = tr("Carte bancaire");
-            if(moyenH == "Éspèces") moyen = tr("Éspèces");
+            if(moyenH == "Espèces") moyen = tr("Espèces");
             if(moyenH == "Chèque") moyen = tr("Chèque");
             if(moyenH == "Virement") moyen = tr("Virement");
             if(moyenH == "Prélèvement") moyen = tr("Prélèvement");
@@ -605,8 +636,8 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
             }
             else ui->comboBoxFiltre_devise->setCurrentIndex(0);
 
-            ui->dateEditFilter_start->setDate(QDate::fromString(filtres.value("date_debut").toString(),"dd/MM/yyyy"));
-            ui->dateEditFilter_end->setDate(QDate::fromString(filtres.value("date_fin").toString(),"dd/MM/yyyy"));
+            ui->dateEditFilter_start->setDate(QDate::fromString(filtres.value("date_debut").toString(),"yyyyMMdd"));
+            ui->dateEditFilter_end->setDate(QDate::fromString(filtres.value("date_fin").toString(),"yyyyMMdd"));
             ui->lineEditFiltre_desc->setText(filtres.value("description").toString());
 
             if(filtres.value("categorie").toString() != "") {
@@ -643,16 +674,16 @@ void OverAid::actu_filtre()
     QString inOut, moyen, cat, cat2, desc, date, devise;
 
     switch (ui->comboBoxFiltre_inOut->currentIndex()) {
-        case 1: inOut = "type='Dépense'"; break;
-        case 2: inOut = "type='Entrée d''argent'"; break;
+        case 1: inOut = "type='Debit'"; break;
+        case 2: inOut = "type='Credit'"; break;
         default: inOut = "1+1"; break;
     }
 
     switch (ui->comboBoxFiltre_moyen->currentIndex()) {
         case 1: moyen = " moyen='Carte bancaire'"; break;
-        case 2: moyen = " moyen='Éspèces'"; break;
-        case 3: moyen = " moyen='Chèque'"; break;
-        case 4: moyen = " moyen='Virement'"; break;
+        case 2: moyen = " moyen='Virement'"; break;
+        case 3: moyen = " moyen='Espèces'"; break;
+        case 4: moyen = " moyen='Chèque'"; break;
         case 5: moyen = " moyen='Prélèvement'"; break;
         default: moyen = " 1+1"; break;
     }
@@ -688,8 +719,7 @@ void OverAid::actu_filtre()
     if(ui->lineEditFiltre_desc->text().isEmpty()) desc = " 1+1";
     else desc = " (description LIKE '"+ui->lineEditFiltre_desc->text().replace("'","''")+"%' OR description LIKE '%;"+ui->lineEditFiltre_desc->text().replace("'","''")+"%')";
 
-    date = " substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2) >= '"+ui->dateEditFilter_start->date().toString("yyyy-MM-dd")+"' AND"
-           " substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2) <= '"+ui->dateEditFilter_end->date().toString("yyyy-MM-dd")+"'";
+    date = " date >= '"+ui->dateEditFilter_start->date().toString("yyyyMMdd")+"' AND date <= '"+ui->dateEditFilter_end->date().toString("yyyyMMdd")+"'";
 
     if(ui->comboBoxFiltre_devise->currentIndex() == 0) devise = " 1+1";
     else devise = " devise='"+ui->comboBoxFiltre_devise->currentText().left(3)+"'";
@@ -710,7 +740,7 @@ void OverAid::actu_historique()
     QStringList headerLabels;
     headerLabels.append(tr("Date"));
     headerLabels.append("");
-    headerLabels.append(tr("Dépense / Entrée"));
+    headerLabels.append(tr("Débit / Crédit"));
     headerLabels.append(tr("Catégorie"));
     headerLabels.append(tr("Sous-catégorie"));
     headerLabels.append(tr("Description"));
@@ -746,14 +776,14 @@ void OverAid::actu_historique()
     QSqlQuery nomDesColonnes("SELECT group_concat(name, ',') AS colonnes FROM pragma_table_info('Transactions') WHERE name <> 'fichier'");
     if(nomDesColonnes.next()) columnNameExceptFile = nomDesColonnes.value("colonnes").toString()+", CASE WHEN fichier IS NULL OR fichier = '' THEN 'Non' ELSE 'Oui' END AS fichier, Devises.symbole";
 
-    QSqlQuery transaction("SELECT "+columnNameExceptFile+" FROM Transactions JOIN Devises ON Transactions.devise = Devises.code WHERE "+where+" ORDER BY (substr(date, 7, 4) || '-' || substr(date, 4, 2) || '-' || substr(date, 1, 2)) ASC, id_trans ASC");
+    QSqlQuery transaction("SELECT "+columnNameExceptFile+" FROM Transactions JOIN Devises ON Transactions.devise = Devises.code WHERE "+where+" ORDER BY date ASC, id_trans ASC");
     qDebug() << transaction.lastQuery();
     while(transaction.next())
     {
         QTreeWidgetItem *trans = new QTreeWidgetItem();
 
-        QDate date = locale.toDate(transaction.value("date").toString(), "dd/MM/yyyy");
-        trans->setText(0, locale.toString(date,"dd/MM/yyyy"));
+        QDate date = QDate::fromString(transaction.value("date").toString(), "yyyyMMdd");
+        trans->setText(0, locale.toString(date, locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")));
 
         if(!anneeList.contains(QString::number(date.year())))
         {
@@ -780,13 +810,13 @@ void OverAid::actu_historique()
         }
 
         QString inOut, inOutH = transaction.value("type").toString();
-        if(inOutH == "Dépense") inOut = tr("Dépense");
-        if(inOutH == "Entrée d'argent") inOut = tr("Entrée d'argent");
+        if(inOutH == "Debit") inOut = tr("Débit");
+        if(inOutH == "Credit") inOut = tr("Crédit");
         trans->setText(2, inOut);
 
         QString moyen, moyenH = transaction.value("moyen").toString();
         if(moyenH == "Carte bancaire") moyen = tr("Carte bancaire");
-        if(moyenH == "Éspèces") moyen = tr("Éspèces");
+        if(moyenH == "Espèces") moyen = tr("Espèces");
         if(moyenH == "Chèque") moyen = tr("Chèque");
         if(moyenH == "Virement") moyen = tr("Virement");
         if(moyenH == "Prélèvement") moyen = tr("Prélèvement");
@@ -853,8 +883,8 @@ void OverAid::actu_historique()
 
                 //Couleur multi cat
                 if(montantLine == 0) category->setForeground(6, QColor("orange"));
-                if((inOutH == "Dépense" && montantLine > 0) || (inOutH == "Entrée d'argent" && montantLine < 0)) category->setForeground(6, Qt::red);
-                if((inOutH == "Dépense" && montantLine < 0) || (inOutH == "Entrée d'argent" && montantLine > 0)) category->setForeground(6, Qt::darkGreen);
+                if((inOutH == "Debit" && montantLine > 0) || (inOutH == "Credit" && montantLine < 0)) category->setForeground(6, Qt::red);
+                if((inOutH == "Debit" && montantLine < 0) || (inOutH == "Credit" && montantLine > 0)) category->setForeground(6, Qt::darkGreen);
 
                 category->setText(5, transaction.value("description").toString().split(";").at(i));
                 category->setText(9, transaction.value("id_trans").toString());
@@ -891,16 +921,16 @@ void OverAid::actu_historique()
 
         //Couleur cat
         if(montantTotal == 0) trans->setForeground(6, QColor("orange"));
-        if((inOutH == "Dépense" && montantTotal > 0) || (inOutH == "Entrée d'argent" && montantTotal < 0)) trans->setForeground(6, Qt::red);
-        if((inOutH == "Dépense" && montantTotal < 0) || (inOutH == "Entrée d'argent" && montantTotal > 0)) trans->setForeground(6, Qt::darkGreen);
+        if((inOutH == "Debit" && montantTotal > 0) || (inOutH == "Credit" && montantTotal < 0)) trans->setForeground(6, Qt::red);
+        if((inOutH == "Debit" && montantTotal < 0) || (inOutH == "Credit" && montantTotal > 0)) trans->setForeground(6, Qt::darkGreen);
 
-        if(!(inOutH == "Dépense" && moyenH == "Éspèces") || !where.startsWith("1+1 AND id_compte"))
+        if(!(inOutH == "Debit" && moyenH == "Espèces") || !where.startsWith("1+1 AND id_compte"))
         {
-            if(inOutH == "Dépense") solde -= montantTotalDeviseCompte;
+            if(inOutH == "Debit") solde -= montantTotalDeviseCompte;
             else solde += montantTotalDeviseCompte;
         }
 
-        if(inOutH == "Dépense")
+        if(inOutH == "Debit")
         {
             deltaY -= montantTotalDeviseCompte;
             deltaM -= montantTotalDeviseCompte;
@@ -911,8 +941,8 @@ void OverAid::actu_historique()
             deltaM += montantTotalDeviseCompte;
         }
 
-        if(date <= QDate::currentDate()) ui->label_reste->setText(tr("Reste compte : ")+QString::number(solde,'f',2).replace(".",",")+" "+symboleCompte);
-        ui->label_prevision->setText(tr("Prévision compte : ")+QString::number(solde,'f',2).replace(".",",")+" "+symboleCompte);
+        if(date <= QDate::currentDate()) ui->label_reste->setText(tr("Solde : ")+QString::number(solde,'f',2).replace(".",",")+" "+symboleCompte);
+        ui->label_prevision->setText(tr("Solde futur : ")+QString::number(solde,'f',2).replace(".",",")+" "+symboleCompte);
 
         trans->setText(8, QString::number(solde,'f',2).replace(".",",")+" "+symboleCompte);
         trans->setForeground(8, Qt::gray);
@@ -1033,8 +1063,8 @@ void OverAid::actu_historique()
     //Changer les labels si filtres
     if(totalTrans != currentTrans)
     {
-        ui->label_reste->setText(tr("Reste compte : ")+tr("-----"));
-        ui->label_prevision->setText(tr("Prévision compte : ")+tr("-----"));
+        ui->label_reste->setText(tr("Solde : ")+"-----");
+        ui->label_prevision->setText(tr("Solde futur : ")+"-----");
         ui->label_reste->setEnabled(false);
         ui->label_prevision->setEnabled(false);
     }
@@ -1131,14 +1161,14 @@ void OverAid::modify_trans()
         QSqlQuery transaction("SELECT * FROM Transactions WHERE id_trans='"+ui->treeWidgetSummary->currentItem()->text(9)+"'");
         if(transaction.next())
         {
-            modif->ui->dateEditAdd->setDate(locale.toDate(transaction.value("date").toString(),"dd/MM/yyyy"));
+            modif->ui->dateEditAdd->setDate(locale.toDate(transaction.value("date").toString(),"yyyyMMdd"));
 
-            if(transaction.value("type").toString() == "Dépense") modif->on_pushButton_out_clicked();
+            if(transaction.value("type").toString() == "Debit") modif->on_pushButton_out_clicked();
             else modif->on_pushButton_in_clicked();
 
             QString moyenH = transaction.value("moyen").toString();
             if(moyenH == "Carte bancaire") modif->ui->comboBox_moyen->setCurrentText(tr("Carte bancaire"));
-            if(moyenH == "Éspèces") modif->ui->comboBox_moyen->setCurrentText(tr("Éspèces"));
+            if(moyenH == "Espèces") modif->ui->comboBox_moyen->setCurrentText(tr("Espèces"));
             if(moyenH == "Chèque") modif->ui->comboBox_moyen->setCurrentText(tr("Chèque"));
             if(moyenH == "Virement") modif->ui->comboBox_moyen->setCurrentText(tr("Virement"));
             if(moyenH == "Prélèvement") modif->ui->comboBox_moyen->setCurrentText(tr("Prélèvement"));
@@ -1213,14 +1243,14 @@ void OverAid::duplicate()
         QSqlQuery transaction("SELECT * FROM Transactions WHERE id_trans='"+ui->treeWidgetSummary->currentItem()->text(9)+"'");
         if(transaction.next())
         {
-            trans->ui->dateEditAdd->setDate(locale.toDate(transaction.value("date").toString(),"dd/MM/yyyy"));
+            trans->ui->dateEditAdd->setDate(locale.toDate(transaction.value("date").toString(),"yyyyMMdd"));
 
-            if(transaction.value("type").toString() == "Dépense") trans->on_pushButton_out_clicked();
+            if(transaction.value("type").toString() == "Debit") trans->on_pushButton_out_clicked();
             else trans->on_pushButton_in_clicked();
 
             QString moyenH = transaction.value("moyen").toString();
             if(moyenH == "Carte bancaire") trans->ui->comboBox_moyen->setCurrentText(tr("Carte bancaire"));
-            if(moyenH == "Éspèces") trans->ui->comboBox_moyen->setCurrentText(tr("Éspèces"));
+            if(moyenH == "Espèces") trans->ui->comboBox_moyen->setCurrentText(tr("Espèces"));
             if(moyenH == "Chèque") trans->ui->comboBox_moyen->setCurrentText(tr("Chèque"));
             if(moyenH == "Virement") trans->ui->comboBox_moyen->setCurrentText(tr("Virement"));
             if(moyenH == "Prélèvement") trans->ui->comboBox_moyen->setCurrentText(tr("Prélèvement"));
@@ -1288,7 +1318,7 @@ void OverAid::delete_trans()
     {
         QMessageBox msgBox;
         msgBox.setText(tr("Supprimer la transaction"));
-        msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer la transaction '")+ui->treeWidgetSummary->currentItem()->text(5)+tr("' du ")+locale.toString(locale.toDate(ui->treeWidgetSummary->currentItem()->text(0),"dd/MM/yyyy"),"dddd d MMMM yyyy")+" ?");
+        msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer la transaction '%1' du %2 ?").arg(ui->treeWidgetSummary->currentItem()->text(5),locale.toString(locale.toDate(ui->treeWidgetSummary->currentItem()->text(0),locale.ShortFormat),locale.LongFormat)));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
         msgBox.setStyleSheet("QLabel{min-width: 350px;}");
@@ -1373,5 +1403,18 @@ void OverAid::on_treeWidgetSummary_itemClicked(QTreeWidgetItem *item, int column
             }
         }
     }
+}
+
+void OverAid::on_groupBox_filtre_toggled(bool arg1)
+{
+    //Masquer le groupBox des filtres (avec animation)
+    QPropertyAnimation *group = new QPropertyAnimation(ui->groupBox_filtre, "maximumHeight");
+    group->setDuration(1000);
+    group->setStartValue(ui->groupBox_filtre->maximumHeight());
+    group->setEndValue(arg1 ? 110 : 20);
+
+    group->start();
+
+    QSqlQuery settings("UPDATE Settings SET showGroupFilter='"+QString(arg1 ? "true" : "false")+"'");
 }
 

@@ -43,16 +43,22 @@ void ManageAccount::actu()
     id_account.clear();
 
     QSqlQuery compte("SELECT * FROM Comptes");
-    while (compte.next())
+    while(compte.next())
     {
         id_account.append(compte.value("id_compte").toInt());
         ui->listWidget->addItem(compte.value("nom").toString());
     }
 
-    ui->lineEdit_nom->clear();
-    ui->doubleSpinBox->setValue(0);
-    ui->lineEdit_nom_2->clear();
-    ui->doubleSpinBox_2->setValue(0);
+    QSqlQuery defaut("SELECT defaultAccount FROM Settings");
+    if(defaut.next())
+    {
+        QFont bold;
+        bold.setBold(true);
+        bold.setUnderline(true);
+        ui->listWidget->item(id_account.indexOf(defaut.value(0).toInt()))->setFont(bold);
+    }
+
+    if(ui->listWidget->item(0)) ui->listWidget->setCurrentItem(ui->listWidget->item(0));
 }
 
 void ManageAccount::on_pushButton_add_clicked()
@@ -134,5 +140,14 @@ void ManageAccount::on_comboBox_devise_currentTextChanged(const QString &arg1)
 void ManageAccount::on_comboBox_devise_2_currentTextChanged(const QString &arg1)
 {
     ui->doubleSpinBox_2->setSuffix(" "+arg1.split("(").at(1).split(")").at(0));
+}
+
+void ManageAccount::on_pushButton_defaultAccount_clicked()
+{
+    if(ui->listWidget->currentRow() != -1)
+    {
+        QSqlQuery remove("UPDATE Settings SET defaultAccount='"+QString::number(id_account.at(ui->listWidget->currentRow()))+"'");
+    }
+    actu();
 }
 

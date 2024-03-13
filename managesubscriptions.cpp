@@ -20,6 +20,11 @@ ManageSubscriptions::~ManageSubscriptions()
     delete ui;
 }
 
+void ManageSubscriptions::on_pushButton_clicked()
+{
+    this->close();
+}
+
 void ManageSubscriptions::treeWidgetMenu(const QPoint &pos)
 {
     QTreeWidget *tree = ui->treeWidget;
@@ -64,7 +69,7 @@ void ManageSubscriptions::actu()
     QStringList headerLabels;
     headerLabels.append(tr("Jour"));
     headerLabels.append("");
-    headerLabels.append(tr("Dépense / Entrée"));
+    headerLabels.append(tr("Débit / Crédit"));
     headerLabels.append(tr("Catégorie"));
     headerLabels.append(tr("Sous-catégorie"));
     headerLabels.append(tr("Description"));
@@ -83,13 +88,13 @@ void ManageSubscriptions::actu()
         trans->setText(0, transaction.value("renouvellement").toString());
 
         QString inOut, inOutH = transaction.value("type").toString();
-        if(inOutH == "Dépense") inOut = tr("Dépense");
-        if(inOutH == "Entrée d'argent") inOut = tr("Entrée d'argent");
+        if(inOutH == "Debit") inOut = tr("Débit");
+        if(inOutH == "Credit") inOut = tr("Crédit");
         trans->setText(2, inOut);
 
         QString moyen, moyenH = transaction.value("moyen").toString();
         if(moyenH == "Carte bancaire") moyen = tr("Carte bancaire");
-        if(moyenH == "Éspèces") moyen = tr("Éspèces");
+        if(moyenH == "Espèces") moyen = tr("Espèces");
         if(moyenH == "Chèque") moyen = tr("Chèque");
         if(moyenH == "Virement") moyen = tr("Virement");
         if(moyenH == "Prélèvement") moyen = tr("Prélèvement");
@@ -119,8 +124,8 @@ void ManageSubscriptions::actu()
                 category->setText(6, QString::number(montantLine,'f',2).replace('.', ',')+" "+transaction.value("symbole").toString());
 
                 if(montantLine == 0) category->setForeground(6, QColor("orange"));
-                if((inOutH == "Dépense" && montantLine > 0) || (inOutH == "Entrée d'argent" && montantLine < 0)) category->setForeground(6, QColor("red"));
-                if((inOutH == "Dépense" && montantLine < 0) || (inOutH == "Entrée d'argent" && montantLine > 0)) category->setForeground(6, QColor("green"));
+                if((inOutH == "Debit" && montantLine > 0) || (inOutH == "Credit" && montantLine < 0)) category->setForeground(6, QColor("red"));
+                if((inOutH == "Debit" && montantLine < 0) || (inOutH == "Credit" && montantLine > 0)) category->setForeground(6, QColor("green"));
 
                 category->setText(5, transaction.value("description").toString().split(";").at(i));
                 category->setText(8, transaction.value("id_sub").toString());
@@ -149,8 +154,8 @@ void ManageSubscriptions::actu()
 
         trans->setText(6, QString::number(montantTotal,'f',2).replace('.', ',')+" "+transaction.value("symbole").toString());
         if(montantTotal == 0) trans->setForeground(6, QColor("orange"));
-        if((inOutH == "Dépense" && montantTotal > 0) || (inOutH == "Entrée d'argent" && montantTotal < 0)) trans->setForeground(6, QColor("red"));
-        if((inOutH == "Dépense" && montantTotal < 0) || (inOutH == "Entrée d'argent" && montantTotal > 0)) trans->setForeground(6, QColor("green"));
+        if((inOutH == "Debit" && montantTotal > 0) || (inOutH == "Credit" && montantTotal < 0)) trans->setForeground(6, QColor("red"));
+        if((inOutH == "Debit" && montantTotal < 0) || (inOutH == "Credit" && montantTotal > 0)) trans->setForeground(6, QColor("green"));
 
         trans->setText(8, transaction.value("id_sub").toString());
         if(!transaction.value("fichier").toByteArray().isEmpty()) trans->setIcon(1, QIcon(":/qrc/ressources/image/pdf.png"));
@@ -182,12 +187,12 @@ void ManageSubscriptions::modify_sub()
         {
             modif->ui->dateEditAdd->setDate(QDate::fromString(transaction.value("renouvellement").toString(),"dd"));
 
-            if(transaction.value("type").toString() == "Dépense") modif->on_pushButton_out_clicked();
+            if(transaction.value("type").toString() == "Debit") modif->on_pushButton_out_clicked();
             else modif->on_pushButton_in_clicked();
 
             QString moyenH = transaction.value("moyen").toString();
             if(moyenH == "Carte bancaire") modif->ui->comboBox_moyen->setCurrentText(tr("Carte bancaire"));
-            if(moyenH == "Éspèces") modif->ui->comboBox_moyen->setCurrentText(tr("Éspèces"));
+            if(moyenH == "Espèces") modif->ui->comboBox_moyen->setCurrentText(tr("Espèces"));
             if(moyenH == "Chèque") modif->ui->comboBox_moyen->setCurrentText(tr("Chèque"));
             if(moyenH == "Virement") modif->ui->comboBox_moyen->setCurrentText(tr("Virement"));
             if(moyenH == "Prélèvement") modif->ui->comboBox_moyen->setCurrentText(tr("Prélèvement"));
@@ -263,12 +268,12 @@ void ManageSubscriptions::duplicate()
         {
             trans->ui->dateEditAdd->setDate(QDate::fromString(transaction.value("renouvellement").toString(),"dd"));
 
-            if(transaction.value("type").toString() == "Dépense") trans->on_pushButton_out_clicked();
+            if(transaction.value("type").toString() == "Debit") trans->on_pushButton_out_clicked();
             else trans->on_pushButton_in_clicked();
 
             QString moyenH = transaction.value("moyen").toString();
             if(moyenH == "Carte bancaire") trans->ui->comboBox_moyen->setCurrentText(tr("Carte bancaire"));
-            if(moyenH == "Éspèces") trans->ui->comboBox_moyen->setCurrentText(tr("Éspèces"));
+            if(moyenH == "Espèces") trans->ui->comboBox_moyen->setCurrentText(tr("Espèces"));
             if(moyenH == "Chèque") trans->ui->comboBox_moyen->setCurrentText(tr("Chèque"));
             if(moyenH == "Virement") trans->ui->comboBox_moyen->setCurrentText(tr("Virement"));
             if(moyenH == "Prélèvement") trans->ui->comboBox_moyen->setCurrentText(tr("Prélèvement"));
@@ -335,7 +340,7 @@ void ManageSubscriptions::delete_sub()
     {
         QMessageBox msgBox;
         msgBox.setText(tr("Supprimer la transaction"));
-        msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer l'abonnement '")+ui->treeWidget->currentItem()->text(5)+tr("' tous les ")+QDate::fromString(ui->treeWidget->currentItem()->text(0),"dd").toString("dd")+" du mois ?");
+        msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer l'abonnement '%1' tous les %2 du mois ?").arg(ui->treeWidget->currentItem()->text(5),QDate::fromString(ui->treeWidget->currentItem()->text(0),"dd").toString("dd")));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
         msgBox.setStyleSheet("QLabel{min-width: 350px;}");
@@ -421,3 +426,4 @@ void ManageSubscriptions::on_treeWidget_itemClicked(QTreeWidgetItem *item, int c
         }
     }
 }
+
