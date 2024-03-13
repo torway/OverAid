@@ -2,11 +2,11 @@
 Manage your accounts and expenses with ease.
 
 # How to install
-Go to the Application folder
+Download the repository and go to Application folder, then :
 - Windows :
-Download the .zip, unzip it in your "Program Files" and create a shortcut of the .exe
+Unzip the archive in your "Program Files" and create a shortcut of the .exe
 - macOS :
-Download the .app
+Copy the .app and paste it on your Mac Applications folder
 
 # Credits
 Application made with Qt Creator 6.5.3
