@@ -75,11 +75,11 @@ void OverAid::stats()
             for(int k = 1; k <= monthItem->childCount(); k++) {
                 QTreeWidgetItem *transaction = monthItem->child(monthItem->childCount()-k);
 
-                solde.append(QString(transaction->text(8).split(" ").at(0)).replace(",",".").toDouble());
-                series->append(QDateTime::fromString(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")).toMSecsSinceEpoch(), QString(transaction->text(8).split(" ").at(0)).replace(",",".").toDouble());
-                zeroSeries->append(QDateTime::fromString(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")).toMSecsSinceEpoch(), 0);
+                solde.append(QString(transaction->text(10).split(" ").at(0)).replace(",",".").toDouble());
+                series->append(locale.toDateTime(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")).toMSecsSinceEpoch(), QString(transaction->text(10).split(" ").at(0)).replace(",",".").toDouble());
+                zeroSeries->append(locale.toDateTime(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")).toMSecsSinceEpoch(), 0);
 
-                dates.append(QDateTime::fromString(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")));
+                dates.append(locale.toDateTime(transaction->text(0),locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")));
             }
         }
     }

@@ -10,5 +10,6 @@
         <file>ressources/translations/spanish.qm</file>
         <file>ressources/translations/qtbase_es.qm</file>
         <file>ressources/translations/qtbase_fr.qm</file>
+        <file>ressources/Bulk_Import.xlsx</file>
     </qresource>
 </RCC>

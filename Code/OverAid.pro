@@ -9,6 +9,7 @@ CONFIG += c++11 sdk_no_version_check
 SOURCES += \
     Classes/RangeSlider.cpp \
     Classes/custommenu.cpp \
+    bulkimport.cpp \
     lineform.cpp \
     main.cpp \
     manageaccount.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 HEADERS += \
     Classes/RangeSlider.h \
     Classes/custommenu.h \
+    bulkimport.h \
     lineform.h \
     manageaccount.h \
     managecategories.h \
@@ -31,6 +33,7 @@ HEADERS += \
     transform.h
 
 FORMS += \
+    bulkimport.ui \
     lineform.ui \
     manageaccount.ui \
     managecategories.ui \
@@ -38,7 +41,7 @@ FORMS += \
     overaid.ui \
     transform.ui
 
-ICON = logo.icns         #https://icon-icons.com/fr/pack/Currency-vol-1-Icons/1172
+ICON = logo.icns
 RC_ICONS = logo.ico
 
 RESOURCES += \

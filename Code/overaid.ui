@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1682</width>
+    <width>1798</width>
     <height>960</height>
    </rect>
   </property>
@@ -237,41 +237,27 @@
        <property name="bottomMargin">
         <number>5</number>
        </property>
-       <item row="0" column="3">
-        <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Filtres sauvegardés :</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_idSavedFilter">
-           <property name="text">
-            <string>id_filter</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="comboBox_savedFilters">
-           <property name="maximumSize">
-            <size>
-             <width>200</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="0" column="4" rowspan="3">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
        </item>
-       <item row="0" column="5" rowspan="2">
+       <item row="3" column="5">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="5" rowspan="3">
         <widget class="QWidget" name="widget" native="true">
          <layout class="QGridLayout" name="gridLayout_4">
           <property name="leftMargin">
@@ -454,7 +440,7 @@
              <widget class="QDateEdit" name="dateEditFilter_end">
               <property name="dateTime">
                <datetime>
-                <hour>11</hour>
+                <hour>12</hour>
                 <minute>0</minute>
                 <second>0</second>
                 <year>2100</year>
@@ -464,6 +450,13 @@
               </property>
               <property name="displayFormat">
                <string>dd MMM yyyy</string>
+              </property>
+              <property name="date">
+               <date>
+                <year>2100</year>
+                <month>12</month>
+                <day>31</day>
+               </date>
               </property>
              </widget>
             </item>
@@ -553,6 +546,13 @@
               </property>
               <property name="displayFormat">
                <string>dd MMM yyyy</string>
+              </property>
+              <property name="date">
+               <date>
+                <year>1900</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
               </property>
              </widget>
             </item>
@@ -648,25 +648,39 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="4" rowspan="2">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="5">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
+       <item row="0" column="3" rowspan="3">
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_idSavedFilter">
+           <property name="text">
+            <string>id_filter</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="QComboBox" name="comboBox_savedFilters">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="label_4">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Filtres sauvegardés :</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -678,7 +692,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1682</width>
+     <width>1798</width>
      <height>24</height>
     </rect>
    </property>
@@ -718,6 +732,8 @@
     <addaction name="separator"/>
     <addaction name="actionExporter_au_format_CSV"/>
     <addaction name="actionExporter_les_PDF_en_ZIP"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_en_masse"/>
     <addaction name="separator"/>
     <addaction name="action_about"/>
     <addaction name="actionFermer"/>
@@ -828,6 +844,11 @@
   <action name="actionImporter_une_base_de_donn_es">
    <property name="text">
     <string>Importer une base de données</string>
+   </property>
+  </action>
+  <action name="actionImport_en_masse">
+   <property name="text">
+    <string>Import en masse</string>
    </property>
   </action>
  </widget>

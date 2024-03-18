@@ -41,43 +41,51 @@ void OverAid::database()
         if(overaidDatabase.open()) qDebug() << tr("Connexion à la base de donnée réussie.");
         else qDebug() << tr("Impossible de se connecter à la base de donnée.");
 
-        QSqlQuery settings("CREATE TABLE \"Settings\" (\"version\" TEXT NOT NULL DEFAULT 0, \"language\" TEXT NOT NULL DEFAULT 'Francais', \"defaultAccount\" TEXT NOT NULL DEFAULT '1', \"showGroupFilter\" TEXT NOT NULL DEFAULT 'true', \"showDebugWindow\" TEXT NOT NULL DEFAULT 'false', \"geometry\" TEXT NOT NULL DEFAULT '0;0;0;0');");
+        QSqlQuery settings("CREATE TABLE 'Settings' ('version' TEXT NOT NULL DEFAULT 0, 'language' TEXT NOT NULL DEFAULT 'Francais', 'defaultAccount' TEXT NOT NULL DEFAULT '1', 'showGroupFilter' TEXT NOT NULL DEFAULT 'true', 'showDebugWindow' TEXT NOT NULL DEFAULT 'false', 'geometry' TEXT NOT NULL DEFAULT '0;0;0;0');");
         if(!settings.executedQuery().isEmpty())
         {
             //Créer la ligne de paramètres
             QSqlQuery settings("INSERT INTO Settings (version) VALUES ('"+version+"')");
 
-            bool done = false;
-            while(done == false)
+            QString langue = "English";
+            if(QLocale::languageToString(QLocale::system().language()) == "French") langue = "Français";
+            else if(QLocale::languageToString(QLocale::system().language()) == "English") langue = "English";
+            else if(QLocale::languageToString(QLocale::system().language()) == "Spanish") langue = "Español";
+            else
             {
-                bool ok;
-                QStringList languages;
-                languages << "Français" << "English" << "Español";
-
-                QString selectedOptionLanguage = QInputDialog::getItem(nullptr, "Language", "Please choose your language.", languages, 0, false, &ok);
-                if(ok && !selectedOptionLanguage.isEmpty())
+                bool done = false;
+                while(done == false)
                 {
-                    QSqlQuery langage("UPDATE Settings SET language='"+selectedOptionLanguage+"'");
+                    bool ok;
+                    QStringList languages;
+                    languages << "Français" << "English" << "Español";
 
-                    QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/language.txt");
-                    if (file.open(QIODevice::ReadWrite))
+                    QString selectedOptionLanguage = QInputDialog::getItem(nullptr, "Language", "Please choose your language.", languages, 0, false, &ok);
+                    if(ok && !selectedOptionLanguage.isEmpty())
                     {
-                        file.resize(0);
-                        QTextStream stream(&file);
-                        stream << selectedOptionLanguage;
-                        file.close();
-
+                        langue = selectedOptionLanguage;
                         done = true;
                     }
                 }
             }
+
+            QSqlQuery langage("UPDATE Settings SET language='"+langue+"'");
+
+            QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/language.txt");
+            if (file.open(QIODevice::ReadWrite))
+            {
+                file.resize(0);
+                QTextStream stream(&file);
+                stream << langue;
+                file.close();
+            }
         }
-        QSqlQuery compte("CREATE TABLE \"Comptes\" (\"id_compte\" INTEGER NOT NULL, \"nom\" TEXT NOT NULL, \"montant_initial\" DOUBLE NOT NULL, \"devise\" TEXT NOT NULL, \"active\" TEXT NOT NULL, PRIMARY KEY(\"id_compte\" AUTOINCREMENT));");
-        QSqlQuery transaction("CREATE TABLE \"Transactions\" (\"id_trans\" INTEGER NOT NULL, \"id_compte\" TEXT NOT NULL,\"date\" TEXT NOT NULL,\"type\" TEXT NOT NULL,\"moyen\" TEXT NOT NULL,\"categorie\" TEXT NOT NULL,\"sous_categorie\" TEXT NOT NULL,\"description\" TEXT NOT NULL,\"montant\" DOUBLE NOT NULL,\"devise\" TEXT NOT NULL,\"montantDeviseCompte\" DOUBLE NOT NULL,\"detail_montant\" TEXT NOT NULL,\"fichier\" BLOB,PRIMARY KEY(\"id_trans\" AUTOINCREMENT));");
-        QSqlQuery categorie("CREATE TABLE \"Catégories\" (\"id_cat\" INTEGER NOT NULL,\"type\" TEXT,\"nom\" TEXT NOT NULL,\"cat0\" TEXT NOT NULL,\"id_compte\" INTEGER, PRIMARY KEY(\"id_cat\" AUTOINCREMENT))");
-        QSqlQuery abonnement("CREATE TABLE\"Abonnements\" (\"id_sub\" INTEGER NOT NULL,\"id_compte\" INTEGER NOT NULL,\"renouvellement\" TEXT NOT NULL,\"type\" TEXT NOT NULL,\"moyen\" TEXT NOT NULL,\"categorie\" TEXT NOT NULL,\"sous_categorie\" TEXT NOT NULL,\"description\" TEXT NOT NULL,\"montant\" DOUBLE NOT NULL,\"devise\" TEXT NOT NULL,\"montantDeviseCompte\" DOUBLE NOT NULL,\"detail_montant\" TEXT NOT NULL,\"fichier\" BLOB NOT NULL,\"dernier\" TEXT NOT NULL, PRIMARY KEY(\"id_sub\" AUTOINCREMENT));");
-        QSqlQuery filtre("CREATE TABLE \"Filtres\" (\"id_filtre\" INTEGER NOT NULL, \"id_compte\" INTEGER NOT NULL, \"nom\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"moyen\" TEXT NOT NULL, \"categorie\" TEXT NOT NULL, \"sous_categorie\" TEXT NOT NULL, \"date_debut\" TEXT NOT NULL, \"date_fin\" TEXT NOT NULL, \"description\" TEXT NOT NULL, \"devise\" TEXT NOT NULL, PRIMARY KEY(\"id_filtre\" AUTOINCREMENT));");
-        QSqlQuery devise("CREATE TABLE \"Devises\" (\"id_currency\" INTEGER NOT NULL, \"code\" TEXT NOT NULL, \"nom\" TEXT NOT NULL, \"symbole\" TEXT NOT NULL, PRIMARY KEY(\"id_currency\" AUTOINCREMENT));");
+        QSqlQuery compte("CREATE TABLE 'Comptes' ('id_compte' INTEGER NOT NULL, 'nom' TEXT NOT NULL, 'montant_initial' DOUBLE NOT NULL, 'devise' TEXT NOT NULL, 'active' TEXT NOT NULL, PRIMARY KEY('id_compte' AUTOINCREMENT));");
+        QSqlQuery transaction("CREATE TABLE 'Transactions' ('id_trans' INTEGER NOT NULL, 'id_compte' TEXT NOT NULL,'date' TEXT NOT NULL,'type' TEXT NOT NULL,'moyen' TEXT NOT NULL,'categorie' TEXT NOT NULL,'sous_categorie' TEXT NOT NULL,'description' TEXT NOT NULL,'montant' DOUBLE NOT NULL,'devise' TEXT NOT NULL,'montantDeviseCompte' DOUBLE NOT NULL,'detail_montant' TEXT NOT NULL,'fichier' BLOB,PRIMARY KEY('id_trans' AUTOINCREMENT));");
+        QSqlQuery categorie("CREATE TABLE 'Catégories' ('id_cat' INTEGER NOT NULL,'type' TEXT,'nom' TEXT NOT NULL,'cat0' TEXT NOT NULL,'id_compte' INTEGER, PRIMARY KEY('id_cat' AUTOINCREMENT))");
+        QSqlQuery abonnement("CREATE TABLE'Abonnements' ('id_sub' INTEGER NOT NULL,'id_compte' INTEGER NOT NULL,'renouvellement' TEXT NOT NULL,'type' TEXT NOT NULL,'moyen' TEXT NOT NULL,'categorie' TEXT NOT NULL,'sous_categorie' TEXT NOT NULL,'description' TEXT NOT NULL,'montant' DOUBLE NOT NULL,'devise' TEXT NOT NULL,'montantDeviseCompte' DOUBLE NOT NULL,'detail_montant' TEXT NOT NULL,'fichier' BLOB NOT NULL,'dernier' TEXT NOT NULL, PRIMARY KEY('id_sub' AUTOINCREMENT));");
+        QSqlQuery filtre("CREATE TABLE 'Filtres' ('id_filtre' INTEGER NOT NULL, 'id_compte' INTEGER NOT NULL, 'nom' TEXT NOT NULL, 'type' TEXT NOT NULL, 'moyen' TEXT NOT NULL, 'categorie' TEXT NOT NULL, 'sous_categorie' TEXT NOT NULL, 'date_debut' TEXT NOT NULL, 'date_fin' TEXT NOT NULL, 'description' TEXT NOT NULL, 'devise' TEXT NOT NULL, PRIMARY KEY('id_filtre' AUTOINCREMENT));");
+        QSqlQuery devise("CREATE TABLE 'Devises' ('id_currency' INTEGER NOT NULL, 'code' TEXT NOT NULL, 'nom' TEXT NOT NULL, 'symbole' TEXT NOT NULL, PRIMARY KEY('id_currency' AUTOINCREMENT));");
         if(!devise.executedQuery().isEmpty())
         {
             foreach (QString currency, devisesList) QSqlQuery currencyAdd("INSERT INTO Devises (code,nom,symbole) VALUES ('"+currency.split("-").at(0)+"','"+currency.split("-").at(1)+"','"+currency.split("-").at(2)+"')");

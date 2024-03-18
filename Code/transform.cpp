@@ -241,7 +241,7 @@ void TransForm::on_pushButtonAdd_clicked()
         if(commande == "Ajouter")
         {
             query.prepare("INSERT INTO Transactions (id_compte, date, type, moyen, categorie, sous_categorie, description, montant, detail_montant, fichier, devise, montantDeviseCompte, projet) "
-                          "VALUES ('"+QString::number(id_compte)+"', '"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', '"+type.replace("'","''")+"', '"+moyen+"', '"+cat+"', "
+                          "VALUES ('"+QString::number(id_compte)+"', '"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', '"+type+"', '"+moyen+"', '"+cat+"', "
                           "'"+cat2+"', '"+desc+"', '"+montant+"', '"+ope+"',:pdf, '"+ui->comboBox_devise->currentText().left(3)+"', '"+montantDeviseCompte+"', '"+ui->lineEdit_projet->text().replace("'","''")+"');");
 
             QMessageBox::information(this, tr("Transaction ajoutée"), tr("La transaction a bien été ajoutée."), tr("Fermer"));
@@ -249,7 +249,7 @@ void TransForm::on_pushButtonAdd_clicked()
 
         if(commande == "Modifier")
         {
-            query.prepare("UPDATE Transactions SET date='"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', type='"+type.replace("'","''")+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', "
+            query.prepare("UPDATE Transactions SET date='"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', type='"+type+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', "
                           "description='"+desc+"', montant='"+montant+"', detail_montant='"+ope+"', fichier=:pdf, devise='"+ui->comboBox_devise->currentText().left(3)+"', montantDeviseCompte='"+montantDeviseCompte+"', projet='"+ui->lineEdit_projet->text().replace("'","''")+"' "
                           "WHERE id_trans='"+ui->label_id->text()+"'");
 
@@ -260,7 +260,7 @@ void TransForm::on_pushButtonAdd_clicked()
         if(commande == "Abonnement")
         {
             query.prepare("INSERT INTO Abonnements (id_compte, type, moyen, categorie, sous_categorie, description, montant, detail_montant, fichier, renouvellement, dernier, devise, montantDeviseCompte, projet) "
-                              "VALUES ('"+QString::number(id_compte)+"', '"+type.replace("'","''")+"', '"+moyen+"', '"+cat+"', "
+                              "VALUES ('"+QString::number(id_compte)+"', '"+type+"', '"+moyen+"', '"+cat+"', "
                               "'"+cat2+"', '"+desc+"', '"+montant+"', '"+ope+"',:pdf, '"+ui->dateEditAdd->date().toString("dd")+"', '"+QDate::currentDate().toString("yyyyMM")+"', '"+ui->comboBox_devise->currentText().left(3)+"', "
                               "'"+montantDeviseCompte+"', '"+ui->lineEdit_projet->text().replace("'","''")+"');");
 
@@ -269,7 +269,7 @@ void TransForm::on_pushButtonAdd_clicked()
 
         if(commande == "Modifier abo")
         {
-            query.prepare("UPDATE Abonnements SET type='"+type.replace("'","''")+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', description='"+desc+"', montant='"+montant+"', detail_montant='"+ope+"'"
+            query.prepare("UPDATE Abonnements SET type='"+type+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', description='"+desc+"', montant='"+montant+"', detail_montant='"+ope+"'"
                           ", fichier=:pdf, renouvellement='"+ui->dateEditAdd->date().toString("dd")+"', devise='"+ui->comboBox_devise->currentText().left(3)+"', montantDeviseCompte='"+montantDeviseCompte+"', projet='"+ui->lineEdit_projet->text().replace("'","''")+"' "
                           "WHERE id_sub='"+ui->label_id->text()+"'");
             QMessageBox::information(this, tr("Abonnement modifié"), tr("L'abonnement a bien été modifié."), tr("Fermer"));

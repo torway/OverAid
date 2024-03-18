@@ -3,6 +3,7 @@
 #include "managecategories.h"
 #include "manageaccount.h"
 #include "managesubscriptions.h"
+#include "bulkimport.h"
 
 
 //A propos
@@ -126,8 +127,7 @@ void OverAid::on_actionExporter_au_format_CSV_triggered()
             {
                 output << transaction.value("id_trans").toString() << ";";
                 QDate date = QDate::fromString(transaction.value("date").toString(), "yyyyMMdd");
-                output << locale.toString(date, locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy"));
-                output << ";";
+                output << locale.toString(date, locale.dateFormat(QLocale::ShortFormat).contains("yyyy") ? locale.dateFormat(QLocale::ShortFormat) : locale.dateFormat(QLocale::ShortFormat).replace("yy","yyyy")) << ";";
 
                 QString inOutH = transaction.value("type").toString();
                 if(inOutH == "Debit") output << tr("Débit");
@@ -207,6 +207,15 @@ void OverAid::on_actionGerer_les_comptes_triggered()
     acc->setWindowModality(Qt::ApplicationModal);
     acc->show();
     connect(acc, SIGNAL(actualiser()), this, SLOT(actu_compte()));
+}
+
+//Import en masse
+void OverAid::on_actionImport_en_masse_triggered()
+{
+    BulkImport *bulk = new BulkImport(nullptr);
+    bulk->setWindowModality(Qt::ApplicationModal);
+    bulk->show();
+    connect(bulk, &BulkImport::actualiser, this, [=](){actu(true, false);});
 }
 
 void OverAid::actu_compte()
