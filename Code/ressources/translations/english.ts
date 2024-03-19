@@ -22,7 +22,7 @@
     </message>
     <message>
         <location filename="../../bulkimport.ui" line="129"/>
-        <location filename="../../bulkimport.cpp" line="108"/>
+        <location filename="../../bulkimport.cpp" line="110"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
@@ -115,17 +115,22 @@ Then click the &apos;Import&apos; button to import transactions without errors</
         <translation>The subcategory &apos;%1&apos; does not exist in the category &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../../bulkimport.cpp" line="85"/>
+        <location filename="../../bulkimport.cpp" line="84"/>
+        <source>La description ne peut pas être vide.</source>
+        <translation>The description can&apos;t be empty.</translation>
+    </message>
+    <message>
+        <location filename="../../bulkimport.cpp" line="87"/>
         <source>Le montant n&apos;est pas au bon format.</source>
         <translation>The amount is not in the correct format.</translation>
     </message>
     <message>
-        <location filename="../../bulkimport.cpp" line="108"/>
+        <location filename="../../bulkimport.cpp" line="110"/>
         <source>Transactions ajoutées</source>
         <translation>Transactions added</translation>
     </message>
     <message>
-        <location filename="../../bulkimport.cpp" line="108"/>
+        <location filename="../../bulkimport.cpp" line="110"/>
         <source>Les transactions sans erreur ont bien été ajoutées.</source>
         <translation>The transactions without errors have been successfully added.</translation>
     </message>

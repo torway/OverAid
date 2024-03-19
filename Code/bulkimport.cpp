@@ -81,6 +81,8 @@ QString BulkImport::checkFields(QString line)
     QSqlQuery cat2SQL("SELECT id_cat FROM Catégories WHERE nom='"+fields.at(4)+"' AND cat0='"+cat+"'");
     if(!cat2SQL.next()) return tr("La sous-catégorie '%1' n'existe pas dans la catégorie '%2'.").arg(fields.at(4), fields.at(3));
 
+    if(fields.at(5).isEmpty()) return tr("La description ne peut pas être vide.");
+
     static QRegularExpression regex("^\\d+(?:\\.\\d{0,2})?$");
     if(!regex.match(fields.at(6)).hasMatch()) return tr("Le montant n'est pas au bon format.");
 
@@ -146,7 +148,9 @@ bool BulkImport::addLine(QString line)
     if(cat2SQL.next()) cat2 = cat2SQL.value(0).toString();
     else return false;
 
-    QString desc = QString(fields.at(5)).replace("'","''");
+    QString desc;
+    if(!fields.at(5).isEmpty()) desc = QString(fields.at(5)).replace("'","''");
+    else return false;
 
     QString montant;
     static QRegularExpression regex("^\\d+(?:\\.\\d{0,2})?$");
