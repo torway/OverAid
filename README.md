@@ -2,7 +2,7 @@
 Manage your accounts and expenses with ease.
 
 # How to install
-Download the repository and go to Application folder, then :
+Select the Release files and chose your OS zip :
 - Windows :
 Unzip the archive in a new folder on your "Program Files" and create a shortcut of the .exe
 - macOS :
