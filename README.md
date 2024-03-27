@@ -9,4 +9,4 @@ Unzip the archive in a new folder on your "Program Files" and create a shortcut 
 Copy the .app and paste it on your Mac Applications folder
 
 # Credits
-Application made with Qt Creator 6.5.3
+Application made with [Qt Creator](https://www.qt.io/product/development-tools) 6.5.3
