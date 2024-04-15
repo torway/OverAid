@@ -53,6 +53,8 @@ TransForm::~TransForm()
 
 void TransForm::actu_projet()
 {
+    ui->lineEdit_projet->clear();
+
     //Autocompletion Projet
     QStringList projetList;
     QSqlQuery projet("SELECT DISTINCT projet FROM Transactions WHERE id_compte='"+QString::number(id_compte)+"' ORDER BY projet ASC");

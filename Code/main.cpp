@@ -34,7 +34,12 @@ int main(int argc, char *argv[])
         {
             file.resize(0);
             QTextStream stream(&file);
-            stream << "Français";
+
+            QString langue = "English";
+            if(QLocale::languageToString(QLocale::system().language()) == "French") langue = "Français";
+            else if(QLocale::languageToString(QLocale::system().language()) == "Spanish") langue = "Español";
+
+            stream << langue;
             file.close();
         }
     }

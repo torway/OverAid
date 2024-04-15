@@ -31,7 +31,7 @@ public:
     Ui::OverAid *ui;
     ~OverAid();
 
-    QString version = "2.2.2";
+    QString version = "2.2.3";
     QLocale locale;
 
     void database();
@@ -107,6 +107,8 @@ private slots:
     bool importDatabase();
 
     void on_actionImport_en_masse_triggered();
+
+    void on_actionTest_de_vitesse_triggered();
 
 private:
     QSqlDatabase overaidDatabase;

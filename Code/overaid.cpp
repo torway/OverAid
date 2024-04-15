@@ -49,29 +49,11 @@ void OverAid::database()
 
             QString langue = "English";
             if(QLocale::languageToString(QLocale::system().language()) == "French") langue = "Français";
-            else if(QLocale::languageToString(QLocale::system().language()) == "English") langue = "English";
             else if(QLocale::languageToString(QLocale::system().language()) == "Spanish") langue = "Español";
-            else
-            {
-                bool done = false;
-                while(done == false)
-                {
-                    bool ok;
-                    QStringList languages;
-                    languages << "Français" << "English" << "Español";
-
-                    QString selectedOptionLanguage = QInputDialog::getItem(nullptr, "Language", "Please choose your language.", languages, 0, false, &ok);
-                    if(ok && !selectedOptionLanguage.isEmpty())
-                    {
-                        langue = selectedOptionLanguage;
-                        done = true;
-                    }
-                }
-            }
 
             QSqlQuery langage("UPDATE Settings SET language='"+langue+"'");
 
-            QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/language.txt");
+            QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/translate.txt");
             if (file.open(QIODevice::ReadWrite))
             {
                 file.resize(0);

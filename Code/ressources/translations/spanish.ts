@@ -643,9 +643,9 @@ Por favor, elige otro.</translation>
         <location filename="../../overaid.ui" line="403"/>
         <location filename="../../overaid.ui" line="480"/>
         <location filename="../../overaid.ui" line="606"/>
-        <location filename="../../overaid.cpp" line="504"/>
-        <location filename="../../overaid_action.cpp" line="103"/>
-        <location filename="../../overaid_action.cpp" line="115"/>
+        <location filename="../../overaid.cpp" line="486"/>
+        <location filename="../../overaid_action.cpp" line="176"/>
+        <location filename="../../overaid_action.cpp" line="188"/>
         <source>Tout</source>
         <translation>Todo</translation>
     </message>
@@ -656,47 +656,47 @@ Por favor, elige otro.</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="611"/>
-        <location filename="../../overaid.cpp" line="692"/>
-        <location filename="../../overaid.cpp" line="906"/>
-        <location filename="../../overaid.cpp" line="1264"/>
-        <location filename="../../overaid.cpp" line="1348"/>
-        <location filename="../../overaid_action.cpp" line="138"/>
+        <location filename="../../overaid.cpp" line="674"/>
+        <location filename="../../overaid.cpp" line="888"/>
+        <location filename="../../overaid.cpp" line="1246"/>
+        <location filename="../../overaid.cpp" line="1330"/>
+        <location filename="../../overaid_action.cpp" line="211"/>
         <source>Carte bancaire</source>
         <translation>Tarjeta de crédito</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="626"/>
-        <location filename="../../overaid.cpp" line="694"/>
-        <location filename="../../overaid.cpp" line="908"/>
-        <location filename="../../overaid.cpp" line="1266"/>
-        <location filename="../../overaid.cpp" line="1350"/>
-        <location filename="../../overaid_action.cpp" line="140"/>
+        <location filename="../../overaid.cpp" line="676"/>
+        <location filename="../../overaid.cpp" line="890"/>
+        <location filename="../../overaid.cpp" line="1248"/>
+        <location filename="../../overaid.cpp" line="1332"/>
+        <location filename="../../overaid_action.cpp" line="213"/>
         <source>Chèque</source>
         <translation>Cheque</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="616"/>
-        <location filename="../../overaid.cpp" line="695"/>
-        <location filename="../../overaid.cpp" line="909"/>
-        <location filename="../../overaid.cpp" line="1267"/>
-        <location filename="../../overaid.cpp" line="1351"/>
-        <location filename="../../overaid_action.cpp" line="141"/>
+        <location filename="../../overaid.cpp" line="677"/>
+        <location filename="../../overaid.cpp" line="891"/>
+        <location filename="../../overaid.cpp" line="1249"/>
+        <location filename="../../overaid.cpp" line="1333"/>
+        <location filename="../../overaid_action.cpp" line="214"/>
         <source>Virement</source>
         <translation>Transferencia bancaria</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="631"/>
-        <location filename="../../overaid.cpp" line="696"/>
-        <location filename="../../overaid.cpp" line="910"/>
-        <location filename="../../overaid.cpp" line="1268"/>
-        <location filename="../../overaid.cpp" line="1352"/>
-        <location filename="../../overaid_action.cpp" line="142"/>
+        <location filename="../../overaid.cpp" line="678"/>
+        <location filename="../../overaid.cpp" line="892"/>
+        <location filename="../../overaid.cpp" line="1250"/>
+        <location filename="../../overaid.cpp" line="1334"/>
+        <location filename="../../overaid_action.cpp" line="215"/>
         <source>Prélèvement</source>
         <translation>Domiciliación bancaria</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="389"/>
-        <location filename="../../overaid.ui" line="751"/>
+        <location filename="../../overaid.ui" line="752"/>
         <source>Catégories</source>
         <translation>Categorías</translation>
     </message>
@@ -713,8 +713,8 @@ Por favor, elige otro.</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="360"/>
-        <location filename="../../overaid.cpp" line="825"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="807"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Description</source>
         <translation>Descripción</translation>
     </message>
@@ -729,9 +729,9 @@ Por favor, elige otro.</translation>
         <translation>id_filter</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="838"/>
-        <location filename="../../overaid_action.cpp" line="13"/>
-        <location filename="../../overaid_action.cpp" line="14"/>
+        <location filename="../../overaid.ui" line="857"/>
+        <location filename="../../overaid_action.cpp" line="19"/>
+        <location filename="../../overaid_action.cpp" line="20"/>
         <source>À propos</source>
         <translation>Acerca de</translation>
     </message>
@@ -747,18 +747,18 @@ Por favor, elige otro.</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="81"/>
-        <location filename="../../overaid.cpp" line="1032"/>
-        <location filename="../../overaid.cpp" line="1162"/>
+        <location filename="../../overaid.cpp" line="1014"/>
+        <location filename="../../overaid.cpp" line="1144"/>
         <source>Solde : </source>
         <translation>Saldo : </translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="786"/>
+        <location filename="../../overaid.ui" line="799"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="833"/>
+        <location filename="../../overaid.ui" line="852"/>
         <source>Afficher le débugger</source>
         <translation>Mostrar depurador</translation>
     </message>
@@ -769,49 +769,49 @@ Por favor, elige otro.</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="379"/>
-        <location filename="../../overaid.cpp" line="829"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="811"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Projet</source>
         <translation>Proyecto</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="408"/>
-        <location filename="../../overaid.cpp" line="685"/>
-        <location filename="../../overaid.cpp" line="1036"/>
-        <location filename="../../overaid_action.cpp" line="160"/>
+        <location filename="../../overaid.cpp" line="667"/>
+        <location filename="../../overaid.cpp" line="1018"/>
+        <location filename="../../overaid_action.cpp" line="233"/>
         <source>Manuel</source>
         <translation>Manual</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="413"/>
-        <location filename="../../overaid.cpp" line="686"/>
-        <location filename="../../overaid.cpp" line="1037"/>
-        <location filename="../../overaid_action.cpp" line="161"/>
+        <location filename="../../overaid.cpp" line="668"/>
+        <location filename="../../overaid.cpp" line="1019"/>
+        <location filename="../../overaid_action.cpp" line="234"/>
         <source>Abonnement</source>
         <translation>Suscripción</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="418"/>
-        <location filename="../../overaid.ui" line="851"/>
-        <location filename="../../overaid.cpp" line="687"/>
-        <location filename="../../overaid.cpp" line="1038"/>
-        <location filename="../../overaid_action.cpp" line="162"/>
+        <location filename="../../overaid.ui" line="870"/>
+        <location filename="../../overaid.cpp" line="669"/>
+        <location filename="../../overaid.cpp" line="1020"/>
+        <location filename="../../overaid_action.cpp" line="235"/>
         <source>Import en masse</source>
         <translation>Importación masiva</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="485"/>
-        <location filename="../../overaid.cpp" line="679"/>
-        <location filename="../../overaid.cpp" line="901"/>
-        <location filename="../../overaid_action.cpp" line="133"/>
+        <location filename="../../overaid.cpp" line="661"/>
+        <location filename="../../overaid.cpp" line="883"/>
+        <location filename="../../overaid_action.cpp" line="206"/>
         <source>Débit</source>
         <translation>Débito</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="490"/>
-        <location filename="../../overaid.cpp" line="680"/>
-        <location filename="../../overaid.cpp" line="902"/>
-        <location filename="../../overaid_action.cpp" line="134"/>
+        <location filename="../../overaid.cpp" line="662"/>
+        <location filename="../../overaid.cpp" line="884"/>
+        <location filename="../../overaid_action.cpp" line="207"/>
         <source>Crédit</source>
         <translation>Crédito</translation>
     </message>
@@ -822,11 +822,11 @@ Por favor, elige otro.</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="621"/>
-        <location filename="../../overaid.cpp" line="693"/>
-        <location filename="../../overaid.cpp" line="907"/>
-        <location filename="../../overaid.cpp" line="1265"/>
-        <location filename="../../overaid.cpp" line="1349"/>
-        <location filename="../../overaid_action.cpp" line="139"/>
+        <location filename="../../overaid.cpp" line="675"/>
+        <location filename="../../overaid.cpp" line="889"/>
+        <location filename="../../overaid.cpp" line="1247"/>
+        <location filename="../../overaid.cpp" line="1331"/>
+        <location filename="../../overaid_action.cpp" line="212"/>
         <source>Espèces</source>
         <translation>Efectivo</translation>
     </message>
@@ -851,405 +851,397 @@ Por favor, elige otro.</translation>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="746"/>
+        <location filename="../../overaid.ui" line="747"/>
         <source>Gérer les comptes</source>
         <translation>Gestionar cuentas</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="766"/>
-        <source>Français</source>
-        <translation>Francés</translation>
-    </message>
-    <message>
-        <location filename="../../overaid.ui" line="778"/>
-        <source>Anglais</source>
-        <translation>Inglés</translation>
-    </message>
-    <message>
-        <location filename="../../overaid.ui" line="783"/>
-        <location filename="../../overaid.cpp" line="282"/>
-        <location filename="../../overaid.cpp" line="623"/>
-        <location filename="../../overaid.cpp" line="643"/>
-        <location filename="../../overaid.cpp" line="652"/>
-        <location filename="../../overaid.cpp" line="656"/>
-        <location filename="../../overaid.cpp" line="671"/>
-        <location filename="../../overaid.cpp" line="1235"/>
-        <location filename="../../overaid.cpp" line="1239"/>
-        <location filename="../../overaid.cpp" line="1332"/>
-        <location filename="../../overaid.cpp" line="1410"/>
-        <location filename="../../overaid.cpp" line="1433"/>
-        <location filename="../../overaid_action.cpp" line="38"/>
-        <location filename="../../overaid_action.cpp" line="61"/>
-        <location filename="../../overaid_action.cpp" line="70"/>
-        <location filename="../../overaid_action.cpp" line="345"/>
+        <location filename="../../overaid.ui" line="796"/>
+        <location filename="../../overaid.cpp" line="264"/>
+        <location filename="../../overaid.cpp" line="605"/>
+        <location filename="../../overaid.cpp" line="625"/>
+        <location filename="../../overaid.cpp" line="634"/>
+        <location filename="../../overaid.cpp" line="638"/>
+        <location filename="../../overaid.cpp" line="653"/>
+        <location filename="../../overaid.cpp" line="1217"/>
+        <location filename="../../overaid.cpp" line="1221"/>
+        <location filename="../../overaid.cpp" line="1314"/>
+        <location filename="../../overaid.cpp" line="1392"/>
+        <location filename="../../overaid.cpp" line="1415"/>
+        <location filename="../../overaid_action.cpp" line="44"/>
+        <location filename="../../overaid_action.cpp" line="67"/>
+        <location filename="../../overaid_action.cpp" line="76"/>
+        <location filename="../../overaid_action.cpp" line="412"/>
         <source>Fermer</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="794"/>
-        <location filename="../../overaid_action.cpp" line="84"/>
+        <location filename="../../overaid.ui" line="807"/>
+        <location filename="../../overaid_action.cpp" line="157"/>
         <source>Exporter au format CSV</source>
         <translation>Exportar a formato CSV</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="799"/>
-        <location filename="../../overaid_action.cpp" line="21"/>
+        <location filename="../../overaid.ui" line="812"/>
+        <location filename="../../overaid_action.cpp" line="27"/>
         <source>Sauvegarder la base de données</source>
         <translation>Guardar la base de datos</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="802"/>
+        <location filename="../../overaid.ui" line="815"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="807"/>
+        <location filename="../../overaid.ui" line="820"/>
         <source>Télécharger tous les PDF</source>
         <translation>Descargar todos los PDF</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="812"/>
+        <location filename="../../overaid.ui" line="825"/>
         <source>Abonnements</source>
         <translation>Suscripciones</translation>
     </message>
     <message>
-        <location filename="../../overaid.ui" line="825"/>
-        <source>Espagnol</source>
-        <translation>Español</translation>
-    </message>
-    <message>
-        <location filename="../../overaid.ui" line="846"/>
-        <location filename="../../overaid_action.cpp" line="29"/>
+        <location filename="../../overaid.ui" line="865"/>
+        <location filename="../../overaid_action.cpp" line="35"/>
         <source>Importer une base de données</source>
         <translation>Importar una base de datos</translation>
     </message>
     <message>
+        <location filename="../../overaid.ui" line="875"/>
+        <location filename="../../overaid_action.cpp" line="101"/>
+        <location filename="../../overaid_action.cpp" line="140"/>
+        <source>Test de vitesse</source>
+        <translation>Prueba de velocidad</translation>
+    </message>
+    <message>
         <location filename="../../overaid.cpp" line="41"/>
-        <location filename="../../overaid.cpp" line="132"/>
+        <location filename="../../overaid.cpp" line="114"/>
         <source>Connexion à la base de donnée réussie.</source>
         <translation>Conexión a la base de datos exitosa.</translation>
     </message>
     <message>
         <location filename="../../overaid.cpp" line="42"/>
-        <location filename="../../overaid.cpp" line="133"/>
-        <location filename="../../overaid_action.cpp" line="51"/>
+        <location filename="../../overaid.cpp" line="115"/>
+        <location filename="../../overaid_action.cpp" line="57"/>
         <source>Impossible de se connecter à la base de donnée.</source>
         <translation>No se puede conectar a la base de datos.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="98"/>
-        <location filename="../../overaid.cpp" line="109"/>
-        <location filename="../../overaid.cpp" line="115"/>
+        <location filename="../../overaid.cpp" line="80"/>
+        <location filename="../../overaid.cpp" line="91"/>
+        <location filename="../../overaid.cpp" line="97"/>
         <source>Nouveau compte</source>
         <translation>Nueva cuenta</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="98"/>
+        <location filename="../../overaid.cpp" line="80"/>
         <source>Veuillez choisir un nom pour votre compte.</source>
         <translation>Por favor, elija un nombre para su cuenta.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="98"/>
+        <location filename="../../overaid.cpp" line="80"/>
         <source>Compte courant</source>
         <translation>Cuenta corriente</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="109"/>
+        <location filename="../../overaid.cpp" line="91"/>
         <source>Veuillez choisir une devise pour votre compte.</source>
         <translation>Por favor, elija una moneda para su cuenta.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="115"/>
+        <location filename="../../overaid.cpp" line="97"/>
         <source>Veuillez choisir le montant initial pour votre compte.</source>
         <translation>Por favor, elija el monto inicial para su cuenta.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="149"/>
+        <location filename="../../overaid.cpp" line="131"/>
         <source>Tout étendre</source>
         <translation>Expandir todo</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="151"/>
+        <location filename="../../overaid.cpp" line="133"/>
         <source>Tout rétrécir</source>
         <translation>Contraer todo</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="154"/>
+        <location filename="../../overaid.cpp" line="136"/>
         <source>Copier la case</source>
         <translation>Copiar celda</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="156"/>
+        <location filename="../../overaid.cpp" line="138"/>
         <source>Copier la ligne</source>
         <translation>Copiar línea</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="159"/>
+        <location filename="../../overaid.cpp" line="141"/>
         <source>Convertir en abonnement</source>
         <translation>Convertir a suscripción</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="162"/>
+        <location filename="../../overaid.cpp" line="144"/>
         <source>Convertir en abonnement (sans PDF)</source>
         <translation>Convertir a suscripción (sin PDF)</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="166"/>
+        <location filename="../../overaid.cpp" line="148"/>
         <source>Modifier cette transaction</source>
         <translation>Editar esta transacción</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="169"/>
+        <location filename="../../overaid.cpp" line="151"/>
         <source>Dupliquer cette transaction</source>
         <translation>Duplicar esta transacción</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="172"/>
+        <location filename="../../overaid.cpp" line="154"/>
         <source>Supprimer cette transaction</source>
         <translation>Eliminar esta transacción</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="176"/>
+        <location filename="../../overaid.cpp" line="158"/>
         <source>Afficher toutes les colonnes</source>
         <translation>Mostrar todas las columnas</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="178"/>
+        <location filename="../../overaid.cpp" line="160"/>
         <source>Masquer cette colonne</source>
         <translation>Ocultar esta columna</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="282"/>
+        <location filename="../../overaid.cpp" line="264"/>
         <source>Abonnements ajoutés</source>
         <translation>Suscripciones añadidas</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="282"/>
+        <location filename="../../overaid.cpp" line="264"/>
         <source>Les abonnements ont bien été ajoutés.</source>
         <translation>Las suscripciones se han añadido correctamente.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="403"/>
-        <location filename="../../overaid.cpp" line="492"/>
+        <location filename="../../overaid.cpp" line="385"/>
+        <location filename="../../overaid.cpp" line="474"/>
         <source>Sélectionner tout</source>
         <translation>Seleccionar todo</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="404"/>
-        <location filename="../../overaid.cpp" line="493"/>
+        <location filename="../../overaid.cpp" line="386"/>
+        <location filename="../../overaid.cpp" line="475"/>
         <source>Désélectionner tout</source>
         <translation>Deseleccionar todo</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="486"/>
+        <location filename="../../overaid.cpp" line="468"/>
         <source>Vide</source>
         <translation>Vacío</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="550"/>
-        <location filename="../../overaid.cpp" line="553"/>
-        <location filename="../../overaid.cpp" line="615"/>
-        <location filename="../../overaid.cpp" line="733"/>
+        <location filename="../../overaid.cpp" line="532"/>
+        <location filename="../../overaid.cpp" line="535"/>
+        <location filename="../../overaid.cpp" line="597"/>
+        <location filename="../../overaid.cpp" line="715"/>
         <source>Sauvegarder et remplacer ce filtre</source>
         <translation>Guardar y reemplazar este filtro</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="551"/>
+        <location filename="../../overaid.cpp" line="533"/>
         <source>Sauvegarder comme nouveau filtre</source>
         <translation>Guardar como nuevo filtro</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="552"/>
-        <location filename="../../overaid.cpp" line="554"/>
-        <location filename="../../overaid.cpp" line="616"/>
-        <location filename="../../overaid.cpp" line="734"/>
+        <location filename="../../overaid.cpp" line="534"/>
+        <location filename="../../overaid.cpp" line="536"/>
+        <location filename="../../overaid.cpp" line="598"/>
+        <location filename="../../overaid.cpp" line="716"/>
         <source>Supprimer ce filtre</source>
         <translation>Eliminar este filtro</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="623"/>
+        <location filename="../../overaid.cpp" line="605"/>
         <source>Filtre personnalisé supprimé</source>
         <translation>Filtro personalizado eliminado</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="623"/>
+        <location filename="../../overaid.cpp" line="605"/>
         <source>Le filtre personnalisé &apos;%1&apos; a bien été supprimé.</source>
         <translation>El filtro personalizado &apos;%1&apos; ha sido eliminado correctamente.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="638"/>
+        <location filename="../../overaid.cpp" line="620"/>
         <source>Nouveau filtre</source>
         <translation>Nuevo filtro</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="638"/>
+        <location filename="../../overaid.cpp" line="620"/>
         <source>Veuillez choisir un nom pour ce filtre personnalisé.</source>
         <translation>Por favor, elija un nombre para su filtro.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="643"/>
-        <location filename="../../overaid.cpp" line="656"/>
-        <location filename="../../overaid.cpp" line="1239"/>
-        <location filename="../../overaid.cpp" line="1332"/>
-        <location filename="../../overaid.cpp" line="1410"/>
-        <location filename="../../overaid.cpp" line="1433"/>
-        <location filename="../../overaid_action.cpp" line="61"/>
-        <location filename="../../overaid_action.cpp" line="70"/>
+        <location filename="../../overaid.cpp" line="625"/>
+        <location filename="../../overaid.cpp" line="638"/>
+        <location filename="../../overaid.cpp" line="1221"/>
+        <location filename="../../overaid.cpp" line="1314"/>
+        <location filename="../../overaid.cpp" line="1392"/>
+        <location filename="../../overaid.cpp" line="1415"/>
+        <location filename="../../overaid_action.cpp" line="67"/>
+        <location filename="../../overaid_action.cpp" line="76"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="643"/>
+        <location filename="../../overaid.cpp" line="625"/>
         <source>Un filtre personnalisé porte déjà ce nom.</source>
         <translation>Ya existe un filtro personalizado con este nombre.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="652"/>
+        <location filename="../../overaid.cpp" line="634"/>
         <source>Filtre personnalisé ajouté</source>
         <translation>Filtro personalizado añadido</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="652"/>
+        <location filename="../../overaid.cpp" line="634"/>
         <source>Le filtre personnalisé &apos;%1&apos; a bien été ajouté.</source>
         <translation>El filtro personalizado &apos;%1&apos; ha sido añadido correctamente.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="656"/>
+        <location filename="../../overaid.cpp" line="638"/>
         <source>Le filtre personnalisé doit avoir un nom valide.</source>
         <translation>El filtro personalizado debe tener un nombre válido.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="671"/>
+        <location filename="../../overaid.cpp" line="653"/>
         <source>Filtre personnalisé mis à jour</source>
         <translation>Filtro personalizado actualizado</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="671"/>
+        <location filename="../../overaid.cpp" line="653"/>
         <source>Le filtre personnalisé &apos;%1&apos; a bien été mis à jour.</source>
         <translation>El filtro personalizado &apos;%1&apos; se ha actualizado correctamente.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="820"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="802"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <location filename="../../overaid_stats.cpp" line="110"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="828"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="810"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Mode de saisie</source>
         <translation>Método de entrada</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1420"/>
+        <location filename="../../overaid.cpp" line="1402"/>
         <source>Etes-vous sûr(e)(s) de vouloir supprimer la multi-transaction du %1 ?</source>
         <translation>¿Estás seguro(a) de querer eliminar la multi-transacción del %1?</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1421"/>
+        <location filename="../../overaid.cpp" line="1403"/>
         <source>Etes-vous sûr(e)(s) de vouloir supprimer la transaction &apos;%1&apos; du %2 ?</source>
         <translation>¿Estás seguro(a) de querer eliminar la transacción &apos;%1&apos; del %2?</translation>
     </message>
     <message>
         <location filename="../../overaid.ui" line="562"/>
-        <location filename="../../overaid.cpp" line="822"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="804"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Débit / Crédit</source>
         <translation>Débito / Crédito</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="823"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="805"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Catégorie</source>
         <translation>Categoría</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="824"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="806"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Sous-catégorie</source>
         <translation>Subcategoría</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="826"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="808"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Montant</source>
         <translation>Monto</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="827"/>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid.cpp" line="809"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Moyen de paiement</source>
         <translation>Método de pago</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="830"/>
+        <location filename="../../overaid.cpp" line="812"/>
         <source>Solde</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="831"/>
+        <location filename="../../overaid.cpp" line="813"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1033"/>
-        <location filename="../../overaid.cpp" line="1163"/>
+        <location filename="../../overaid.cpp" line="1015"/>
+        <location filename="../../overaid.cpp" line="1145"/>
         <source>Solde futur : </source>
         <translation>Saldo futuro : </translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1235"/>
+        <location filename="../../overaid.cpp" line="1217"/>
         <source>Abonnement ajouté</source>
         <translation>Suscripción añadida</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1235"/>
+        <location filename="../../overaid.cpp" line="1217"/>
         <source>La transaction a bien été convertie en abonnement.</source>
         <translation>La transacción se ha convertido en una suscripción correctamente.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1239"/>
-        <location filename="../../overaid.cpp" line="1332"/>
-        <location filename="../../overaid.cpp" line="1410"/>
-        <location filename="../../overaid.cpp" line="1433"/>
+        <location filename="../../overaid.cpp" line="1221"/>
+        <location filename="../../overaid.cpp" line="1314"/>
+        <location filename="../../overaid.cpp" line="1392"/>
+        <location filename="../../overaid.cpp" line="1415"/>
         <source>Il ne s&apos;agit pas d&apos;une transaction.</source>
         <translation>No es una transacción.</translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1275"/>
-        <location filename="../../overaid.cpp" line="1370"/>
+        <location filename="../../overaid.cpp" line="1257"/>
+        <location filename="../../overaid.cpp" line="1352"/>
         <source>Ligne </source>
         <translation>Línea </translation>
     </message>
     <message>
-        <location filename="../../overaid.cpp" line="1418"/>
+        <location filename="../../overaid.cpp" line="1400"/>
         <source>Supprimer la transaction</source>
         <translation>Eliminar la transacción</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="14"/>
+        <location filename="../../overaid_action.cpp" line="20"/>
         <source>Version : %1</source>
         <translation>Versión : %1</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="14"/>
+        <location filename="../../overaid_action.cpp" line="20"/>
         <source>Développé par : Tom BEBIN</source>
         <translation>Desarrollado por : Tom BEBIN</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="14"/>
+        <location filename="../../overaid_action.cpp" line="20"/>
         <source>Gérez vos comptes et vos dépenses en toute simplicité.</source>
         <translation>Administre tus cuentas y gastos con facilidad.</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="21"/>
-        <location filename="../../overaid_action.cpp" line="48"/>
+        <location filename="../../overaid_action.cpp" line="27"/>
+        <location filename="../../overaid_action.cpp" line="54"/>
         <source>Base de données (*.db)</source>
         <translation>Base de datos (*.db)</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="30"/>
+        <location filename="../../overaid_action.cpp" line="36"/>
         <source>Importer une base de données remplacera celle actuellement utilisée.
 Cette action est irréversible.
 Veuillez sauvegarder vos données avant d&apos;effectuer cette action.
@@ -1262,89 +1254,135 @@ Por favor, haga una copia de seguridad de sus datos antes de realizar esta acci�
 ¿Está seguro(a) de querer continuar?</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="38"/>
+        <location filename="../../overaid_action.cpp" line="44"/>
         <source>Base de données importée</source>
         <translation>Base de datos importada</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="38"/>
+        <location filename="../../overaid_action.cpp" line="44"/>
         <source>La base de données a bien été importée.
 Elle remplace désormais l&apos;ancienne.</source>
         <translation>La base de datos ha sido importada correctamente.
 Ahora reemplaza a la antigua.</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="48"/>
+        <location filename="../../overaid_action.cpp" line="54"/>
         <source>Choisir une base de données</source>
         <translation>Seleccionar una base de datos</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="61"/>
+        <location filename="../../overaid_action.cpp" line="67"/>
         <source>La base de données n&apos;a pas la structure de tables nécessaire.</source>
         <translation>La base de datos no tiene la estructura de tablas necesaria.</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="70"/>
+        <location filename="../../overaid_action.cpp" line="76"/>
         <source>La table %1 n&apos;a pas la structure nécessaire.</source>
         <translation>La tabla %1 no tiene la estructura necesaria.</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="84"/>
+        <location filename="../../overaid_action.cpp" line="93"/>
+        <source>Nombre de rechargement</source>
+        <translation>Número de recargas</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="93"/>
+        <source>Veuillez choisir le nombre de rechargement pour le test.
+
+Plus le nombre de rechargement est élevé, 
+plus le test est représentatif mais plus de puissance sera utilisée.</source>
+        <translation>Por favor, elija el número de recargas para la prueba.
+
+Cuanto mayor sea el número de recargas, 
+más representativa será la prueba pero se utilizará más potencia.</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="141"/>
+        <source>Résultats pour %1 transactions et %2 rechargements : </source>
+        <translation>Resultados para %1 transacciones y %2 recargas : </translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="142"/>
+        <source>Vitesse minimum : %1 msec</source>
+        <translation>Velocidad mínima : %1 msec</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="143"/>
+        <source>Vitesse moyene : %1 msec</source>
+        <translation>Velocidad promedio : %1 msec</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="144"/>
+        <source>Vitesse maximum : %1 msec</source>
+        <translation>Velocidad máxima : %1 msec</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="145"/>
+        <source>Vitesse moyenne par transaction : %1 msec</source>
+        <translation>Velocidad promedio por transacción : %1 msec</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="146"/>
+        <source>Vitesse totale : %1 msec</source>
+        <translation>Velocidad total : %1 msec</translation>
+    </message>
+    <message>
+        <location filename="../../overaid_action.cpp" line="157"/>
         <source>transaction.csv</source>
         <translation>transacción.csv</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="84"/>
+        <location filename="../../overaid_action.cpp" line="157"/>
         <source>Fichier CSV (*.csv)</source>
         <translation>Archivo CSV (*.csv)</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Devise</source>
         <translation>Moneda</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Montant Devise Compte</source>
         <translation>Monto Moneda Cuenta</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Détail montant</source>
         <translation>Detalles del monto</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="89"/>
+        <location filename="../../overaid_action.cpp" line="162"/>
         <source>Fichier PDF</source>
         <translation>Archivo PDF</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="166"/>
+        <location filename="../../overaid_action.cpp" line="239"/>
         <source>Oui</source>
         <translation>Sí</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="166"/>
+        <location filename="../../overaid_action.cpp" line="239"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="230"/>
+        <location filename="../../overaid_action.cpp" line="297"/>
         <source>Comptes actifs</source>
         <translation>Cuentas activas</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="244"/>
+        <location filename="../../overaid_action.cpp" line="311"/>
         <source>Comptes archivés</source>
         <translation>Cuentas archivadas</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="345"/>
+        <location filename="../../overaid_action.cpp" line="412"/>
         <source>Changement de langue</source>
         <translation>Cambio de idioma</translation>
     </message>
     <message>
-        <location filename="../../overaid_action.cpp" line="345"/>
+        <location filename="../../overaid_action.cpp" line="412"/>
         <source>L&apos;application va redémarrer.</source>
         <translation>La aplicación se reiniciará.</translation>
     </message>
@@ -1357,19 +1395,19 @@ Ahora reemplaza a la antigua.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../main.cpp" line="83"/>
+        <location filename="../../main.cpp" line="88"/>
         <source>Erreur version</source>
         <translation>Error de versión</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="83"/>
+        <location filename="../../main.cpp" line="88"/>
         <source>La version de l&apos;application est obsolète.
 Merci d&apos;utiliser une version plus récente.</source>
         <translation>La versión de la aplicación está desactualizada.
 Por favor, use una versión más reciente.</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="83"/>
+        <location filename="../../main.cpp" line="88"/>
         <source>Fermer</source>
         <translation>Cerrar</translation>
     </message>
@@ -1393,31 +1431,31 @@ Por favor, use una versión más reciente.</translation>
     </message>
     <message>
         <location filename="../../transform.ui" line="278"/>
-        <location filename="../../transform.cpp" line="206"/>
+        <location filename="../../transform.cpp" line="208"/>
         <source>Carte bancaire</source>
         <translation>Tarjeta de crédito</translation>
     </message>
     <message>
         <location filename="../../transform.ui" line="293"/>
-        <location filename="../../transform.cpp" line="208"/>
+        <location filename="../../transform.cpp" line="210"/>
         <source>Chèque</source>
         <translation>Cheque</translation>
     </message>
     <message>
         <location filename="../../transform.ui" line="298"/>
-        <location filename="../../transform.cpp" line="210"/>
+        <location filename="../../transform.cpp" line="212"/>
         <source>Prélèvement</source>
         <translation>Domiciliación bancaria</translation>
     </message>
     <message>
         <location filename="../../transform.ui" line="283"/>
-        <location filename="../../transform.cpp" line="209"/>
+        <location filename="../../transform.cpp" line="211"/>
         <source>Virement</source>
         <translation>Transferencia bancaria</translation>
     </message>
     <message>
         <location filename="../../transform.ui" line="288"/>
-        <location filename="../../transform.cpp" line="207"/>
+        <location filename="../../transform.cpp" line="209"/>
         <source>Espèces</source>
         <translation>Efectivo</translation>
     </message>
@@ -1493,72 +1531,72 @@ Por favor, use una versión más reciente.</translation>
         <translation>OverAid © - Editar la suscripción</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="129"/>
+        <location filename="../../transform.cpp" line="131"/>
         <source>Choisir un fichier</source>
         <translation>Seleccionar un archivo</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="129"/>
+        <location filename="../../transform.cpp" line="131"/>
         <source>PDF (*.pdf)</source>
         <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="144"/>
-        <location filename="../../transform.cpp" line="153"/>
-        <location filename="../../transform.cpp" line="178"/>
+        <location filename="../../transform.cpp" line="146"/>
+        <location filename="../../transform.cpp" line="155"/>
+        <location filename="../../transform.cpp" line="180"/>
         <source>Ligne </source>
         <translation>Línea </translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="170"/>
+        <location filename="../../transform.cpp" line="172"/>
         <source>Montant total : </source>
         <translation>Monto total : </translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="247"/>
+        <location filename="../../transform.cpp" line="249"/>
         <source>Transaction ajoutée</source>
         <translation>Transacción agregada</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="247"/>
+        <location filename="../../transform.cpp" line="249"/>
         <source>La transaction a bien été ajoutée.</source>
         <translation>La transacción se ha agregado correctamente.</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="247"/>
-        <location filename="../../transform.cpp" line="256"/>
-        <location filename="../../transform.cpp" line="267"/>
-        <location filename="../../transform.cpp" line="275"/>
+        <location filename="../../transform.cpp" line="249"/>
+        <location filename="../../transform.cpp" line="258"/>
+        <location filename="../../transform.cpp" line="269"/>
+        <location filename="../../transform.cpp" line="277"/>
         <source>Fermer</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="256"/>
+        <location filename="../../transform.cpp" line="258"/>
         <source>Transaction modifiée</source>
         <translation>Transacción editada</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="256"/>
+        <location filename="../../transform.cpp" line="258"/>
         <source>La transaction a bien été modifiée.</source>
         <translation>La transacción se ha editado correctamente.</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="267"/>
+        <location filename="../../transform.cpp" line="269"/>
         <source>Abonnement ajouté</source>
         <translation>Suscripción añadida</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="267"/>
+        <location filename="../../transform.cpp" line="269"/>
         <source>L&apos;abonnement a bien été ajouté.</source>
         <translation>La suscripción se ha añadido correctamente.</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="275"/>
+        <location filename="../../transform.cpp" line="277"/>
         <source>Abonnement modifié</source>
         <translation>Suscripción editada</translation>
     </message>
     <message>
-        <location filename="../../transform.cpp" line="275"/>
+        <location filename="../../transform.cpp" line="277"/>
         <source>L&apos;abonnement a bien été modifié.</source>
         <translation>La suscripción se ha editado correctamente.</translation>
     </message>
@@ -1592,7 +1630,7 @@ Por favor, use una versión más reciente.</translation>
     </message>
     <message>
         <location filename="../../lineform.ui" line="123"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%M%&lt;/span&gt; : Le mois en chiffres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%MM%&lt;/span&gt; : Le mois en lettres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%A%&lt;/span&gt; : L&apos;année en chiffres&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez rajouter des claculs (ex : &lt;span style=&quot; font-weight:600;&quot;&gt;%MM+1%&lt;/span&gt; ou &lt;span style=&quot; font-weight:600;&quot;&gt;%A-2%&lt;/span&gt;)&lt;/p&gt;&lt;p&gt;Pour que l&apos;année soit incrémentée lors du passage de Décembre à Janvier, le %A(...)% doit être après le %M+(...)%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%M%&lt;/span&gt; : Le mois en chiffres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%MM%&lt;/span&gt; : Le mois en lettres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%A%&lt;/span&gt; : L&apos;année en chiffres&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez rajouter des calculs (ex : &lt;span style=&quot; font-weight:600;&quot;&gt;%MM+1%&lt;/span&gt; ou &lt;span style=&quot; font-weight:600;&quot;&gt;%A-2%&lt;/span&gt;)&lt;/p&gt;&lt;p&gt;Pour que l&apos;année soit incrémentée lors du passage de Décembre à Janvier, le %A(...)% doit être après le %M+(...)%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%M%&lt;/span&gt; : Mes en dígitos&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%MM%&lt;/span&gt; : Mes en letras&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%A%&lt;/span&gt; : Año en dígitos&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Puedes agregar cálculos (por ejemplo, &lt;span style=&quot; font-weight:600;&quot;&gt;%MM+1%&lt;/span&gt; o &lt;span style=&quot; font-weight:600;&quot;&gt;%A-2%&lt;/span&gt;)&lt;/p&gt;&lt;p&gt;Para asegurarte de que el año se incremente al pasar de Diciembre a Enero, %A(...) debe ir después de %M+(...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>

@@ -353,7 +353,7 @@
                 <height>0</height>
                </size>
               </property>
-              <property name="whatsThis">
+              <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;'%' remplace une chaîne de caractère&lt;/p&gt;&lt;p&gt;'_' remplace un seul caractère&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="placeholderText">
@@ -440,7 +440,7 @@
              <widget class="QDateEdit" name="dateEditFilter_end">
               <property name="dateTime">
                <datetime>
-                <hour>12</hour>
+                <hour>0</hour>
                 <minute>0</minute>
                 <second>0</second>
                 <year>2100</year>
@@ -529,7 +529,7 @@
              <widget class="QDateEdit" name="dateEditFilter_start">
               <property name="dateTime">
                <datetime>
-                <hour>12</hour>
+                <hour>0</hour>
                 <minute>0</minute>
                 <second>0</second>
                 <year>1900</year>
@@ -539,7 +539,7 @@
               </property>
               <property name="time">
                <time>
-                <hour>12</hour>
+                <hour>0</hour>
                 <minute>0</minute>
                 <second>0</second>
                </time>
@@ -734,6 +734,7 @@
     <addaction name="actionExporter_les_PDF_en_ZIP"/>
     <addaction name="separator"/>
     <addaction name="actionImport_en_masse"/>
+    <addaction name="actionTest_de_vitesse"/>
     <addaction name="separator"/>
     <addaction name="action_about"/>
     <addaction name="actionFermer"/>
@@ -763,7 +764,13 @@
      <normaloff>:/qrc/ressources/image/flag_france.png</normaloff>:/qrc/ressources/image/flag_france.png</iconset>
    </property>
    <property name="text">
-    <string>Français</string>
+    <string notr="true">Français</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">Français</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">French</string>
    </property>
   </action>
   <action name="actionAnglais">
@@ -775,7 +782,13 @@
      <normaloff>:/qrc/ressources/image/flag_usa.png</normaloff>:/qrc/ressources/image/flag_usa.png</iconset>
    </property>
    <property name="text">
-    <string>Anglais</string>
+    <string notr="true">English</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">English</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">English</string>
    </property>
   </action>
   <action name="actionFermer">
@@ -822,7 +835,13 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Espagnol</string>
+    <string notr="true">Español</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">Español</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">Spanish</string>
    </property>
   </action>
   <action name="actionAfficher_le_d_bugger">
@@ -849,6 +868,11 @@
   <action name="actionImport_en_masse">
    <property name="text">
     <string>Import en masse</string>
+   </property>
+  </action>
+  <action name="actionTest_de_vitesse">
+   <property name="text">
+    <string>Test de vitesse</string>
    </property>
   </action>
  </widget>

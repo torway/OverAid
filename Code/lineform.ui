@@ -120,7 +120,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%M%&lt;/span&gt; : Le mois en chiffres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%MM%&lt;/span&gt; : Le mois en lettres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%A%&lt;/span&gt; : L'année en chiffres&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez rajouter des claculs (ex : &lt;span style=&quot; font-weight:600;&quot;&gt;%MM+1%&lt;/span&gt; ou &lt;span style=&quot; font-weight:600;&quot;&gt;%A-2%&lt;/span&gt;)&lt;/p&gt;&lt;p&gt;Pour que l'année soit incrémentée lors du passage de Décembre à Janvier, le %A(...)% doit être après le %M+(...)%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%M%&lt;/span&gt; : Le mois en chiffres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%MM%&lt;/span&gt; : Le mois en lettres&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;%A%&lt;/span&gt; : L'année en chiffres&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez rajouter des calculs (ex : &lt;span style=&quot; font-weight:600;&quot;&gt;%MM+1%&lt;/span&gt; ou &lt;span style=&quot; font-weight:600;&quot;&gt;%A-2%&lt;/span&gt;)&lt;/p&gt;&lt;p&gt;Pour que l'année soit incrémentée lors du passage de Décembre à Janvier, le %A(...)% doit être après le %M+(...)%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="whatsThis">
         <string/>

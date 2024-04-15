@@ -6,6 +6,12 @@
 #include "bulkimport.h"
 
 
+//Fermer
+void OverAid::on_actionFermer_triggered()
+{
+    qApp->quit();
+}
+
 //A propos
 void OverAid::on_action_about_triggered()
 {
@@ -33,7 +39,7 @@ void OverAid::on_actionImporter_une_base_de_donn_es_triggered()
     msgBox.setStyleSheet("QLabel{min-width: 350px;}");
     int ret = msgBox.exec();
 
-    if (ret == QMessageBox::Ok) if(importDatabase())
+    if(ret == QMessageBox::Ok) if(importDatabase())
         {
             QMessageBox::information(this, tr("Base de données importée"), tr("La base de données a bien été importée.\nElle remplace désormais l'ancienne."), tr("Fermer"));
 
@@ -76,6 +82,73 @@ bool OverAid::importDatabase()
     QFile::copy(importDatabase.databaseName(), overaidDatabase.databaseName());
 
     return true;
+}
+
+//Speedtest
+void OverAid::on_actionTest_de_vitesse_triggered()
+{
+    this->setEnabled(false);
+
+    bool ok;
+    int selectedOptionAmount = QInputDialog::getInt(nullptr, tr("Nombre de rechargement"), tr("Veuillez choisir le nombre de rechargement pour le test.\n\nPlus le nombre de rechargement est élevé, \nplus le test est représentatif mais plus de puissance sera utilisée."), 20, 0, 100000, 1, &ok);
+    if(ok)
+    {
+        QTime startTime = QTime::currentTime();
+        int minTime = 0, maxTime = 0, sommeTime = 0, totalTime = 0;
+        QList<int> listTime;
+
+        QWidget window;
+        window.setWindowTitle(tr("Test de vitesse"));
+        window.setFixedWidth(this->width()/2);
+        window.setFixedHeight(40);
+
+        QProgressBar progressBar;
+        progressBar.setMinimum(0);
+        progressBar.setMaximum(100);
+
+        QVBoxLayout layout(&window);
+        layout.addWidget(&progressBar);
+        window.setLayout(&layout);
+
+        window.show();
+
+        for(int i = 0; i < selectedOptionAmount; i++)
+        {
+            QApplication::processEvents();
+            QTime timer = QTime::currentTime();
+            actu(true, false);
+            int time = timer.msecsTo(QTime::currentTime());
+
+            if(i == 0) minTime = maxTime = time;
+            else
+            {
+                if(time < minTime) minTime = time;
+                if(time > maxTime) maxTime = time;
+            }
+            listTime.append(time);
+            sommeTime += time;
+            progressBar.setValue(((i+1)*100) / selectedOptionAmount);
+        }
+        totalTime = startTime.msecsTo(QTime::currentTime());
+
+        window.destroyed();
+
+        QSqlQuery transaction("SELECT COUNT(*) FROM Transactions WHERE "+where);
+        if(transaction.next())
+        {
+            QMessageBox result;
+            result.setWindowTitle(tr("Test de vitesse"));
+            result.setText(tr("Résultats pour %1 transactions et %2 rechargements : ").arg(transaction.value(0).toString(), QString::number(selectedOptionAmount)) +"\n\n"+
+                           tr("Vitesse minimum : %1 msec").arg(minTime) +"\n"+
+                           tr("Vitesse moyene : %1 msec").arg(sommeTime/listTime.size()) +"\n"+
+                           tr("Vitesse maximum : %1 msec").arg(maxTime) +"\n\n"+
+                           tr("Vitesse moyenne par transaction : %1 msec").arg(QString::number((double(sommeTime)/double(listTime.size()))/double(transaction.value(0).toInt()),'f',4)) +"\n"+
+                           tr("Vitesse totale : %1 msec").arg(totalTime));
+            result.exec();
+        }
+    }
+
+    this->setEnabled(true);
 }
 
 //Exporter au format CSV
@@ -194,10 +267,13 @@ void OverAid::on_actionExporter_les_PDF_en_ZIP_triggered()
     QDesktopServices::openUrl(QUrl("file:///"+QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF/"));
 }
 
-//Fermer
-void OverAid::on_actionFermer_triggered()
+//Import en masse
+void OverAid::on_actionImport_en_masse_triggered()
 {
-    qApp->quit();
+    BulkImport *bulk = new BulkImport(nullptr);
+    bulk->setWindowModality(Qt::ApplicationModal);
+    bulk->show();
+    connect(bulk, &BulkImport::actualiser, this, [=](){actu(true, false);});
 }
 
 //Gestion des comptes
@@ -207,15 +283,6 @@ void OverAid::on_actionGerer_les_comptes_triggered()
     acc->setWindowModality(Qt::ApplicationModal);
     acc->show();
     connect(acc, SIGNAL(actualiser()), this, SLOT(actu_compte()));
-}
-
-//Import en masse
-void OverAid::on_actionImport_en_masse_triggered()
-{
-    BulkImport *bulk = new BulkImport(nullptr);
-    bulk->setWindowModality(Qt::ApplicationModal);
-    bulk->show();
-    connect(bulk, &BulkImport::actualiser, this, [=](){actu(true, false);});
 }
 
 void OverAid::actu_compte()
