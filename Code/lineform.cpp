@@ -78,10 +78,11 @@ void lineForm::on_lineEditAdd_Operation_textChanged()
         QByteArray expBA = exp.toUtf8();
         expressionToParse = expBA.constData();
         result = expression();
+        if(result == INFINITY) result = 0;
     }
 
-    if(result == 0) ui->label_operationResult->clear();
-    else ui->label_operationResult->setText(QString::number(result, 'f', 2)+ui->doubleSpinBoxAdd_fixe->suffix());
+    ui->label_operationResult->setText(QString::number(result, 'f', 2)+ui->doubleSpinBoxAdd_fixe->suffix());
+    if(ui->lineEditAdd_Operation->text().count() == 0) ui->label_operationResult->clear();
 
     emit OverAid_amountChanged();
 }
