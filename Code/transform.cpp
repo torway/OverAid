@@ -188,16 +188,21 @@ void TransForm::on_tabWidget_Line_tabCloseRequested(int index)
 
 void TransForm::on_pushButtonAdd_clicked()
 {
-    bool catExistOk = true;
+    bool catExistOk = true, descriptionOk = true, montantSigneOK = true;
     for(int i = 0; i < ui->tabWidget_Line->count()-1; i++)
+    {
         if(ui->tabWidget_Line->widget(i)->findChild<QComboBox *>("comboBoxAdd_Cat")->count() == 0) catExistOk = false;
-
-    bool descriptionOk = true;
-    for(int i = 0; i < ui->tabWidget_Line->count()-1; i++)
         if(ui->tabWidget_Line->widget(i)->findChild<QLineEdit *>("lineEditAdd_description")->text().isEmpty()) descriptionOk = false;
+
+        double montant = ui->tabWidget_Line->widget(i)->findChild<QDoubleSpinBox *>("doubleSpinBoxAdd_fixe")->isEnabled() ?
+            ui->tabWidget_Line->widget(i)->findChild<QDoubleSpinBox *>("doubleSpinBoxAdd_fixe")->value() : ui->tabWidget_Line->widget(i)->findChild<QLabel *>("label_operationResult")->text().split(" ").at(0).toDouble();
+        double montantDeviseCompte = ui->tabWidget_Line->widget(i)->findChild<QDoubleSpinBox *>("doubleSpinBoxAdd_deviseCompte")->value();
+        if((montant < 0 || montantDeviseCompte < 0) && (montant > 0 || montantDeviseCompte > 0)) montantSigneOK = false;
+    }
 
     if(!catExistOk) QMessageBox::warning(this, "Erreur", "Aucune catégorie n'existe.", "Fermer");
     else if(!descriptionOk) QMessageBox::warning(this, "Erreur", "Une des descriptions n'est pas renseignée.", "Fermer");
+    else if(!montantSigneOK) QMessageBox::warning(this, "Erreur", "Un des montants n'est pas du même signe que son montant en devise du compte.", "Fermer");
     else
     {
         QString type;

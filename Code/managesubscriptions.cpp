@@ -80,7 +80,16 @@ void ManageSubscriptions::actu()
     ui->treeWidget->setHeaderLabels(headerLabels);
     ui->treeWidget->hideColumn(8);
 
+    QString deviseCompte, symboleCompte;
+    QSqlQuery compteInitial("SELECT devise,Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
+    if(compteInitial.next())
+    {
+        deviseCompte = compteInitial.value("devise").toString();
+        symboleCompte = compteInitial.value("symbole").toString();
+    }
+
     //Affichage
+    double solde = 0;
     QSqlQuery transaction("SELECT *,Devises.symbole FROM Abonnements JOIN Devises ON Devises.code=Abonnements.devise WHERE id_compte='"+QString::number(id_compte)+"' ORDER BY renouvellement DESC");
     while(transaction.next())
     {
@@ -101,7 +110,7 @@ void ManageSubscriptions::actu()
         else if(moyenH == "Prélèvement") moyen = tr("Prélèvement");
         trans->setText(7, moyen);
 
-        double montantTotal = 0;
+        double montantTotal = 0, montantTotalDeviseCompte = 0;
         //Si multi catégorie
         if(transaction.value("categorie").toString().contains(";"))
         {
@@ -120,6 +129,7 @@ void ManageSubscriptions::actu()
                 if(cat2.next()) category->setText(4, cat2.value("nom").toString());
 
                 montantTotal += transaction.value("montant").toString().split(";").at(i).toDouble();
+                montantTotalDeviseCompte += deviseCompte == transaction.value("devise").toString() ? transaction.value("montant").toString().split(";").at(i).toDouble() : transaction.value("montantDeviseCompte").toString().split(";").at(i).toDouble();
 
                 double montantLine = transaction.value("montant").toString().split(";").at(i).toDouble();
                 category->setText(6, QString::number(montantLine,'f',2).replace('.', ',')+" "+transaction.value("symbole").toString());
@@ -147,11 +157,13 @@ void ManageSubscriptions::actu()
             if(cat2.next()) trans->setText(4, cat2.value("nom").toString());
 
             montantTotal = transaction.value("montant").toDouble();
+            montantTotalDeviseCompte = deviseCompte == transaction.value("devise").toString() ? transaction.value("montant").toDouble() : transaction.value("montantDeviseCompte").toDouble();
 
             trans->setText(5, transaction.value("description").toString());
         }
 
         montantTotal = QString::number(montantTotal,'f',2).toDouble();
+        montantTotalDeviseCompte = QString::number(montantTotalDeviseCompte,'f',2).toDouble();
 
         trans->setText(6, QString::number(montantTotal,'f',2).replace('.', ',')+" "+transaction.value("symbole").toString());
         if(montantTotal == 0) trans->setForeground(6, QColor("orange"));
@@ -161,8 +173,16 @@ void ManageSubscriptions::actu()
         trans->setText(8, transaction.value("id_sub").toString());
         if(!transaction.value("fichier").toByteArray().isEmpty()) trans->setIcon(1, QIcon(":/qrc/ressources/image/pdf.png"));
 
+        if(!(inOutH == "Debit" && moyenH == "Espèces"))
+        {
+            if(inOutH == "Debit") solde -= montantTotalDeviseCompte;
+            else solde += montantTotalDeviseCompte;
+        }
+
         ui->treeWidget->expandItem(trans);
     }
+
+    ui->label_totalMonth->setText(tr("Total par mois : ")+QString::number(solde,'f',2).replace(".",",")+" "+symboleCompte);
 
     for(int i = 0; i < ui->treeWidget->columnCount(); i++)
     {

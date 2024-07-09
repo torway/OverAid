@@ -189,12 +189,19 @@ void OverAid::actu(bool remember, bool actuCat)
     QSqlQuery abo("SELECT * FROM Abonnements WHERE CAST(dernier AS int)<'"+QDate::currentDate().toString("yyyyMM")+"'");
     while(abo.next())
     {
+        QString dernier = abo.value("dernier").toString();
+        if(dernier.isEmpty())
+        {
+            QSqlQuery update_abo("UPDATE Abonnements SET dernier='"+QDate::currentDate().addMonths(-1).toString("yyyyMM")+"' WHERE id_sub='"+abo.value("id_sub").toString()+"'");
+            dernier = QDate::currentDate().addMonths(-1).toString("yyyyMM");
+        }
+
         int renouvellement = abo.value("renouvellement").toInt();
-        QDate lastDate = locale.toDate(abo.value("dernier").toString() + abo.value("renouvellement").toString(),"yyyyMMdd");
+        QDate lastDate = locale.toDate(dernier + abo.value("renouvellement").toString(),"yyyyMMdd");
         while(!lastDate.isValid())
         {
             renouvellement--;
-            lastDate = locale.toDate(abo.value("dernier").toString() + QString::number(renouvellement),"yyyyMMdd");
+            lastDate = locale.toDate(dernier + QString::number(renouvellement),"yyyyMMdd");
         }
 
         while(lastDate < QDate::currentDate().addDays(1-QDate::currentDate().day()))
@@ -288,11 +295,11 @@ void OverAid::actu(bool remember, bool actuCat)
     {
         actu_categorie();
         actu_sousCategorie();
+        actu_savedFilters();
     }
     actu_historique();
     actu_desc();
     actu_projet();
-    actu_savedFilters();
 
     if(ui->tabWidget->currentIndex() == 1) on_tabWidget_currentChanged(1);
 
@@ -893,8 +900,7 @@ void OverAid::actu_historique()
         trans->setText(7, moyen);
 
         //Si multi catégorie
-        double montantTotal = 0;
-        double montantTotalDeviseCompte = 0;
+        double montantTotal = 0, montantTotalDeviseCompte = 0;
         if(transaction.value("categorie").toString().contains(";"))
         {
             trans->setText(3, "---");

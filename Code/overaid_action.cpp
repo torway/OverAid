@@ -15,9 +15,13 @@ void OverAid::on_actionFermer_triggered()
 //A propos
 void OverAid::on_action_about_triggered()
 {
+    qint64 bddSize = 0;
+    QFileInfo bddInfo(overaidDatabase.databaseName());
+    if (bddInfo.exists() && bddInfo.isFile()) bddSize = bddInfo.size();
+
     QMessageBox aboutBox;
     aboutBox.setWindowTitle(tr("À propos"));
-    aboutBox.setText(tr("À propos") +"\n\n"+ tr("Version : %1").arg(QApplication::applicationVersion()) +"\n"+ tr("Développé par : Tom BEBIN") +"\n\n"+ tr("Gérez vos comptes et vos dépenses en toute simplicité.") +"\n");
+    aboutBox.setText(tr("À propos") +"\n\n"+ tr("Version : %1").arg(QApplication::applicationVersion()) +"\n"+ tr("Développé par : Tom BEBIN") +"\n\n"+ tr("Taille de la base de données : %1 Mo").arg(round(static_cast<double>(bddSize) / (1024 * 1024)*10)/10) +"\n\n"+ tr("Gérez vos comptes et vos dépenses en toute simplicité.") +"\n");
     aboutBox.exec();
 }
 
