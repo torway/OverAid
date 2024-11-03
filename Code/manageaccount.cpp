@@ -96,7 +96,22 @@ void ManageAccount::on_pushButton_delete_clicked()
             QSqlQuery remove("DELETE FROM Comptes WHERE id_compte='"+QString::number(id_account.at(ui->listWidget->currentRow()))+"'");
             QSqlQuery remove2("DELETE FROM Transactions WHERE id_compte='"+QString::number(id_account.at(ui->listWidget->currentRow()))+"'");
             QSqlQuery remove3("DELETE FROM Abonnements WHERE id_compte='"+QString::number(id_account.at(ui->listWidget->currentRow()))+"'");
-            actu();
+
+            QSqlQuery defaut("SELECT defaultAccount FROM Settings");
+            if(defaut.next() && defaut.value("defaultAccount").toInt() == id_account.at(ui->listWidget->currentRow()))
+            {
+                QSqlQuery comptes("SELECT id_compte FROM Comptes");
+                while(comptes.next())
+                {
+                    if(comptes.value("id_comptes").toInt() != id_account.at(ui->listWidget->currentRow()))
+                    {
+                        QSqlQuery defaut("UPDATE Settings SET defaultAccount='"+comptes.value("id_compte").toString()+"'");
+                        break;
+                    }
+                }
+                actu();
+            }
+            else actu();
         }
     }
     else QMessageBox::warning(this, tr("Impossible de supprimer le compte."), tr("Aucun compte n'a été séléctionné."), tr("Corriger"));
@@ -128,6 +143,7 @@ void ManageAccount::on_pushButton_modify_clicked()
 
         QMessageBox::information(this, tr("Compte modifié"), tr("Le compte a bien été modifié."), tr("Fermer"));
         actu();
+        emit actuSolde();
     }
     else QMessageBox::warning(this, tr("Erreur"), tr("Le nom n'est pas renseigné."), tr("Fermer"));
 }

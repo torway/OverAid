@@ -46,45 +46,25 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="3" rowspan="3">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="4" colspan="2">
-         <widget class="QComboBox" name="comboBox_devise_2"/>
-        </item>
-        <item row="3" column="4" colspan="2">
+        <item row="4" column="4" colspan="2">
          <widget class="QCheckBox" name="checkBox_archive">
           <property name="text">
            <string>Archiver</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Devise :</string>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="4" colspan="2">
-         <spacer name="verticalSpacer_2">
+         <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>10</height>
            </size>
           </property>
          </spacer>
@@ -99,6 +79,25 @@
           </property>
           <property name="maximum">
            <double>99999.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="4" colspan="2">
+         <widget class="QPushButton" name="pushButton_modify">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Modifier</string>
           </property>
          </widget>
         </item>
@@ -128,35 +127,63 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="4" colspan="2">
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
+        <item row="2" column="4" colspan="2">
+         <widget class="QComboBox" name="comboBox_devise_2"/>
+        </item>
+        <item row="3" column="4" colspan="2">
+         <spacer name="verticalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Archiver un compte entraînera 
-la suppression de tous ses abonnements</string>
+           <string>Devise :</string>
           </property>
          </widget>
         </item>
+        <item row="3" column="3" rowspan="5">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="7" column="4" colspan="2">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="6" column="4" colspan="2">
-         <widget class="QPushButton" name="pushButton_modify">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
+         <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Modifier</string>
+           <string>Archiver un compte entraînera 
+la suppression de tous ses abonnements</string>
           </property>
          </widget>
         </item>
@@ -168,7 +195,7 @@ la suppression de tous ses abonnements</string>
    <item row="3" column="0">
     <widget class="QPushButton" name="pushButton_defaultAccount">
      <property name="text">
-      <string>Par défault</string>
+      <string>Par défaut</string>
      </property>
     </widget>
    </item>
@@ -249,6 +276,9 @@ la suppression de tous ses abonnements</string>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label">
+        <property name="locale">
+         <locale language="French" country="France"/>
+        </property>
         <property name="text">
          <string>Nom du compte :</string>
         </property>
@@ -315,6 +345,9 @@ la suppression de tous ses abonnements</string>
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="label_2">
+        <property name="locale">
+         <locale language="French" country="France"/>
+        </property>
         <property name="text">
          <string>Montant initial :</string>
         </property>

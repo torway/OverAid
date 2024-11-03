@@ -44,6 +44,7 @@ TransForm::TransForm(QWidget *parent, QString command) :
     }
 
     ui->label_id->hide();
+    this->adjustSize();
 }
 
 TransForm::~TransForm()

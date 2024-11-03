@@ -195,7 +195,7 @@ void OverAid::on_actionExporter_au_format_CSV_triggered()
 
         QString columnNameExceptFile = "*";
         QSqlQuery nomDesColonnes("SELECT group_concat(name, ',') AS colonnes FROM pragma_table_info('Transactions') WHERE name <> 'fichier'");
-        if(nomDesColonnes.next()) columnNameExceptFile = nomDesColonnes.value("colonnes").toString()+", CASE WHEN fichier IS NULL OR fichier = '' THEN 'Non' ELSE 'Oui' END AS fichier";
+        if(nomDesColonnes.next()) columnNameExceptFile = nomDesColonnes.value("colonnes").toString()+", CASE WHEN fichier IS NULL OR fichier = '' THEN 'false' ELSE 'true' END AS fichier";
 
         QSqlQuery transaction("SELECT "+columnNameExceptFile+" FROM Transactions WHERE "+where+" ORDER BY date ASC, id_trans ASC");
         while(transaction.next())
@@ -240,7 +240,7 @@ void OverAid::on_actionExporter_au_format_CSV_triggered()
                 output << ";";
 
                 output << transaction.value("projet").toString() << ";";
-                output << (transaction.value("fichier").toString() == "Oui" ? tr("Oui") : tr("Non")) << Qt::endl;
+                output << (transaction.value("fichier").toString() == "true" ? tr("Oui") : tr("Non")) << Qt::endl;
             }
         }
     }
@@ -249,17 +249,17 @@ void OverAid::on_actionExporter_au_format_CSV_triggered()
 //Exporter les PDF
 void OverAid::on_actionExporter_les_PDF_en_ZIP_triggered()
 {
-    if(!QDir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF").exists()) QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF");
+    if(!QDir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/"+tr("Documents PDF")).exists()) QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/"+tr("Documents PDF"));
     else
     {
-        QDir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF").removeRecursively();
-        QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF");
+        QDir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/"+tr("Documents PDF")).removeRecursively();
+        QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/"+tr("Documents PDF"));
     }
 
     QSqlQuery transaction("SELECT * FROM Transactions WHERE "+where+" AND fichier !='' ORDER BY date DESC, id_trans DESC");
     while(transaction.next())
     {
-        QFile file(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF/"+transaction.value("date").toString()
+        QFile file(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/"+tr("Documents PDF")+"/"+transaction.value("date").toString()
                    +" | "+transaction.value("type").toString()+" | "+transaction.value("description").toString()+".pdf");
         if (file.open(QFile::WriteOnly))
         {
@@ -268,7 +268,7 @@ void OverAid::on_actionExporter_les_PDF_en_ZIP_triggered()
         }
     }
 
-    QDesktopServices::openUrl(QUrl("file:///"+QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/Documents PDF/"));
+    QDesktopServices::openUrl(QUrl("file:///"+QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)+"/"+tr("Documents PDF")+"/"));
 }
 
 //Import en masse
@@ -286,7 +286,21 @@ void OverAid::on_actionGerer_les_comptes_triggered()
     ManageAccount *acc = new ManageAccount(nullptr);
     acc->setWindowModality(Qt::ApplicationModal);
     acc->show();
-    connect(acc, SIGNAL(actualiser()), this, SLOT(actu_compte()));
+    connect(acc, &ManageAccount::actualiser, this, [=](){
+        actu_compte();
+        QSqlQuery settings("SELECT * FROM Settings");
+        if(settings.next()) {
+        QSqlQuery compte("SELECT nom FROM Comptes WHERE id_compte='"+settings.value("defaultAccount").toString()+"'");
+        if(compte.next()) {
+            foreach(QAction *action, ui->menuComptes->actions()) {
+                if(action->text() == compte.value(0).toString()) {
+                    changeAccount(action);
+                    break;
+                }
+            }
+        }
+        }});
+    connect(acc, &ManageAccount::actuSolde, this, [=](){actu(true,false);});
 }
 
 void OverAid::actu_compte()

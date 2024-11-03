@@ -48,6 +48,7 @@ private:
 
 signals :
     void actualiser();
+    void actuSolde();
 };
 
 #endif // MANAGEACCOUNT_H

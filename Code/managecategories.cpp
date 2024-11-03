@@ -186,7 +186,7 @@ void ManageCategories::listWidget_itemDoubleClicked_finished(QString catType, QL
     if(!exist.next())
     {
         if(id != "-1") QSqlQuery update("UPDATE Catégories SET nom = '"+item->text().replace("'","''")+"' WHERE id_cat='"+id+"'");
-        else
+        else if(!item->text().isEmpty())
         {
             QSqlQuery ajouter("INSERT INTO Catégories (type,nom,cat0,id_compte) VALUES ('"+catType+"','"+item->text().replace("'","''")+"',"
                               "'"+(cat0 == "1+1" ? "" : QString::number(id_cats.at(ui->listWidget_cat->currentRow())))+"','"+QString::number(id_compte)+"')");

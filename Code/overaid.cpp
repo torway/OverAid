@@ -802,6 +802,8 @@ void OverAid::actu_historique()
     qDebug() << "----------";
     QTime timerHisto = QTime::currentTime();
     actu_filtre();
+    ui->label_reste->setText(tr("Solde : ")+"-----");
+    ui->label_prevision->setText(tr("Solde futur : ")+"-----");
 
     ui->treeWidgetSummary->clear();
     ui->treeWidgetSummary->setColumnCount(7);
@@ -844,10 +846,6 @@ void OverAid::actu_historique()
     QStringList anneeMoisList, anneeList;
 
     QIcon pdfIcon = QIcon(":/qrc/ressources/image/pdf.png");
-
-    int totalTrans = 0, currentTrans = 0;
-    QSqlQuery totalTransaction("SELECT COUNT(*) FROM Transactions WHERE id_compte='"+QString::number(id_compte)+"'");
-    if(totalTransaction.next()) totalTrans = totalTransaction.value("COUNT(*)").toInt();
 
     QString columnNameExceptFile = "*";
     QSqlQuery nomDesColonnes("SELECT group_concat(name, ',') AS colonnes FROM pragma_table_info('Transactions') WHERE name <> 'fichier'");
@@ -1069,11 +1067,11 @@ void OverAid::actu_historique()
                     --i;
                 }
             }
+
             if (monthItem->childCount() == 0) {
                 delete monthItem;
                 --monthIndex;
             }
-            else currentTrans += monthItem->childCount(); //Pour afficher ou non les label reste/prévision compte
         }
         if (yearItem->childCount() == 0) {
             delete yearItem;
@@ -1145,7 +1143,7 @@ void OverAid::actu_historique()
     qDebug() << "remembering time : " << timerRemember.msecsTo(QTime::currentTime()) << "msec.";
 
     //Changer les labels si filtres
-    if(totalTrans != currentTrans)
+    if(!where.startsWith("1+1 AND id_compte"))
     {
         ui->label_reste->setText(tr("Solde : ")+"-----");
         ui->label_prevision->setText(tr("Solde futur : ")+"-----");
