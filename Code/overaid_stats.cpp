@@ -33,10 +33,6 @@ void OverAid::stats_solde()
     QList<QDateTime> dates;
     QList<double> solde;
 
-    QString symboleCompte;
-    QSqlQuery devise("SELECT Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
-    if(devise.next()) symboleCompte = devise.value("symbole").toString();
-
     QSqlQuery firstDate("SELECT date FROM Transactions WHERE "+where+" ORDER BY date ASC, id_trans ASC");
     if(firstDate.next())
     {
@@ -99,7 +95,7 @@ void OverAid::stats_solde()
     zeroSeries->attachAxis(axisX);
 
     QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i "+symboleCompte);
+    axisY->setLabelFormat("%i");
     axisY->setTitleText("");
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
@@ -483,7 +479,7 @@ void OverAid::stats_debitCredit()
     chart->setTheme(QChart::ChartThemeBrownSand);
 
     QValueAxis *axisY = new QValueAxis();
-    axisY->setLabelFormat("%i "+symboleCompte);
+    axisY->setLabelFormat("%i");
     axisY->setTitleText("");
     axisY->applyNiceNumbers();
     chart->addAxis(axisY, Qt::AlignLeft);
