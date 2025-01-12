@@ -7,7 +7,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11 sdk_no_version_check
 
 SOURCES += \
-    Classes/RangeSlider.cpp \
     Classes/custommenu.cpp \
     bulkimport.cpp \
     lineform.cpp \
@@ -22,7 +21,6 @@ SOURCES += \
     transform.cpp
 
 HEADERS += \
-    Classes/RangeSlider.h \
     Classes/custommenu.h \
     bulkimport.h \
     lineform.h \

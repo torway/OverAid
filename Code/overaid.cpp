@@ -1,6 +1,5 @@
 #include "overaid.h"
 #include "ui_overaid.h"
-#include "Classes/RangeSlider.h"
 #include "lineform.h"
 #include "ui_lineform.h"
 #include "Classes/custommenu.h"
@@ -11,12 +10,6 @@ OverAid::OverAid(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("OverAid ©");
-
-    //Slider a deux sens
-    rangeSlider = new RangeSlider(Qt::Horizontal, RangeSlider::Option::DoubleHandles, ui->tabStats);
-    rangeSlider->setObjectName(QString::fromUtf8("rangeSlider"));
-    rangeSlider->setMaximumSize(QSize(16777215, 50));
-    ui->gridLayout_stats->addWidget(rangeSlider,1,0);
 
     //Menu clic droit
     ui->lineEditFiltre_desc->setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -347,9 +340,9 @@ void OverAid::actu_desc()
         if(desc.value("description").toString().contains(";"))
         {
             for(int i = 0; i <= desc.value("description").toString().count(";"); i++)
-                if(!descriptionList.contains(desc.value("description").toString().split(";").at(i))) descriptionList.append(desc.value("description").toString().split(";").at(i));
+                if(!descriptionList.contains(desc.value("description").toString().split(";").at(i).trimmed())) descriptionList.append(desc.value("description").toString().split(";").at(i).trimmed());
         }
-        else if(!descriptionList.contains(desc.value("description").toString())) descriptionList.append(desc.value("description").toString());
+        else if(!descriptionList.contains(desc.value("description").toString().trimmed())) descriptionList.append(desc.value("description").toString().trimmed());
     }
 
     QCompleter *com(new QCompleter(descriptionList, this));
@@ -376,7 +369,7 @@ void OverAid::actu_categorie()
 {
     id_categories.clear();
 
-    if(ui->pushButtonFiltre_cat->findChild<CustomMenu *>()) ui->pushButtonFiltre_cat->findChild<CustomMenu *>()->~CustomMenu();
+    if(ui->pushButtonFiltre_cat->findChild<CustomMenu *>()) ui->pushButtonFiltre_cat->findChild<CustomMenu *>()->deleteLater();
     CustomMenu *menuCat = new CustomMenu(ui->pushButtonFiltre_cat, ui->pushButtonFiltre_cat);
     QSqlQuery categorie("SELECT id_cat,nom FROM Catégories WHERE type='0' AND id_compte='"+QString::number(id_compte)+"' ORDER BY nom");
     while(categorie.next())
@@ -434,7 +427,7 @@ void OverAid::actu_sousCategorie()
         if(!cat0FilterList.isEmpty()) cat0_filtre = "(" + cat0FilterList.join(" OR ") + ")";
     }
 
-    if(ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()) ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->~CustomMenu();
+    if(ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()) ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->deleteLater();
     CustomMenu *menuCat2 = new CustomMenu(ui->pushButtonFiltre_cat2, ui->pushButtonFiltre_cat2);
 
     QSqlQuery sousCategorie_filtre("SELECT * FROM Catégories WHERE type='1' AND "+cat0_filtre+" AND id_compte='"+QString::number(id_compte)+"' ORDER BY nom");

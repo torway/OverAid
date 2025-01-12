@@ -13,7 +13,6 @@
 #include <QCompleter>
 #include <QListWidgetItem>
 #include <QtCharts>
-#include "Classes/RangeSlider.h"
 #include "transform.h"
 #include "ui_overaid.h"
 #include "ui_transform.h"
@@ -31,7 +30,7 @@ public:
     Ui::OverAid *ui;
     ~OverAid();
 
-    QString version = "2.2.6";
+    QString version = "2.3";
     QLocale locale;
 
     void database();
@@ -57,9 +56,15 @@ public slots:
     void update();
     void changeAccount(QAction *actionClicked);
 
-    void stats();
-    void stats_dates();
-    void stats_hover(const QPointF &point, bool state);
+    //Statistiques
+    void stats_solde();
+    void stats_solde_hover(const QPointF &point, bool state);
+    void stats_categories(bool isMainCategory, QString cat0);
+    void stats_categories_hover(QPieSlice *slice, bool state);
+    void setFullScreen(QWidget *widget);
+    void stats_debitCredit();
+    void stats_debitCredit_hover(bool status, int index, QBarSet *barSet);
+    void restoreFullScreen();
 
     void tout_etendre();
     void tout_retrecir();
@@ -126,15 +131,6 @@ private:
     QList<QString> rememberOpenedYears, rememberOpenedMonth, rememberOpenedItems;
     QList<QString> rememberOpenedYearsID, rememberOpenedMonthID, rememberOpenedItemsID;
     int rememberPosition = 0;
-
-    //Stats
-    QList<QString> statsList;
-    QLineSeries *series = new QLineSeries();
-    RangeSlider *rangeSlider;
-    QList<QDateTime> dates;
-    QList<double> solde;
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    QValueAxis *axisY = new QValueAxis;
 
     //Devises
     //Liste en Janvier 2024

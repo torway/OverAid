@@ -160,9 +160,9 @@ void lineForm::actu_desc()
         if(desc.value("description").toString().contains(";"))
         {
             for(int i = 0; i <= desc.value("description").toString().count(";"); i++)
-                if(!descriptionList.contains(desc.value("description").toString().split(";").at(i))) descriptionList.append(desc.value("description").toString().split(";").at(i));
+                if(!descriptionList.contains(desc.value("description").toString().split(";").at(i).trimmed())) descriptionList.append(desc.value("description").toString().split(";").at(i).trimmed());
         }
-        else if(!descriptionList.contains(desc.value("description").toString())) descriptionList.append(desc.value("description").toString());
+        else if(!descriptionList.contains(desc.value("description").toString().trimmed())) descriptionList.append(desc.value("description").toString().trimmed());
     }
 
     foreach(QObject *object, this->parent()->children())
@@ -170,7 +170,7 @@ void lineForm::actu_desc()
         if(qobject_cast<lineForm*>(object))
         {
             lineForm *line = qobject_cast<lineForm*>(object);
-            if(!descriptionList.contains(line->ui->lineEditAdd_description->text()) && line->ui->lineEditAdd_description->text() != "") descriptionList.append(line->ui->lineEditAdd_description->text());
+            if(!descriptionList.contains(line->ui->lineEditAdd_description->text().trimmed()) && line->ui->lineEditAdd_description->text().trimmed() != "") descriptionList.append(line->ui->lineEditAdd_description->text().trimmed());
         }
     }
 

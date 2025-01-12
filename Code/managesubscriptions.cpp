@@ -66,7 +66,7 @@ void ManageSubscriptions::actu()
     QSqlQuery categorie("SELECT * FROM Catégories WHERE type='0' AND id_compte='"+QString::number(id_compte)+"' ORDER BY nom");
 
     ui->treeWidget->clear();
-    ui->treeWidget->setColumnCount(7);
+    ui->treeWidget->setColumnCount(8);
     QStringList headerLabels;
     headerLabels.append(tr("Jour"));
     headerLabels.append("");
@@ -76,9 +76,10 @@ void ManageSubscriptions::actu()
     headerLabels.append(tr("Description"));
     headerLabels.append(tr("Montant"));
     headerLabels.append(tr("Moyen de paiement"));
+    headerLabels.append(tr("Projet"));
     headerLabels.append("id");
     ui->treeWidget->setHeaderLabels(headerLabels);
-    ui->treeWidget->hideColumn(8);
+    ui->treeWidget->hideColumn(9);
 
     QString deviseCompte, symboleCompte;
     QSqlQuery compteInitial("SELECT devise,Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
@@ -139,7 +140,7 @@ void ManageSubscriptions::actu()
                 if((inOutH == "Debit" && montantLine < 0) || (inOutH == "Credit" && montantLine > 0)) category->setForeground(6, QColor("green"));
 
                 category->setText(5, transaction.value("description").toString().split(";").at(i));
-                category->setText(8, transaction.value("id_sub").toString());
+                category->setText(9, transaction.value("id_sub").toString());
 
                 trans->addChild(category);
             }
@@ -170,7 +171,8 @@ void ManageSubscriptions::actu()
         if((inOutH == "Debit" && montantTotal > 0) || (inOutH == "Credit" && montantTotal < 0)) trans->setForeground(6, QColor("red"));
         if((inOutH == "Debit" && montantTotal < 0) || (inOutH == "Credit" && montantTotal > 0)) trans->setForeground(6, QColor("green"));
 
-        trans->setText(8, transaction.value("id_sub").toString());
+        trans->setText(8, transaction.value("projet").toString());
+        trans->setText(9, transaction.value("id_sub").toString());
         if(!transaction.value("fichier").toByteArray().isEmpty()) trans->setIcon(1, QIcon(":/qrc/ressources/image/pdf.png"));
 
         if(!(inOutH == "Debit" && moyenH == "Espèces"))

@@ -15,6 +15,7 @@ public:
 
     void mouseReleaseEvent(QMouseEvent *event) override;
     void showEvent(QShowEvent *event) override;
+    QAction* findAction(QString name);
 
 public slots:
     void activateAll();

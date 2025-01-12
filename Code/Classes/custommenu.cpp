@@ -30,6 +30,13 @@ void CustomMenu::mouseReleaseEvent(QMouseEvent *event)
     else QMenu::mouseReleaseEvent(event);
 }
 
+QAction* CustomMenu::findAction(QString name)
+{
+    foreach(QAction *action, this->actions())
+        if(action->text() == name) return action;
+    return nullptr;
+}
+
 void CustomMenu::activateAll()
 {
     foreach(QAction *action, this->actions())
