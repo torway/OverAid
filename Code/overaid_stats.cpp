@@ -129,7 +129,7 @@ void OverAid::stats_solde()
     minimizeButton->setStyleSheet("color:black; font-size:26px; background-color: rgba(0, 0, 0, 0);");
     QGraphicsProxyWidget *minimizeProxy = chartView->scene()->addWidget(minimizeButton);
 
-    QPushButton *resetButton = new QPushButton("↺");
+    QPushButton *resetButton = new QPushButton("⤺");
     resetButton->setFixedWidth(40);
     resetButton->setStyleSheet("color:black; font-size:26px; background-color: rgba(0, 0, 0, 0);");
     QGraphicsProxyWidget *resetProxy = chartView->scene()->addWidget(resetButton);
@@ -181,8 +181,17 @@ void OverAid::stats_solde_hover(const QPointF &point, bool state)
 
 void OverAid::stats_categories(bool isMainCategory, QString cat0)
 {
-    if(ui->gridLayout_stats->itemAtPosition(0,1)) ui->gridLayout_stats->itemAtPosition(0,1)->widget()->deleteLater();
-    if(ui->gridLayout_stats->itemAtPosition(0,2)) ui->gridLayout_stats->itemAtPosition(0,2)->widget()->deleteLater();
+    bool isDebitCurrentWidget = false, isCreditCurrentWidget = false;
+    if(ui->gridLayout_stats->itemAtPosition(0,1))
+    {
+        if(!ui->gridLayout_stats->itemAtPosition(0,1)->widget()->isHidden()) isDebitCurrentWidget = true;
+        ui->gridLayout_stats->itemAtPosition(0,1)->widget()->deleteLater();
+    }
+    if(ui->gridLayout_stats->itemAtPosition(0,2))
+    {
+        if(!ui->gridLayout_stats->itemAtPosition(0,2)->widget()->isHidden()) isCreditCurrentWidget = true;
+        ui->gridLayout_stats->itemAtPosition(0,2)->widget()->deleteLater();
+    }
 
     QPieSeries *seriesDebit = new QPieSeries();
     QStringList catDebit;
@@ -211,17 +220,21 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
                         QTreeWidgetItem *multiTrans = transaction->child(transaction->childCount()-l);
                         while(!multiTrans->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(multiTrans,6);
 
-                        QAction *catAction = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat->menu())->findAction(multiTrans->text(3));
-                        QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(multiTrans->text(4));
+                        QString cat = multiTrans->text(3);
+                        QString cat2 = multiTrans->text(4);
+                        if(cat2 == "") cat2 = tr("Vide");
+
+                        QAction *catAction = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat->menu())->findAction(cat);
+                        QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(cat2);
                         if(catAction && catAction->isChecked() && cat2Action && cat2Action->isChecked() && (cat0 == "-1" || cat0 == multiTrans->text(3)))
                         {
                             isDebit = (transaction->text(2) == tr("Débit") && QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').toDouble() > 0) || (transaction->text(2) == tr("Crédit") && QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').toDouble() < 0);
-                            if(!(isDebit ?catDebit:catCredit).contains(multiTrans->text(isMainCategory?3:4)))
+                            if(!(isDebit ?catDebit:catCredit).contains(isMainCategory?cat:cat2))
                             {
-                                (isDebit?catDebit:catCredit).append(multiTrans->text(isMainCategory?3:4));
+                                (isDebit?catDebit:catCredit).append(isMainCategory?cat:cat2);
                                 (isDebit?catDebit_montant:catCredit_montant).append(QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').remove("-").toDouble());
                             }
-                            else (isDebit?catDebit_montant:catCredit_montant)[(isDebit?catDebit:catCredit).indexOf(multiTrans->text(isMainCategory?3:4))] += QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').remove("-").toDouble();
+                            else (isDebit?catDebit_montant:catCredit_montant)[(isDebit?catDebit:catCredit).indexOf(isMainCategory?cat:cat2)] += QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').remove("-").toDouble();
                         }
                     }
                 }
@@ -229,17 +242,21 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
                 {
                     while(!transaction->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(transaction,6);
 
-                    QAction *catAction = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat->menu())->findAction(transaction->text(3));
-                    QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(transaction->text(4));
+                    QString cat = transaction->text(3);
+                    QString cat2 = transaction->text(4);
+                    if(cat2 == "") cat2 = tr("Vide");
+
+                    QAction *catAction = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat->menu())->findAction(cat);
+                    QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(cat2);
                     if(catAction && catAction->isChecked() && cat2Action && cat2Action->isChecked() && (cat0 == "-1" || cat0 == transaction->text(3)))
                     {
                         isDebit = (transaction->text(2) == tr("Débit") && QString(transaction->text(6).split(" ").at(0)).replace(',','.').toDouble() > 0) || (transaction->text(2) == tr("Crédit") && QString(transaction->text(6).split(" ").at(0)).replace(',','.').toDouble() < 0);
-                        if(!(isDebit?catDebit:catCredit).contains(transaction->text(isMainCategory?3:4)))
+                        if(!(isDebit?catDebit:catCredit).contains(isMainCategory?cat:cat2))
                         {
-                            (isDebit?catDebit:catCredit).append(transaction->text(isMainCategory?3:4));
+                            (isDebit?catDebit:catCredit).append(isMainCategory?cat:cat2);
                             (isDebit?catDebit_montant:catCredit_montant).append(QString(transaction->text(6).split(" ").at(0)).replace(',','.').remove("-").toDouble());
                         }
-                        else (isDebit?catDebit_montant:catCredit_montant)[(isDebit?catDebit:catCredit).indexOf(transaction->text(isMainCategory?3:4))] += QString(transaction->text(6).split(" ").at(0)).replace(',','.').remove("-").toDouble();
+                        else (isDebit?catDebit_montant:catCredit_montant)[(isDebit?catDebit:catCredit).indexOf(isMainCategory?cat:cat2)] += QString(transaction->text(6).split(" ").at(0)).replace(',','.').remove("-").toDouble();
                     }
                 }
             }
@@ -313,7 +330,7 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
         QPushButton *button = new QPushButton(text);
         button->setFixedWidth(40);
         button->setStyleSheet("color:black; font-size:26px; background-color: rgba(0, 0, 0, 0);");
-        if (hideInitially) button->hide();
+        if(hideInitially) button->hide();
         QGraphicsProxyWidget *proxy = chartView->scene()->addWidget(button);
         return {button, proxy};
     };
@@ -321,13 +338,12 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
     // Création des boutons pour chartViewDebit
     auto [fullScreenButtonDebit, fullScreenProxyDebit] = createButton("⛶", false, chartViewDebit);
     auto [minimizeButtonDebit, minimizeProxyDebit] = createButton("▬", true, chartViewDebit);
-    auto [resetButtonDebit, resetProxyDebit] = createButton("↺", isMainCategory, chartViewDebit);
+    auto [resetButtonDebit, resetProxyDebit] = createButton("⤺", isMainCategory, chartViewDebit);
 
     // Création des boutons pour chartViewCredit
     auto [fullScreenButtonCredit, fullScreenProxyCredit] = createButton("⛶", false, chartViewCredit);
     auto [minimizeButtonCredit, minimizeProxyCredit] = createButton("▬", true, chartViewCredit);
-    auto [resetButtonCredit, resetProxyCredit] = createButton("↺", isMainCategory, chartViewCredit);
-
+    auto [resetButtonCredit, resetProxyCredit] = createButton("⤺", isMainCategory, chartViewCredit);
 
     connect(seriesDebit, &QPieSeries::hovered, this, &OverAid::stats_categories_hover);
     connect(seriesCredit, &QPieSeries::hovered, this, &OverAid::stats_categories_hover);
@@ -382,6 +398,19 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
     };
     connect(chartDebit, &QChart::geometryChanged, chartButtonPos(chartDebit, fullScreenProxyDebit, fullScreenButtonDebit, minimizeProxyDebit, minimizeButtonDebit, resetProxyDebit, resetButtonDebit));
     connect(chartCredit, &QChart::geometryChanged, chartButtonPos(chartCredit, fullScreenProxyCredit, fullScreenButtonCredit, minimizeProxyCredit, minimizeButtonCredit, resetProxyCredit, resetButtonCredit));
+
+    if(ui->gridLayout_stats->itemAtPosition(0,0)->widget()->isHidden())
+    {
+        auto load = [=]()
+        {
+            return [=]()
+            {
+                if(isDebitCurrentWidget && !isCreditCurrentWidget) fullScreenButtonDebit->click();
+                if(!isDebitCurrentWidget && isCreditCurrentWidget) fullScreenButtonCredit->click();
+            };
+        };
+        QTimer::singleShot(0,load());
+    }
 }
 
 void OverAid::stats_categories_hover(QPieSlice *slice, bool state)
@@ -514,7 +543,7 @@ void OverAid::stats_debitCredit()
     minimizeButton->setStyleSheet("color:black; font-size:26px; background-color: rgba(0, 0, 0, 0);");
     QGraphicsProxyWidget *minimizeProxy = chartView->scene()->addWidget(minimizeButton);
 
-    QPushButton *resetButton = new QPushButton("↺");
+    QPushButton *resetButton = new QPushButton("⤺");
     resetButton->setFixedWidth(40);
     resetButton->setStyleSheet("color:black; font-size:26px; background-color: rgba(0, 0, 0, 0);");
     QGraphicsProxyWidget *resetProxy = chartView->scene()->addWidget(resetButton);
