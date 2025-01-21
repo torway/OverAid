@@ -113,16 +113,13 @@ void ManageCategories::on_pushButton_deleteCat_clicked()
 
         if (ret == QMessageBox::Ok)
         {
-            QSqlQuery removeCat("DELETE FROM Catégories WHERE id_cat='"+QString::number(id_cats.at(ui->listWidget_cat->currentRow()))+"'");
-            QSqlQuery selectSubCat("SELECT id_cat FROM Catégories WHERE cat0='"+QString::number(id_cats.at(ui->listWidget_cat->currentRow()))+"'");
-            while(selectSubCat.next()) {
-                QSqlQuery update("UPDATE Transactions SET sous_categorie='\"\"' WHERE sous_categorie='"+selectSubCat.value("id_cat").toString()+"'");
-                QSqlQuery update2("UPDATE Abonnements SET sous_categorie='\"\"' WHERE sous_categorie='"+selectSubCat.value("id_cat").toString()+"'");
-            }
-            QSqlQuery removeSubCat("DELETE FROM Catégories WHERE cat0='"+QString::number(id_cats.at(ui->listWidget_cat->currentRow()))+"'");
+            QString cat = QString::number(id_cats.at(ui->listWidget_cat->currentRow()));
+            QSqlQuery removeCat("DELETE FROM Catégories WHERE id_cat='"+cat+"'");
+            QSqlQuery removeSubCat("DELETE FROM Catégories WHERE cat0='"+cat+"'");
 
-            QSqlQuery removeTrans("DELETE FROM Transactions WHERE categorie LIKE '%\""+QString::number(id_cats.at(ui->listWidget_cat->currentRow()))+"\"%'");
-            QSqlQuery removeAbo("DELETE FROM Abonnements WHERE categorie LIKE '%\""+QString::number(id_cats.at(ui->listWidget_cat->currentRow()))+"\"%'");
+            QSqlQuery removeTrans("DELETE FROM Transactions WHERE categorie LIKE '%\""+cat+"\"%'");
+            QSqlQuery removeAbo("DELETE FROM Abonnements WHERE categorie LIKE '%\""+cat+"\"%'");
+
             actu_categorie();
             actu_sousCategorie();
         }
@@ -146,9 +143,12 @@ void ManageCategories::on_pushButton_deleteCat2_clicked()
 
         if (ret == QMessageBox::Ok)
         {
-            QSqlQuery remove("DELETE FROM Catégories WHERE id_cat='"+QString::number(id_subcats.at(ui->listWidget_subcat->currentRow()))+"'");
-            QSqlQuery update("UPDATE Transactions SET sous_categorie='\"\"' WHERE sous_categorie='"+QString::number(id_subcats.at(ui->listWidget_subcat->currentRow()))+"'");
-            QSqlQuery update2("UPDATE Abonnements SET sous_categorie='\"\"' WHERE sous_categorie='"+QString::number(id_subcats.at(ui->listWidget_subcat->currentRow()))+"'");
+            QString cat2 = QString::number(id_subcats.at(ui->listWidget_subcat->currentRow()));
+            QSqlQuery remove("DELETE FROM Catégories WHERE id_cat='"+cat2+"'");
+
+            QSqlQuery update("UPDATE Transactions SET sous_categorie = REPLACE(sous_categorie,\""+cat2+"\",\"\") WHERE sous_categorie LIKE '%\""+cat2+"\"%'");
+            QSqlQuery update2("UPDATE Abonnements SET sous_categorie = REPLACE(sous_categorie,\""+cat2+"\",\"\") WHERE sous_categorie LIKE '%\""+cat2+"\"%'");
+
             actu_sousCategorie();
         }
     }

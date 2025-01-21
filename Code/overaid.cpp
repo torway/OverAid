@@ -1215,7 +1215,7 @@ void OverAid::transToSub(bool avecPDF)
         if(ui->treeWidgetSummary->indexOfTopLevelItem(ui->treeWidgetSummary->currentItem()->parent()->parent()) != 0 &&
            ui->treeWidgetSummary->currentItem()->parent()->parent()->indexOfChild(ui->treeWidgetSummary->currentItem()->parent()) != 0) actu(false, false);
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
 }
 
 void OverAid::modify_trans()
@@ -1308,7 +1308,7 @@ void OverAid::modify_trans()
             }
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
 }
 
 void OverAid::duplicate()
@@ -1386,7 +1386,7 @@ void OverAid::duplicate()
             trans->ui->lineEdit_projet->setText(transaction.value("projet").toString());
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
 }
 
 void OverAid::delete_trans()
@@ -1395,8 +1395,8 @@ void OverAid::delete_trans()
     {
         QMessageBox msgBox;
         msgBox.setText(tr("Supprimer la transaction"));
-        if(ui->treeWidgetSummary->currentItem()->parent()->parent()->parent())
-            msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer la multi-transaction du %1 ?").arg(locale.toString(locale.toDate(ui->treeWidgetSummary->currentItem()->parent()->text(0),locale.ShortFormat),locale.LongFormat)));
+        if(ui->treeWidgetSummary->currentItem()->parent()->parent()->parent() || ui->treeWidgetSummary->currentItem()->childCount() > 0)
+            msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer la multi-transaction du %1 ?").arg(locale.toString(locale.toDate((ui->treeWidgetSummary->currentItem()->parent()->parent()->parent() ? ui->treeWidgetSummary->currentItem()->parent() : ui->treeWidgetSummary->currentItem()) ->text(0),locale.ShortFormat),locale.LongFormat)));
         else msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer la transaction '%1' du %2 ?").arg(ui->treeWidgetSummary->currentItem()->text(5),locale.toString(locale.toDate(ui->treeWidgetSummary->currentItem()->text(0),locale.ShortFormat),locale.LongFormat)));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
@@ -1409,7 +1409,7 @@ void OverAid::delete_trans()
             actu(true, false);
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
 }
 
 void OverAid::on_treeWidgetSummary_itemClicked(QTreeWidgetItem *item, int column)

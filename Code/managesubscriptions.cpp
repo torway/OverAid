@@ -195,7 +195,7 @@ void ManageSubscriptions::actu()
 
 void ManageSubscriptions::modify_sub()
 {
-    if(!ui->treeWidget->currentItem()->text(8).isEmpty())
+    if(!ui->treeWidget->currentItem()->text(9).isEmpty())
     {
         TransForm *modif = new TransForm(nullptr, "Modifier abo");
         modif->setWindowModality(Qt::ApplicationModal);
@@ -206,7 +206,7 @@ void ManageSubscriptions::modify_sub()
         modif->actu_devise();
         modif->actu_projet();
 
-        QSqlQuery transaction("SELECT * FROM Abonnements WHERE id_sub='"+ui->treeWidget->currentItem()->text(8)+"'");
+        QSqlQuery transaction("SELECT * FROM Abonnements WHERE id_sub='"+ui->treeWidget->currentItem()->text(9)+"'");
         if(transaction.next())
         {
             modif->ui->dateEditAdd->setDate(QDate::fromString(transaction.value("renouvellement").toString(),"dd"));
@@ -282,14 +282,14 @@ void ManageSubscriptions::modify_sub()
             }
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), tr("Fermer"));
 }
 
 void ManageSubscriptions::duplicate()
 {
-    if(!ui->treeWidget->currentItem()->text(8).isEmpty())
+    if(!ui->treeWidget->currentItem()->text(9).isEmpty())
     {
-        QSqlQuery transaction("SELECT * FROM Abonnements WHERE id_sub='"+ui->treeWidget->currentItem()->text(8)+"'");
+        QSqlQuery transaction("SELECT * FROM Abonnements WHERE id_sub='"+ui->treeWidget->currentItem()->text(9)+"'");
         if(transaction.next())
         {
             trans->ui->dateEditAdd->setDate(QDate::fromString(transaction.value("renouvellement").toString(),"dd"));
@@ -359,17 +359,17 @@ void ManageSubscriptions::duplicate()
             trans->ui->lineEdit_projet->setText(transaction.value("projet").toString());
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), tr("Fermer"));
 }
 
 void ManageSubscriptions::delete_sub()
 {
-    if(!ui->treeWidget->currentItem()->text(8).isEmpty())
+    if(!ui->treeWidget->currentItem()->text(9).isEmpty())
     {
         QMessageBox msgBox;
-        msgBox.setText(tr("Supprimer la transaction"));
-        if(ui->treeWidget->currentItem()->parent())
-            msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer l'abonnement multi-transaction tous les %1 du mois ?").arg(QDate::fromString(ui->treeWidget->currentItem()->parent()->text(0),"dd").toString("dd")));
+        msgBox.setText(tr("Supprimer l'abonnement"));
+        if(ui->treeWidget->currentItem()->parent() || ui->treeWidget->currentItem()->childCount() > 0)
+            msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer l'abonnement multi-transaction tous les %1 du mois ?").arg(QDate::fromString((ui->treeWidget->currentItem()->parent() ? ui->treeWidget->currentItem()->parent() : ui->treeWidget->currentItem()) ->text(0),"dd").toString("dd")));
         else msgBox.setInformativeText(tr("Etes-vous sûr(e)(s) de vouloir supprimer l'abonnement '%1' tous les %2 du mois ?").arg(ui->treeWidget->currentItem()->text(5),QDate::fromString(ui->treeWidget->currentItem()->text(0),"dd").toString("dd")));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
@@ -378,11 +378,11 @@ void ManageSubscriptions::delete_sub()
 
         if (ret == QMessageBox::Ok)
         {
-            QSqlQuery remove("DELETE FROM Abonnements WHERE id_sub='"+ui->treeWidget->currentItem()->text(8)+"'");
+            QSqlQuery remove("DELETE FROM Abonnements WHERE id_sub='"+ui->treeWidget->currentItem()->text(9)+"'");
             actu();
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Il ne s'agit pas d'un abonnement."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), tr("Fermer"));
 }
 
 void ManageSubscriptions::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
@@ -394,7 +394,7 @@ void ManageSubscriptions::on_treeWidget_itemClicked(QTreeWidgetItem *item, int c
         QSqlQuery devise("SELECT Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
         if(devise.next()) symboleCompte = devise.value("symbole").toString();
 
-        QSqlQuery transaction("SELECT montant,devise,detail_montant,montantDeviseCompte,Devises.symbole FROM Abonnements JOIN Devises ON Devises.code=Abonnements.devise WHERE id_sub='"+item->text(8)+"'");
+        QSqlQuery transaction("SELECT montant,devise,detail_montant,montantDeviseCompte,Devises.symbole FROM Abonnements JOIN Devises ON Devises.code=Abonnements.devise WHERE id_sub='"+item->text(9)+"'");
         if(transaction.next())
         {
             QString montant, detailMontant, montantDeviseCompte;
@@ -439,7 +439,7 @@ void ManageSubscriptions::on_treeWidget_itemClicked(QTreeWidgetItem *item, int c
     //Ouvrir le PDF
     if(column == 1 && !item->icon(1).isNull())
     {
-        QSqlQuery transaction("SELECT fichier FROM Abonnements WHERE id_sub='"+item->text(8)+"'");
+        QSqlQuery transaction("SELECT fichier FROM Abonnements WHERE id_sub='"+item->text(9)+"'");
         if(transaction.next())
         {
             QByteArray pdf = transaction.value("fichier").toByteArray();
