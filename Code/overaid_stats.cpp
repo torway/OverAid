@@ -535,6 +535,17 @@ void OverAid::stats_debitCredit()
     //Recadrer sur les 6 derniers mois
     axisX->setMin(mois[mois.count() - (mois.count() > 6 ? 6 : mois.count())]);
 
+    QList<qreal> valuesCredit, valuesDebit;
+    for (int i = 0; i < creditBar->count(); ++i) valuesCredit.append(creditBar->at(i));
+    for (int i = 0; i < debitBar->count(); ++i) valuesDebit.append(debitBar->at(i));
+
+    QList<qreal> lastCredit = valuesCredit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()-1), mois.count() > 6 ? 6 : mois.count());
+    QList<qreal> lastDebit = valuesDebit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()-1), mois.count() > 6 ? 6 : mois.count());
+    QList<qreal> combinedValues = lastCredit + lastDebit;
+
+    qreal maxValue = *std::max_element(combinedValues.begin(), combinedValues.end());
+    axisY->setRange(0,maxValue);
+
     ui->gridLayout_stats->addWidget(chartView,1,1,1,2);
 
     //Boutons d'actions
@@ -558,6 +569,9 @@ void OverAid::stats_debitCredit()
 
     connect(resetButton, &QPushButton::clicked, [=]() {
         axisX->setMin(mois[0]);
+        QList<qreal> combinedValues = valuesCredit + valuesDebit;
+        qreal max = *std::max_element(combinedValues.begin(), combinedValues.end());
+        axisY->setRange(0,max);
         chart->zoomReset();
         resetButton->hide();
     });
