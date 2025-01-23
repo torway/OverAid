@@ -466,8 +466,11 @@ void OverAid::stats_debitCredit()
                         QTreeWidgetItem *multiTrans = transaction->child(transaction->childCount()-l);
                         while(!multiTrans->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(multiTrans,6);
 
+                        QString cat2 = multiTrans->text(4);
+                        if(cat2 == "") cat2 = tr("Vide");
+
                         QAction *catAction = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat->menu())->findAction(multiTrans->text(3));
-                        QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(multiTrans->text(4));
+                        QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(cat2);
                         if(catAction && catAction->isChecked() && cat2Action && cat2Action->isChecked())
                         {
                             isDebit = (transaction->text(2) == tr("Débit") && QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').toDouble() > 0) || (transaction->text(2) == tr("Crédit") && QString(multiTrans->text(6).split(" ").at(0)).replace(',','.').toDouble() < 0);
@@ -479,8 +482,11 @@ void OverAid::stats_debitCredit()
                 {
                     while(!transaction->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(transaction,6);
 
+                    QString cat2 = transaction->text(4);
+                    if(cat2 == "") cat2 = tr("Vide");
+
                     QAction *catAction = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat->menu())->findAction(transaction->text(3));
-                    QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(transaction->text(4));
+                    QAction *cat2Action = qobject_cast<CustomMenu*>(ui->pushButtonFiltre_cat2->menu())->findAction(cat2);
                     if(catAction && catAction->isChecked() && cat2Action && cat2Action->isChecked())
                     {
                         isDebit = (transaction->text(2) == tr("Débit") && QString(transaction->text(6).split(" ").at(0)).replace(',','.').toDouble() > 0) || (transaction->text(2) == tr("Crédit") && QString(transaction->text(6).split(" ").at(0)).replace(',','.').toDouble() < 0);
