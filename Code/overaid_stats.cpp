@@ -539,8 +539,8 @@ void OverAid::stats_debitCredit()
     for (int i = 0; i < creditBar->count(); ++i) valuesCredit.append(creditBar->at(i));
     for (int i = 0; i < debitBar->count(); ++i) valuesDebit.append(debitBar->at(i));
 
-    QList<qreal> lastCredit = valuesCredit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()-1), mois.count() > 6 ? 6 : mois.count());
-    QList<qreal> lastDebit = valuesDebit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()-1), mois.count() > 6 ? 6 : mois.count());
+    QList<qreal> lastCredit = valuesCredit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()), mois.count() > 6 ? 6 : mois.count());
+    QList<qreal> lastDebit = valuesDebit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()), mois.count() > 6 ? 6 : mois.count());
     QList<qreal> combinedValues = lastCredit + lastDebit;
 
     qreal maxValue = *std::max_element(combinedValues.begin(), combinedValues.end());
@@ -562,6 +562,7 @@ void OverAid::stats_debitCredit()
 
     QPushButton *resetButton = new QPushButton("⤺");
     resetButton->setFixedWidth(40);
+    if(mois.count() < 6) resetButton->hide();
     resetButton->setStyleSheet("color:black; font-size:26px; background-color: rgba(0, 0, 0, 0);");
     QGraphicsProxyWidget *resetProxy = chartView->scene()->addWidget(resetButton);
 
