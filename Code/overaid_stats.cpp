@@ -104,16 +104,18 @@ void OverAid::stats_solde()
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     chartView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    chartView->setRubberBand(QChartView::RectangleRubberBand);
 
-    //Recadrer sur les 60 dernières transactions
-    axisX->setMin(dates[dates.count() - (dates.count() > 60 ? 60 : dates.count())]);
+    if(!dates.isEmpty())
+    {
+        //Recadrer sur les 60 dernières transactions
+        axisX->setMin(dates[dates.count() - (dates.count() > 60 ? 60 : dates.count())]);
 
-    QList<double> soldeTemp = solde.mid(dates.count() - (dates.count() > 60 ? 60 : dates.count()-1), dates.count() > 60 ? 60 : dates.count());
-    double min = *std::min_element(soldeTemp.begin(), soldeTemp.end());
-    double max = *std::max_element(soldeTemp.begin(), soldeTemp.end());
-    soldeTemp.clear();
-    axisY->setRange(min,max);
+        QList<double> soldeTemp = solde.mid(dates.count() - (dates.count() > 60 ? 60 : dates.count()-1), dates.count() > 60 ? 60 : dates.count());
+        double min = *std::min_element(soldeTemp.begin(), soldeTemp.end());
+        double max = *std::max_element(soldeTemp.begin(), soldeTemp.end());
+        soldeTemp.clear();
+        axisY->setRange(min,max);
+    }
 
     ui->gridLayout_stats->addWidget(chartView,0,0,2,1);
 
@@ -137,10 +139,14 @@ void OverAid::stats_solde()
     connect(series, &QLineSeries::hovered, this, &OverAid::stats_solde_hover);
 
     connect(resetButton, &QPushButton::clicked, [=]() {
-        axisX->setMin(dates[0]);
-        double min = *std::min_element(solde.begin(), solde.end());
-        double max = *std::max_element(solde.begin(), solde.end());
-        axisY->setRange(min,max);
+        if(!dates.isEmpty())
+        {
+            axisX->setMin(dates[0]);
+            double min = *std::min_element(solde.begin(), solde.end());
+            double max = *std::max_element(solde.begin(), solde.end());
+            axisY->setRange(min,max);
+        }
+        chartView->setRubberBand(QChartView::RectangleRubberBand);
         chart->zoomReset();
         resetButton->hide();
     });
@@ -508,7 +514,7 @@ void OverAid::stats_debitCredit()
     chart->legend()->hide();
     chart->layout()->setContentsMargins(0, 0, 0, 0);
     chart->setLocale(locale);
-    if(series->count() == 0) chart->setTitle(tr("Aucune transaction avec ces filtres"));
+    if(debitBar->count() + creditBar->count() == 0) chart->setTitle(tr("Aucune transaction avec ces filtres"));
     else chart->setTitle(tr("Budget"));
 
     chart->setTheme(QChart::ChartThemeBrownSand);
@@ -530,21 +536,23 @@ void OverAid::stats_debitCredit()
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     chartView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    chartView->setRubberBand(QChartView::RectangleRubberBand);
-
-    //Recadrer sur les 6 derniers mois
-    axisX->setMin(mois[mois.count() - (mois.count() > 6 ? 6 : mois.count())]);
 
     QList<qreal> valuesCredit, valuesDebit;
-    for (int i = 0; i < creditBar->count(); ++i) valuesCredit.append(creditBar->at(i));
-    for (int i = 0; i < debitBar->count(); ++i) valuesDebit.append(debitBar->at(i));
+    if(!mois.isEmpty())
+    {
+        //Recadrer sur les 6 derniers mois
+        axisX->setMin(mois[mois.count() - (mois.count() > 6 ? 6 : mois.count())]);
 
-    QList<qreal> lastCredit = valuesCredit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()), mois.count() > 6 ? 6 : mois.count());
-    QList<qreal> lastDebit = valuesDebit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()), mois.count() > 6 ? 6 : mois.count());
-    QList<qreal> combinedValues = lastCredit + lastDebit;
+        for (int i = 0; i < creditBar->count(); ++i) valuesCredit.append(creditBar->at(i));
+        for (int i = 0; i < debitBar->count(); ++i) valuesDebit.append(debitBar->at(i));
 
-    qreal maxValue = *std::max_element(combinedValues.begin(), combinedValues.end());
-    axisY->setRange(0,maxValue);
+        QList<qreal> lastCredit = valuesCredit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()), mois.count() > 6 ? 6 : mois.count());
+        QList<qreal> lastDebit = valuesDebit.mid(mois.count() - (mois.count() > 6 ? 6 : mois.count()), mois.count() > 6 ? 6 : mois.count());
+        QList<qreal> combinedValues = lastCredit + lastDebit;
+
+        qreal maxValue = *std::max_element(combinedValues.begin(), combinedValues.end());
+        axisY->setRange(0,maxValue);
+    }
 
     ui->gridLayout_stats->addWidget(chartView,1,1,1,2);
 
@@ -569,10 +577,14 @@ void OverAid::stats_debitCredit()
     connect(series, &QBarSeries::hovered, this, &OverAid::stats_debitCredit_hover);
 
     connect(resetButton, &QPushButton::clicked, [=]() {
-        axisX->setMin(mois[0]);
-        QList<qreal> combinedValues = valuesCredit + valuesDebit;
-        qreal max = *std::max_element(combinedValues.begin(), combinedValues.end());
-        axisY->setRange(0,max);
+        if(!mois.isEmpty())
+        {
+            axisX->setMin(mois[0]);
+            QList<qreal> combinedValues = valuesCredit + valuesDebit;
+            qreal max = *std::max_element(combinedValues.begin(), combinedValues.end());
+            axisY->setRange(0,max);
+        }
+        chartView->setRubberBand(QChartView::RectangleRubberBand);
         chart->zoomReset();
         resetButton->hide();
     });
@@ -600,15 +612,24 @@ void OverAid::stats_debitCredit()
 
 void OverAid::stats_debitCredit_hover(bool status, int index, QBarSet *barSet)
 {
+    QChart *chart = qobject_cast<QChartView*>(ui->gridLayout_stats->itemAtPosition(1, 1)->widget())->chart();
     if(status)
     {
         QString symboleCompte;
         QSqlQuery devise("SELECT Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
         if(devise.next()) symboleCompte = devise.value("symbole").toString();
 
-        qobject_cast<QChartView*>(ui->gridLayout_stats->itemAtPosition(1,1)->widget())->chart()->setTitle(barSet->label()+" : "+QString::number(barSet->at(index),'f',2)+" "+symboleCompte);
+        QBarCategoryAxis *axisX = nullptr;
+        foreach (QAbstractAxis *axis, chart->axes()) {
+            if (axis->orientation() == Qt::Horizontal) {
+                axisX = qobject_cast<QBarCategoryAxis*>(axis);
+                break;
+            }
+        }
+
+        if(axisX) chart->setTitle(axisX->at(index) +" | "+ barSet->label()+" : "+QString::number(barSet->at(index),'f',2)+" "+symboleCompte);
     }
-    else qobject_cast<QChartView*>(ui->gridLayout_stats->itemAtPosition(1,1)->widget())->chart()->setTitle(tr("Budget"));
+    else chart->setTitle(tr("Budget"));
 }
 
 void OverAid::setFullScreen(QWidget *widget)
