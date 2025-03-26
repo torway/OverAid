@@ -164,7 +164,7 @@ void OverAid::on_actionExporter_au_format_CSV_triggered()
     {
         QTextStream output(&data);
         output << "id_trans" << ";" << tr("Date") << ";" << tr("Débit / Crédit") << ";" << tr("Moyen de paiement") << ";" << tr("Catégorie") << ";" << tr("Sous-catégorie") << ";" << tr("Description") << ";" << tr("Montant") << ";" << tr("Devise") << ";" << tr("Montant Devise Compte") << ";" << tr("Détail montant") << ";" << tr("Mode de saisie") << ";" << tr("Projet") << ";" << tr("Fichier PDF") << Qt::endl;
-        output << "" << ";" << "> "+ui->dateEditFilter_start->date().toString(locale.dateFormat(QLocale::ShortFormat))+", < "+ui->dateEditFilter_end->date().toString(locale.dateFormat(QLocale::ShortFormat)) << ";" << ui->comboBoxFiltre_inOut->currentText() << ";" << ui->comboBoxFiltre_moyen->currentText() << ";";
+        output << tr("Filtres")+" :" << ";" << "> "+ui->dateEditFilter_start->date().toString(locale.dateFormat(QLocale::ShortFormat))+", < "+ui->dateEditFilter_end->date().toString(locale.dateFormat(QLocale::ShortFormat)) << ";" << ui->comboBoxFiltre_inOut->currentText() << ";" << ui->comboBoxFiltre_moyen->currentText() << ";";
 
         QString cat, cat2;
         bool allCatActionsChecked = true;

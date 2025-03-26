@@ -14,6 +14,34 @@ void OverAid::on_tabWidget_currentChanged(int index)
             }
         }
 
+        QString symboleCompte;
+        QSqlQuery devise("SELECT Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
+        if(devise.next()) symboleCompte = devise.value("symbole").toString();
+
+        //Afficher le montant des transactions en montantDeviseCompte
+        for(int i = 1; i <= ui->treeWidgetSummary->topLevelItemCount(); i++) {
+            QTreeWidgetItem *yearItem = ui->treeWidgetSummary->topLevelItem(ui->treeWidgetSummary->topLevelItemCount()-i);
+            for(int j = 1; j <= yearItem->childCount(); j++) {
+                QTreeWidgetItem *monthItem = yearItem->child(yearItem->childCount()-j);
+                for(int k = 1; k <= monthItem->childCount(); k++) {
+                    QTreeWidgetItem *transaction = monthItem->child(monthItem->childCount()-k);
+
+                    QSqlQuery trans("SELECT CASE WHEN montantDeviseCompte = '' THEN montant ELSE montantDeviseCompte END montant FROM Transactions WHERE id_trans='"+transaction->text(11)+"'");
+                    if(trans.next()) {
+                        if(transaction->childCount() > 0)
+                        {
+                            for(int l = 1; l <= transaction->childCount(); l++)
+                            {
+                                QTreeWidgetItem *multiTrans = transaction->child(transaction->childCount()-l);
+                                while(multiTrans->text(6) != QString::number(trans.value("montant").toString().split(';').at(transaction->childCount()-l).toDouble(),'f',2).replace('.', ',')+" "+symboleCompte) on_treeWidgetSummary_itemClicked(multiTrans,6);
+                            }
+                        }
+                        else while(transaction->text(6) != QString::number(trans.value("montant").toDouble(),'f',2).replace('.', ',')+" "+symboleCompte) on_treeWidgetSummary_itemClicked(transaction,6);
+                    }
+                }
+            }
+        }
+
         stats_solde();
         stats_categories(true,"-1");
         stats_debitCredit();
@@ -22,6 +50,32 @@ void OverAid::on_tabWidget_currentChanged(int index)
             ui->gridLayout_stats->setRowStretch(i, 100);
         for (int i = 0; i < ui->gridLayout_stats->columnCount(); i++)
             ui->gridLayout_stats->setColumnStretch(i, 100);
+    }
+    else if(index == 0)
+    {
+        //Afficher le montant des transactions en devise de la transaction
+        for(int i = 1; i <= ui->treeWidgetSummary->topLevelItemCount(); i++) {
+            QTreeWidgetItem *yearItem = ui->treeWidgetSummary->topLevelItem(ui->treeWidgetSummary->topLevelItemCount()-i);
+            for(int j = 1; j <= yearItem->childCount(); j++) {
+                QTreeWidgetItem *monthItem = yearItem->child(yearItem->childCount()-j);
+                for(int k = 1; k <= monthItem->childCount(); k++) {
+                    QTreeWidgetItem *transaction = monthItem->child(monthItem->childCount()-k);
+
+                    QSqlQuery trans("SELECT montant, Devises.symbole FROM Transactions JOIN Devises ON Devises.code=Transactions.devise WHERE id_trans='"+transaction->text(11)+"'");
+                    if(trans.next()) {
+                        if(transaction->childCount() > 0)
+                        {
+                            for(int l = 1; l <= transaction->childCount(); l++)
+                            {
+                                QTreeWidgetItem *multiTrans = transaction->child(transaction->childCount()-l);
+                                while(multiTrans->text(6) != QString::number(trans.value("montant").toString().split(';').at(transaction->childCount()-l).toDouble(),'f',2).replace('.', ',')+" "+trans.value("symbole").toString()) on_treeWidgetSummary_itemClicked(multiTrans,6);
+                            }
+                        }
+                        else while(transaction->text(6) != QString::number(trans.value("montant").toDouble(),'f',2).replace('.', ',')+" "+trans.value("symbole").toString()) on_treeWidgetSummary_itemClicked(transaction,6);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -206,10 +260,6 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
     QStringList catCredit;
     QList<double> catCredit_montant;
 
-    QString symboleCompte;
-    QSqlQuery devise("SELECT Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
-    if(devise.next()) symboleCompte = devise.value("symbole").toString();
-
     bool isDebit;
 
     for(int i = 1; i <= ui->treeWidgetSummary->topLevelItemCount(); i++) {
@@ -224,7 +274,6 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
                     for(int l = 1; l <= transaction->childCount(); l++)
                     {
                         QTreeWidgetItem *multiTrans = transaction->child(transaction->childCount()-l);
-                        while(!multiTrans->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(multiTrans,6);
 
                         QString cat = multiTrans->text(3);
                         QString cat2 = multiTrans->text(4);
@@ -246,8 +295,6 @@ void OverAid::stats_categories(bool isMainCategory, QString cat0)
                 }
                 else
                 {
-                    while(!transaction->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(transaction,6);
-
                     QString cat = transaction->text(3);
                     QString cat2 = transaction->text(4);
                     if(cat2 == "") cat2 = tr("Vide");
@@ -448,10 +495,6 @@ void OverAid::stats_debitCredit()
     QBarSet *debitBar = new QBarSet(tr("Débit"));
     QBarSet *creditBar = new QBarSet(tr("Crédit"));
 
-    QString symboleCompte;
-    QSqlQuery devise("SELECT Devises.symbole FROM Comptes JOIN Devises ON Devises.code=Comptes.devise WHERE id_compte='"+QString::number(id_compte)+"'");
-    if(devise.next()) symboleCompte = devise.value("symbole").toString();
-
     bool isDebit;
 
     for(int i = 1; i <= ui->treeWidgetSummary->topLevelItemCount(); i++) {
@@ -470,7 +513,6 @@ void OverAid::stats_debitCredit()
                     for(int l = 1; l <= transaction->childCount(); l++)
                     {
                         QTreeWidgetItem *multiTrans = transaction->child(transaction->childCount()-l);
-                        while(!multiTrans->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(multiTrans,6);
 
                         QString cat2 = multiTrans->text(4);
                         if(cat2 == "") cat2 = tr("Vide");
@@ -486,8 +528,6 @@ void OverAid::stats_debitCredit()
                 }
                 else
                 {
-                    while(!transaction->text(6).contains(symboleCompte)) on_treeWidgetSummary_itemClicked(transaction,6);
-
                     QString cat2 = transaction->text(4);
                     if(cat2 == "") cat2 = tr("Vide");
 

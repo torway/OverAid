@@ -30,7 +30,7 @@ public:
     Ui::OverAid *ui;
     ~OverAid();
 
-    QString version = "2.3.2";
+    const QString version = "2.3.3";
     QLocale locale;
 
     void database();
@@ -115,19 +115,23 @@ private slots:
 
 private:
     QSqlDatabase overaidDatabase;
+    TransForm *trans = new TransForm(nullptr, "Ajouter");
+
+    //Compte
     int id_compte = -1;
     bool active = true;
 
-    TransForm *trans = new TransForm(nullptr, "Ajouter");
-
     QList<int> id_savedFilters;
 
+    //Catégories
     QList<int> id_categories;
     QList<QString> id_sousCategories;
     QList<bool> previousActionsCatState;
 
+    //Filtres
     QString where;
 
+    //Remember tree state
     QList<QString> rememberOpenedYears, rememberOpenedMonth, rememberOpenedItems;
     QList<QString> rememberOpenedYearsID, rememberOpenedMonthID, rememberOpenedItemsID;
     int rememberPosition = 0;

@@ -369,7 +369,8 @@ void OverAid::actu_categorie()
 {
     id_categories.clear();
 
-    if(ui->pushButtonFiltre_cat->findChild<CustomMenu *>()) ui->pushButtonFiltre_cat->findChild<CustomMenu *>()->deleteLater();
+    QList<CustomMenu*> oldMenus = ui->pushButtonFiltre_cat->findChildren<CustomMenu*>();
+    for (CustomMenu *menu : oldMenus) menu->deleteLater();
     CustomMenu *menuCat = new CustomMenu(ui->pushButtonFiltre_cat, ui->pushButtonFiltre_cat);
     QSqlQuery categorie("SELECT id_cat,nom FROM Catégories WHERE type='0' AND id_compte='"+QString::number(id_compte)+"' ORDER BY nom");
     while(categorie.next())
@@ -427,7 +428,8 @@ void OverAid::actu_sousCategorie()
         if(!cat0FilterList.isEmpty()) cat0_filtre = "(" + cat0FilterList.join(" OR ") + ")";
     }
 
-    if(ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()) ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->deleteLater();
+    QList<CustomMenu*> oldMenus = ui->pushButtonFiltre_cat2->findChildren<CustomMenu*>();
+    for (CustomMenu *menu : oldMenus) menu->deleteLater();
     CustomMenu *menuCat2 = new CustomMenu(ui->pushButtonFiltre_cat2, ui->pushButtonFiltre_cat2);
 
     QSqlQuery sousCategorie_filtre("SELECT * FROM Catégories WHERE type='1' AND "+cat0_filtre+" AND id_compte='"+QString::number(id_compte)+"' ORDER BY nom");
@@ -535,7 +537,7 @@ void OverAid::actu_savedFilters()
     ui->comboBox_savedFilters->setItemData(ui->comboBox_savedFilters->findText(tr("Sauvegarder et remplacer ce filtre")), QVariant(0), Qt::ItemDataRole::UserRole - 1);
     ui->comboBox_savedFilters->setItemData(ui->comboBox_savedFilters->findText(tr("Supprimer ce filtre")), QVariant(0), Qt::ItemDataRole::UserRole - 1);
     ui->comboBox_savedFilters->setCurrentIndex(0);
-    connect(ui->comboBox_savedFilters, SIGNAL(currentTextChanged(QString)), this, SLOT(on_comboBox_savedFilters_currentTextChanged()));
+    connect(ui->comboBox_savedFilters, &QComboBox::currentTextChanged, this, [=](){on_comboBox_savedFilters_currentTextChanged();});
 }
 
 void OverAid::on_comboBox_savedFilters_currentTextChanged()
@@ -697,20 +699,20 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
                     if(id_categories.contains(id_cat.toInt())) ui->pushButtonFiltre_cat->findChild<CustomMenu *>()->actions().at(id_categories.indexOf(id_cat.toInt()))->setChecked(true);
             }
             else ui->pushButtonFiltre_cat->findChild<CustomMenu *>()->activateAll();
-            previousActionsCatState.clear();
-            emit ui->pushButtonFiltre_cat->findChild<CustomMenu *>()->aboutToHide();
+
+            actu_sousCategorie();
 
             if(filtres.value("sous_categorie").toString() != "") {
                 QStringList id_sousCategoriesChoped = id_sousCategories;
                 for (int i = 0; i < id_sousCategoriesChoped.size(); ++i)
                     id_sousCategoriesChoped[i] = id_sousCategoriesChoped[i].remove(QRegularExpression("[^\\d\";]")); //Garder que les " ; et les chiffres
 
-                ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->activateNone();
+                ui->pushButtonFiltre_cat2->findChildren<CustomMenu *>().last()->activateNone();
                 foreach(QString id_cat2, filtres.value("sous_categorie").toString().split(";"))
-                    if(id_cat2 == "\"\"") ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->actions().at(ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->actions().count()-4)->setChecked(true);
-                    else if(id_sousCategoriesChoped.contains(id_cat2)) ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->actions().at(id_sousCategoriesChoped.indexOf(id_cat2))->setChecked(true);
+                    if(id_cat2 == "\"\"") ui->pushButtonFiltre_cat2->findChildren<CustomMenu *>().last()->actions().at(ui->pushButtonFiltre_cat2->findChildren<CustomMenu *>().last()->actions().count()-4)->setChecked(true);
+                    else if(id_sousCategoriesChoped.contains(id_cat2)) ui->pushButtonFiltre_cat2->findChildren<CustomMenu *>().last()->actions().at(id_sousCategoriesChoped.indexOf(id_cat2))->setChecked(true);
             }
-            else ui->pushButtonFiltre_cat2->findChild<CustomMenu *>()->activateAll();
+            else ui->pushButtonFiltre_cat2->findChildren<CustomMenu *>().last()->activateAll();
         }
         ui->comboBox_savedFilters->setItemData(ui->comboBox_savedFilters->findText(tr("Sauvegarder et remplacer ce filtre")), QVariant(), Qt::ItemDataRole::UserRole - 1);
         ui->comboBox_savedFilters->setItemData(ui->comboBox_savedFilters->findText(tr("Supprimer ce filtre")), QVariant(), Qt::ItemDataRole::UserRole - 1);
