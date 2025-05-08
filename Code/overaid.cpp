@@ -261,7 +261,7 @@ void OverAid::actu(bool remember, bool actuCat)
         }
     }
     abo.last();
-    if(abo.at() >= 0) QMessageBox::information(this, tr("Abonnements ajoutés"), tr("Les abonnements ont bien été ajoutés."), tr("Fermer"));
+    if(abo.at() >= 0) QMessageBox::information(this, tr("Abonnements ajoutés"), tr("Les abonnements ont bien été ajoutés."), QMessageBox::Close);
 
     //--------
     if(remember)
@@ -604,7 +604,7 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
     else if(ui->comboBox_savedFilters->currentIndex() == ui->comboBox_savedFilters->count()-1) {
         QSqlQuery nom("SELECT nom FROM Filtres WHERE id_filtre='"+ui->label_idSavedFilter->text()+"'");
         if(nom.next()) {
-            QMessageBox::information(this,tr("Filtre personnalisé supprimé"),tr("Le filtre personnalisé '%1' a bien été supprimé.").arg(nom.value("nom").toString()), tr("Fermer"));
+            QMessageBox::information(this,tr("Filtre personnalisé supprimé"),tr("Le filtre personnalisé '%1' a bien été supprimé.").arg(nom.value("nom").toString()), QMessageBox::Close);
             QSqlQuery remove("DELETE FROM Filtres WHERE id_filtre='"+ui->label_idSavedFilter->text()+"'");
             actu_savedFilters();
             on_pushButtonFiltre_delete_clicked();
@@ -624,7 +624,7 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
             {
                 if(!selectedOptionName.isEmpty())
                 {
-                    if(currentNames.contains(selectedOptionName)) QMessageBox::warning(this,tr("Erreur"),tr("Un filtre personnalisé porte déjà ce nom."), tr("Fermer"));
+                    if(currentNames.contains(selectedOptionName)) QMessageBox::warning(this,tr("Erreur"),tr("Un filtre personnalisé porte déjà ce nom."), QMessageBox::Close);
                     else {
                         QSqlQuery add("INSERT INTO Filtres (id_compte, nom, type, moyen, categorie, sous_categorie, date_debut, date_fin, description, devise, projet, modeSaisie) "
                                       "VALUES ('"+QString::number(id_compte)+"','"+selectedOptionName+"','"+inOut+"','"+moyen+"','"+cat+"','"+cat2+"','"+ui->dateEditFilter_start->date().toString("yyyyMMdd")+"','"+ui->dateEditFilter_end->date().toString("yyyyMMdd")+"',"
@@ -633,11 +633,11 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
 
                         actu_savedFilters();
                         ui->comboBox_savedFilters->setCurrentIndex(ui->comboBox_savedFilters->findText(selectedOptionName));
-                        QMessageBox::information(this,tr("Filtre personnalisé ajouté"),tr("Le filtre personnalisé '%1' a bien été ajouté.").arg(selectedOptionName), tr("Fermer"));
+                        QMessageBox::information(this,tr("Filtre personnalisé ajouté"),tr("Le filtre personnalisé '%1' a bien été ajouté.").arg(selectedOptionName), QMessageBox::Close);
                         done = true;
                     }
                 }
-                else QMessageBox::warning(this,tr("Erreur"),tr("Le filtre personnalisé doit avoir un nom valide.").arg(selectedOptionName), tr("Fermer"));
+                else QMessageBox::warning(this,tr("Erreur"),tr("Le filtre personnalisé doit avoir un nom valide.").arg(selectedOptionName), QMessageBox::Close);
             }
             else
             {
@@ -652,7 +652,7 @@ void OverAid::on_comboBox_savedFilters_currentTextChanged()
                          "projet='"+ui->lineEditFiltre_projet->text().replace("'","''")+"', modeSaisie='"+modeSaisie+"' "
                          "WHERE id_filtre='"+ui->label_idSavedFilter->text()+"'");
         ui->comboBox_savedFilters->setCurrentIndex(id_savedFilters.indexOf(ui->label_idSavedFilter->text().toInt()));
-        QMessageBox::information(this,tr("Filtre personnalisé mis à jour"),tr("Le filtre personnalisé '%1' a bien été mis à jour.").arg(ui->comboBox_savedFilters->currentText()), tr("Fermer"));
+        QMessageBox::information(this,tr("Filtre personnalisé mis à jour"),tr("Le filtre personnalisé '%1' a bien été mis à jour.").arg(ui->comboBox_savedFilters->currentText()), QMessageBox::Close);
     }
     else {
         QSqlQuery filtres("SELECT * FROM Filtres WHERE nom='"+ui->comboBox_savedFilters->currentText()+"' AND id_compte='"+QString::number(id_compte)+"'");
@@ -1213,11 +1213,11 @@ void OverAid::transToSub(bool avecPDF)
                 ajouter.exec();
             }
         }
-        QMessageBox::information(this, tr("Abonnement ajouté"), tr("La transaction a bien été convertie en abonnement."), tr("Fermer"));
+        QMessageBox::information(this, tr("Abonnement ajouté"), tr("La transaction a bien été convertie en abonnement."), QMessageBox::Close);
         if(ui->treeWidgetSummary->indexOfTopLevelItem(ui->treeWidgetSummary->currentItem()->parent()->parent()) != 0 &&
            ui->treeWidgetSummary->currentItem()->parent()->parent()->indexOfChild(ui->treeWidgetSummary->currentItem()->parent()) != 0) actu(false, false);
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), QMessageBox::Close);
 }
 
 void OverAid::modify_trans()
@@ -1310,7 +1310,7 @@ void OverAid::modify_trans()
             }
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), QMessageBox::Close);
 }
 
 void OverAid::duplicate()
@@ -1388,7 +1388,7 @@ void OverAid::duplicate()
             trans->ui->lineEdit_projet->setText(transaction.value("projet").toString());
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), QMessageBox::Close);
 }
 
 void OverAid::delete_trans()
@@ -1411,7 +1411,7 @@ void OverAid::delete_trans()
             actu(true, false);
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner une transaction."), QMessageBox::Close);
 }
 
 void OverAid::on_treeWidgetSummary_itemClicked(QTreeWidgetItem *item, int column)

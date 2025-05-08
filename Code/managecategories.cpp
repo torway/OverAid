@@ -124,7 +124,7 @@ void ManageCategories::on_pushButton_deleteCat_clicked()
             actu_sousCategorie();
         }
     }
-    else QMessageBox::warning(this, tr("Impossible de supprimer la catégorie."), tr("Aucune catégorie n'a été séléctionnée."), tr("Corriger"));
+    else QMessageBox::warning(this, tr("Impossible de supprimer la catégorie."), tr("Aucune catégorie n'a été séléctionnée."), QMessageBox::Close);
 }
 
 void ManageCategories::on_pushButton_deleteCat2_clicked()
@@ -152,7 +152,7 @@ void ManageCategories::on_pushButton_deleteCat2_clicked()
             actu_sousCategorie();
         }
     }
-    else QMessageBox::warning(this, tr("Impossible de supprimer la sous-catégorie."), tr("Aucune sous-catégorie n'a été séléctionnée."), tr("Corriger"));
+    else QMessageBox::warning(this, tr("Impossible de supprimer la sous-catégorie."), tr("Aucune sous-catégorie n'a été séléctionnée."), QMessageBox::Close);
 }
 
 void ManageCategories::on_listWidget_cat_itemDoubleClicked(QListWidgetItem *item)
@@ -190,14 +190,14 @@ void ManageCategories::listWidget_itemDoubleClicked_finished(QString catType, QL
         {
             QSqlQuery ajouter("INSERT INTO Catégories (type,nom,cat0,id_compte) VALUES ('"+catType+"','"+item->text().replace("'","''")+"',"
                               "'"+(cat0 == "1+1" ? "" : QString::number(id_cats.at(ui->listWidget_cat->currentRow())))+"','"+QString::number(id_compte)+"')");
-            if(catType == "0") QMessageBox::information(this, tr("Catégorie ajoutée"), tr("La catégorie a bien été ajoutée."), tr("Fermer"));
-            else if(catType == "1") QMessageBox::information(this, tr("Sous catégorie ajoutée"), tr("La sous-catégorie a bien été ajoutée à la catégorie %1.").arg(ui->listWidget_cat->currentItem()->text()), tr("Fermer"));
+            if(catType == "0") QMessageBox::information(this, tr("Catégorie ajoutée"), tr("La catégorie a bien été ajoutée."), QMessageBox::Close);
+            else if(catType == "1") QMessageBox::information(this, tr("Sous catégorie ajoutée"), tr("La sous-catégorie a bien été ajoutée à la catégorie %1.").arg(ui->listWidget_cat->currentItem()->text()), QMessageBox::Close);
         }
     }
     else
     {
-        if(catType == "0") QMessageBox::warning(this, tr("Erreur"), tr("Une catégorie porte déjà ce nom.\nVeuillez en choisir un autre."), tr("Fermer"));
-        else if(catType == "1") QMessageBox::warning(this, tr("Erreur"), tr("Une sous-catégorie porte déjà ce nom au sein de cette catégorie.\nVeuillez en choisir un autre."), tr("Fermer"));
+        if(catType == "0") QMessageBox::warning(this, tr("Erreur"), tr("Une catégorie porte déjà ce nom.\nVeuillez en choisir un autre."), QMessageBox::Close);
+        else if(catType == "1") QMessageBox::warning(this, tr("Erreur"), tr("Une sous-catégorie porte déjà ce nom au sein de cette catégorie.\nVeuillez en choisir un autre."), QMessageBox::Close);
     }
 
     QString oldCat = ui->listWidget_cat->currentItem() != nullptr ? ui->listWidget_cat->currentItem()->text() : "";

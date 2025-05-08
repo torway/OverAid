@@ -9,6 +9,7 @@
 #include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QSqlRecord>
+#include <QSqlError>
 #include <QDateTime>
 #include <QCompleter>
 #include <QListWidgetItem>
@@ -30,7 +31,7 @@ public:
     Ui::OverAid *ui;
     ~OverAid();
 
-    const QString version = "2.3.3";
+    const QString version = "2.3.4";
     QLocale locale;
 
     void database();

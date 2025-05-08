@@ -282,7 +282,7 @@ void ManageSubscriptions::modify_sub()
             }
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), QMessageBox::Close);
 }
 
 void ManageSubscriptions::duplicate()
@@ -359,7 +359,7 @@ void ManageSubscriptions::duplicate()
             trans->ui->lineEdit_projet->setText(transaction.value("projet").toString());
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), QMessageBox::Close);
 }
 
 void ManageSubscriptions::delete_sub()
@@ -382,7 +382,7 @@ void ManageSubscriptions::delete_sub()
             actu();
         }
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Veuillez sélectionner un abonnement."), QMessageBox::Close);
 }
 
 void ManageSubscriptions::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)

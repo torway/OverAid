@@ -45,7 +45,7 @@ void OverAid::on_actionImporter_une_base_de_donn_es_triggered()
 
     if(ret == QMessageBox::Ok) if(importDatabase())
         {
-            QMessageBox::information(this, tr("Base de données importée"), tr("La base de données a bien été importée.\nElle remplace désormais l'ancienne."), tr("Fermer"));
+            QMessageBox::information(this, tr("Base de données importée"), tr("La base de données a bien été importée.\nElle remplace désormais l'ancienne."), QMessageBox::Close);
 
             database();
             actu_settings();
@@ -68,7 +68,7 @@ bool OverAid::importDatabase()
     importTables.sort();
 
     if(overaidTables != importTables) {
-        QMessageBox::warning(this, tr("Erreur"), tr("La base de données n'a pas la structure de tables nécessaire."), tr("Fermer"));
+        QMessageBox::warning(this, tr("Erreur"), tr("La base de données n'a pas la structure de tables nécessaire."), QMessageBox::Close);
         return false;
     }
 
@@ -77,7 +77,7 @@ bool OverAid::importDatabase()
         QSqlRecord importRecord = importDatabase.record(tableName);
 
         if (overaidRecord != importRecord) {
-            QMessageBox::warning(this, tr("Erreur"), tr("La table %1 n'a pas la structure nécessaire.").arg(tableName), tr("Fermer"));
+            QMessageBox::warning(this, tr("Erreur"), tr("La table %1 n'a pas la structure nécessaire.").arg(tableName), QMessageBox::Close);
             return false;
         }
     }
@@ -427,7 +427,7 @@ void OverAid::actu_langage(QString langage)
         file.close();
     }
 
-    QMessageBox::warning(this, tr("Changement de langue"), tr("L'application va redémarrer."), tr("Fermer"));
+    QMessageBox::warning(this, tr("Changement de langue"), tr("L'application va redémarrer."), QMessageBox::Close);
 
     qApp->quit();
     QProcess::startDetached(qApp->applicationFilePath(), qApp->arguments());

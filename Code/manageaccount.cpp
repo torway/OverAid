@@ -65,14 +65,14 @@ void ManageAccount::on_pushButton_add_clicked()
 {
     QSqlQuery nom("SELECT * FROM Comptes WHERE nom='"+ui->lineEdit_nom->text()+"'");
     nom.last();
-    if(nom.at() >= 0) QMessageBox::warning(this, tr("Erreur"), tr("Un compte possède déjà ce nom."), tr("Fermer"));
-    else if(ui->lineEdit_nom->text().isEmpty()) QMessageBox::warning(this, "Erreur", "Le nom n'est pas renseigné.", "Fermer");
+    if(nom.at() >= 0) QMessageBox::warning(this, tr("Erreur"), tr("Un compte possède déjà ce nom."), QMessageBox::Close);
+    else if(ui->lineEdit_nom->text().isEmpty()) QMessageBox::warning(this, tr("Erreur"), tr("Le nom n'est pas renseigné."), QMessageBox::Close);
     else
     {
         QSqlQuery compte("INSERT INTO Comptes (nom,montant_initial,active,devise) VALUES ('"+ui->lineEdit_nom->text().replace("'","''")+"', '"+QString::number(ui->doubleSpinBox->value())+"', "
                          "'true', '"+ui->comboBox_devise->currentText().left(3)+"')");
 
-        QMessageBox::information(this, "Compte ajouté", "Le compte a bien été ajouté.", "Fermer");
+        QMessageBox::information(this, tr("Compte ajouté"), tr("Le compte a bien été ajouté."), QMessageBox::Close);
         actu();
     }
 }
@@ -114,7 +114,7 @@ void ManageAccount::on_pushButton_delete_clicked()
             else actu();
         }
     }
-    else QMessageBox::warning(this, tr("Impossible de supprimer le compte."), tr("Aucun compte n'a été séléctionné."), tr("Corriger"));
+    else QMessageBox::warning(this, tr("Impossible de supprimer le compte."), tr("Aucun compte n'a été séléctionné."), QMessageBox::Close);
 }
 
 void ManageAccount::on_listWidget_currentRowChanged(int currentRow)
@@ -141,11 +141,11 @@ void ManageAccount::on_pushButton_modify_clicked()
 
         if(ui->checkBox_archive->isChecked()) QSqlQuery remove("DELETE FROM Abonnements WHERE id_compte='"+QString::number(id_account.at(ui->listWidget->currentRow()))+"'");
 
-        QMessageBox::information(this, tr("Compte modifié"), tr("Le compte a bien été modifié."), tr("Fermer"));
+        QMessageBox::information(this, tr("Compte modifié"), tr("Le compte a bien été modifié."), QMessageBox::Close);
         actu();
         emit actuSolde();
     }
-    else QMessageBox::warning(this, tr("Erreur"), tr("Le nom n'est pas renseigné."), tr("Fermer"));
+    else QMessageBox::warning(this, tr("Erreur"), tr("Le nom n'est pas renseigné."), QMessageBox::Close);
 }
 
 void ManageAccount::on_comboBox_devise_currentTextChanged(const QString &arg1)

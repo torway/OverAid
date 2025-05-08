@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     if(settings.next()) {
         //Version
         if(QVersionNumber::fromString(settings.value("version").toString()) > versionApp) {
-            QMessageBox::warning(nullptr, QObject::tr("Erreur version"), QObject::tr("La version de l'application est obsolète.\nMerci d'utiliser une version plus récente."), QObject::tr("Fermer"));
+            QMessageBox::warning(nullptr, QObject::tr("Erreur version"), QObject::tr("La version de l'application est obsolète.\nMerci d'utiliser une version plus récente."), QMessageBox::Close);
             return -1;
         }
 

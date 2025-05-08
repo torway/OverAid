@@ -107,7 +107,7 @@ void BulkImport::on_pushButton_import_clicked()
     ui->plainTextEdit_import->setPlainText(importReste);
     ui->plainTextEdit_error->setPlainText(errorReste);
 
-    QMessageBox::information(this, tr("Transactions ajoutées"), tr("Les transactions sans erreur ont bien été ajoutées."), tr("Fermer"));
+    QMessageBox::information(this, tr("Transactions ajoutées"), tr("Les transactions sans erreur ont bien été ajoutées."), QMessageBox::Close);
 
     if(ui->plainTextEdit_error->toPlainText().isEmpty())
     {

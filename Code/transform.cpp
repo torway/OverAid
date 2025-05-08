@@ -201,9 +201,9 @@ void TransForm::on_pushButtonAdd_clicked()
         if((montant < 0 || montantDeviseCompte < 0) && (montant > 0 || montantDeviseCompte > 0)) montantSigneOK = false;
     }
 
-    if(!catExistOk) QMessageBox::warning(this, "Erreur", "Aucune catégorie n'existe.", "Fermer");
-    else if(!descriptionOk) QMessageBox::warning(this, "Erreur", "Une des descriptions n'est pas renseignée.", "Fermer");
-    else if(!montantSigneOK) QMessageBox::warning(this, "Erreur", "Un des montants n'est pas du même signe que son montant en devise du compte.", "Fermer");
+    if(!catExistOk) QMessageBox::warning(this, "Erreur", "Aucune catégorie n'existe.", QMessageBox::Close);
+    else if(!descriptionOk) QMessageBox::warning(this, "Erreur", "Une des descriptions n'est pas renseignée.", QMessageBox::Close);
+    else if(!montantSigneOK) QMessageBox::warning(this, "Erreur", "Un des montants n'est pas du même signe que son montant en devise du compte.", QMessageBox::Close);
     else
     {
         QString type;
@@ -246,13 +246,19 @@ void TransForm::on_pushButtonAdd_clicked()
         }
 
         QSqlQuery query;
+        QMessageBox transMessage;
+        transMessage.setIcon(QMessageBox::Information);
+        transMessage.setStandardButtons(QMessageBox::Ok);
+        transMessage.setDefaultButton(QMessageBox::Ok);
+        transMessage.setEscapeButton(QMessageBox::Ok);
         if(commande == "Ajouter")
         {
             query.prepare("INSERT INTO Transactions (id_compte, date, type, moyen, categorie, sous_categorie, description, montant, detail_montant, fichier, devise, montantDeviseCompte, projet) "
                           "VALUES ('"+QString::number(id_compte)+"', '"+ui->dateEditAdd->date().toString("yyyyMMdd")+"', '"+type+"', '"+moyen+"', '"+cat+"', "
                           "'"+cat2+"', '"+desc+"', '"+montant+"', '"+ope+"',:pdf, '"+ui->comboBox_devise->currentText().left(3)+"', '"+montantDeviseCompte+"', '"+ui->lineEdit_projet->text().replace("'","''")+"');");
 
-            QMessageBox::information(this, tr("Transaction ajoutée"), tr("La transaction a bien été ajoutée."), tr("Fermer"));
+            transMessage.setText(tr("Transaction ajoutée"));
+            transMessage.setInformativeText(tr("La transaction a bien été ajoutée."));
         }
 
         if(commande == "Modifier")
@@ -261,8 +267,8 @@ void TransForm::on_pushButtonAdd_clicked()
                           "description='"+desc+"', montant='"+montant+"', detail_montant='"+ope+"', fichier=:pdf, devise='"+ui->comboBox_devise->currentText().left(3)+"', montantDeviseCompte='"+montantDeviseCompte+"', projet='"+ui->lineEdit_projet->text().replace("'","''")+"' "
                           "WHERE id_trans='"+ui->label_id->text()+"'");
 
-            QMessageBox::information(this, tr("Transaction modifiée"), tr("La transaction a bien été modifiée."), tr("Fermer"));
-            this->close();
+            transMessage.setText(tr("Transaction modifiée"));
+            transMessage.setInformativeText(tr("La transaction a bien été modifiée."));
         }
 
         if(commande == "Abonnement")
@@ -272,7 +278,8 @@ void TransForm::on_pushButtonAdd_clicked()
                               "'"+cat2+"', '"+desc+"', '"+montant+"', '"+ope+"',:pdf, '"+ui->dateEditAdd->date().toString("dd")+"', '"+QDate::currentDate().toString("yyyyMM")+"', '"+ui->comboBox_devise->currentText().left(3)+"', "
                               "'"+montantDeviseCompte+"', '"+ui->lineEdit_projet->text().replace("'","''")+"');");
 
-            QMessageBox::information(this, tr("Abonnement ajouté"), tr("L'abonnement a bien été ajouté."), tr("Fermer"));
+            transMessage.setText(tr("Abonnement ajouté"));
+            transMessage.setInformativeText(tr("L'abonnement a bien été ajouté."));
         }
 
         if(commande == "Modifier abo")
@@ -280,8 +287,9 @@ void TransForm::on_pushButtonAdd_clicked()
             query.prepare("UPDATE Abonnements SET type='"+type+"', moyen='"+moyen+"', categorie='"+cat+"', sous_categorie='"+cat2+"', description='"+desc+"', montant='"+montant+"', detail_montant='"+ope+"'"
                           ", fichier=:pdf, renouvellement='"+ui->dateEditAdd->date().toString("dd")+"', devise='"+ui->comboBox_devise->currentText().left(3)+"', montantDeviseCompte='"+montantDeviseCompte+"', projet='"+ui->lineEdit_projet->text().replace("'","''")+"' "
                           "WHERE id_sub='"+ui->label_id->text()+"'");
-            QMessageBox::information(this, tr("Abonnement modifié"), tr("L'abonnement a bien été modifié."), tr("Fermer"));
-            this->close();
+
+            transMessage.setText(tr("Abonnement modifié"));
+            transMessage.setInformativeText(tr("L'abonnement a bien été modifié."));
         }
 
         if(ui->lineEditPDF->text().isEmpty()) query.bindValue(":pdf","");
@@ -293,8 +301,21 @@ void TransForm::on_pushButtonAdd_clicked()
 
             query.bindValue(":pdf",PDFInByteArray);
         }
-        query.exec();
 
-        emit actu();
+        bool success = query.exec();
+        if(!success) {
+            transMessage.setText(tr("Erreur"));
+            transMessage.setInformativeText(tr("Une erreur est survenue."));
+            transMessage.setIcon(QMessageBox::Warning);
+            transMessage.setStandardButtons(QMessageBox::Ignore | QMessageBox::Retry);
+            transMessage.setDefaultButton(QMessageBox::Retry);
+            transMessage.setEscapeButton(QMessageBox::Retry);
+        }
+
+        int ret = transMessage.exec();
+        if(ret == QMessageBox::Ignore || ret == QMessageBox::Ok) {
+            if(commande.startsWith("Modifier")) this->close();
+            emit actu();
+        }
     }
 }
