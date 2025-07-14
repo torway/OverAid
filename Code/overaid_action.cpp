@@ -366,6 +366,7 @@ void OverAid::changeAccount(QAction *actionClicked)
     {
         id_compte = compte.value("id_compte").toInt();
         active = compte.value("active").toString() == "true"? true : false;
+        ui->label_accountName->setText(actionClicked->text());
     }
 
     QSqlQuery nb_cat("SELECT COUNT(*) FROM Catégories WHERE id_compte='"+QString::number(id_compte)+"'");

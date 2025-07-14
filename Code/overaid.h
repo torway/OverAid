@@ -31,7 +31,7 @@ public:
     Ui::OverAid *ui;
     ~OverAid();
 
-    const QString version = "2.3.4";
+    const QString version = "2.3.5";
     QLocale locale;
 
     void database();

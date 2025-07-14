@@ -1,6 +1,7 @@
 #include "overaid.h"
 #include "ui_overaid.h"
 
+#include <QSharedMemory>
 #include <QApplication>
 #include <QTranslator>
 #include <QSqlQuery>
@@ -23,6 +24,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qInstallMessageHandler(myMessageOutput);
     QTranslator translator, translatorQtBase;
+    QSharedMemory sharedMemory("OverAid");
+
+    if (!sharedMemory.create(1)) {
+        QMessageBox::warning(nullptr, QObject::tr("Instance déjà en cours"), QObject::tr("L'application est déjà ouverte."), QMessageBox::Close);
+        return 0;
+    }
 
     //Création du fichier de langage
     if(!QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).exists() || !QFile(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/translate.txt").exists())

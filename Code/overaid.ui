@@ -16,6 +16,15 @@
   <property name="windowTitle">
    <string>OverAid</string>
   </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_7">
     <property name="leftMargin">
@@ -30,7 +39,10 @@
     <property name="bottomMargin">
      <number>15</number>
     </property>
-    <item row="0" column="0">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="2" column="0">
      <widget class="QGroupBox" name="groupBox_filtre">
       <property name="enabled">
        <bool>true</bool>
@@ -74,13 +86,6 @@
        <property name="bottomMargin">
         <number>5</number>
        </property>
-       <item row="0" column="4" rowspan="3">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="5">
         <spacer name="horizontalSpacer_4">
          <property name="orientation">
@@ -519,26 +524,43 @@
          </item>
         </layout>
        </item>
+       <item row="0" column="4" rowspan="3">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
-    <item row="0" column="1" rowspan="2">
-     <widget class="QPlainTextEdit" name="plainTextEdit_debug">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_accountName">
       <property name="minimumSize">
        <size>
-        <width>300</width>
-        <height>0</height>
+        <width>0</width>
+        <height>30</height>
        </size>
       </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
       </property>
-      <property name="readOnly">
-       <bool>true</bool>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::LinksAccessibleByMouse</set>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="3" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
@@ -658,6 +680,22 @@
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="4">
+     <widget class="QPlainTextEdit" name="plainTextEdit_debug">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
